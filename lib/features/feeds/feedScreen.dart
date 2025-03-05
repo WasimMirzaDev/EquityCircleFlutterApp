@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -24,7 +26,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
       "time": "Today at 10:20 pm",
       "category": "Business",
       "content": "Spend less time on testing .......",
-      "postImage": "assets/images/postImage.png",
+      "postImages": [
+        "assets/images/postImage.png",
+        "assets/images/ima1.png",
+        "assets/images/postImage.png",
+        "assets/images/postImage.png",
+      ],
+
       "likes": "12,900",
     },
     {
@@ -33,7 +41,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       "time": "Today at 10:20 pm",
       "category": "Business",
       "content": "Spend less time on testing .......",
-      "postImage": "assets/images/postImage.png",
+      "postImages": ["assets/images/postImage.png"],
       "likes": "12,900",
     },
   ];
@@ -128,7 +136,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               physics: NeverScrollableScrollPhysics(),
               itemCount: posts.length,
               itemBuilder: (context, index) {
-                return buildPost(posts[index]);
+                return buildPost(context, posts[index]);
               },
             ),
           ],
@@ -160,9 +168,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
   }
 
-  Widget buildPost(Map<String, dynamic> post) {
+  Widget buildPost(BuildContext context, Map<String, dynamic> post) {
+    List<String>? postImages =
+        (post['postImages'] as List?)?.cast<String>(); // ✅ Ensure list or null
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Column(
@@ -180,35 +191,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 post['time'],
                 style: TextStyle(color: Colors.black45, fontSize: 10),
               ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: 80,
-                    child: Chip(
-                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      visualDensity: VisualDensity.compact,
-                      label: FittedBox(
-                        child: Text(
-                          post['category'],
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      backgroundColor: const Color.fromARGB(255, 180, 122, 191),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-
-                  Icon(Icons.more_vert, color: Colors.grey),
-                ],
-              ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -217,21 +200,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
               ),
             ),
             SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Image.asset(
-                  post['postImage'],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: 200,
-                ),
-              ),
-            ),
+
+            /// ✅ Image Gallery (Handles 1, multiple, or no images)
+            buildImageGallery(context, postImages),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Column(
@@ -254,39 +226,122 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
 
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Write a comment",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey),
+  /// ✅ Function to Show Image Gallery (1 or More Images)
+  Widget buildImageGallery(BuildContext context, List<String>? images) {
+    if (images == null || images.isEmpty)
+      return SizedBox(); // ✅ Handle no images
+
+    if (images.length == 1) {
+      // ✅ If only 1 image, show it normally
+      return GestureDetector(
+        onTap: () => openFullScreenGallery(context, images, 0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              images[0],
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 250, // Adjust height for single image
+            ),
+          ),
+        ),
+      );
+    }
+
+    // ✅ If multiple images, show them in a grid
+    return GestureDetector(
+      onTap: () => openFullScreenGallery(context, images, 0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount:
+                images.length > 1 ? 2 : 1, // 2 columns if more than 1 image
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+          ),
+          itemCount: images.length > 4 ? 4 : images.length, // Show max 4 images
+          itemBuilder: (context, index) {
+            if (index == 3 && images.length > 4) {
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(images[index], fit: BoxFit.cover),
+                  Container(
+                    color: Colors.black54,
+                    child: Center(
+                      child: Text(
+                        "+${images.length - 4}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    Icon(Icons.attach_file, color: Colors.grey),
-                    SizedBox(width: 8),
-                    Icon(Icons.camera_alt, color: Colors.grey),
-                    SizedBox(width: 8),
-                    Icon(Icons.emoji_emotions, color: Colors.grey),
-                    SizedBox(width: 8),
-                    Icon(Icons.send, color: Colors.grey),
-                  ],
-                ),
-              ),
-            ),
-          ],
+                  ),
+                ],
+              );
+            }
+            return Image.asset(images[index], fit: BoxFit.cover);
+          },
         ),
+      ),
+    );
+  }
+
+  /// ✅ Open Full-Screen Gallery Function
+  void openFullScreenGallery(
+    BuildContext context,
+    List<String> images,
+    int initialIndex,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (_) =>
+                FullScreenGallery(images: images, initialIndex: initialIndex),
+      ),
+    );
+  }
+}
+
+class FullScreenGallery extends StatelessWidget {
+  final List<String> images;
+
+  const FullScreenGallery({
+    Key? key,
+    required this.images,
+    required int initialIndex,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(backgroundColor: Colors.black),
+      body: PhotoViewGallery.builder(
+        itemCount: images.length,
+        builder: (context, index) {
+          return PhotoViewGalleryPageOptions(
+            imageProvider: AssetImage(images[index]),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2,
+          );
+        },
+        scrollPhysics: BouncingScrollPhysics(),
+        backgroundDecoration: BoxDecoration(color: Colors.black),
       ),
     );
   }
