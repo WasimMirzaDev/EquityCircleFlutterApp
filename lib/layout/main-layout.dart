@@ -41,11 +41,109 @@ class _MainLayoutState extends State<MainLayout> {
 
     return Scaffold(
       key: _scaffoldKey, // ✅ Assign the GlobalKey here
-      drawer: Drawer(
+      /*drawer: Drawer(
         child: Column(
           children: [
             DrawerHeader(child: Text("Equity Circle Menu")),
             ListTile(leading: Icon(Icons.settings), title: Text("Settings")),
+            ListTile(
+              leading: Icon(Icons.feedback),
+              title: Text("Feedback"),
+              onTap: () {
+                context.go('/feedback');
+              },
+            ),
+            GestureDetector(
+              onTap: () {
+                Provider.of<AuthProvider>(context, listen: false).logout();
+                context.go('/login');
+              },
+              child: ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Logout"),
+              ),
+            ),
+          ],
+        ),
+      ),*/
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  bottom: BorderSide(color: Colors.blueGrey, width: 0.01),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/logo_icons/Equity_Circle_full.png',
+                        height: 40,
+                        width: 40,
+                      ),
+
+                      Text(
+                        "Equity Circle",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text("Home", style: GoogleFonts.poppins()),
+              onTap: () => context.go('/home'),
+            ),
+            ListTile(
+              leading: Icon(Icons.school),
+              title: Text("Education", style: GoogleFonts.poppins()),
+              onTap: () => context.go('/education'),
+            ),
+            ListTile(
+              leading: Icon(Icons.work_outline),
+              title: Text("Joblish", style: GoogleFonts.poppins()),
+              onTap: () => context.go('/joblish'),
+            ),
+            ListTile(
+              leading: Icon(Icons.calendar_today),
+              title: Text("Calendar", style: GoogleFonts.poppins()),
+              onTap: () => context.go('/calendar'),
+            ),
+            ListTile(
+              leading: Icon(Icons.notifications),
+              title: Text("Notifications", style: GoogleFonts.poppins()),
+              onTap: () => context.go('/notifications'),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.settings,
+                color: Theme.of(context).iconTheme.color,
+              ),
+              title: Text("Settings", style: GoogleFonts.poppins()),
+              onTap: () {
+                context.go('/settings');
+              },
+            ),
+
+            ListTile(
+              leading: Icon(Icons.feedback),
+              title: Text("Feedback"),
+              onTap: () {
+                context.go('/feedback');
+              },
+            ),
             GestureDetector(
               onTap: () {
                 Provider.of<AuthProvider>(context, listen: false).logout();
@@ -59,6 +157,7 @@ class _MainLayoutState extends State<MainLayout> {
           ],
         ),
       ),
+
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         leading: IconButton(
