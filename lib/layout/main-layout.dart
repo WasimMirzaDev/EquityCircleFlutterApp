@@ -148,20 +148,22 @@ class _MainLayoutState extends State<MainLayout> {
         ],
       ),
 
-      body: PageView(
-        controller: _pageController,
-        physics: const BouncingScrollPhysics(), // ✅ Smooth swipe effect
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        children: [
-          FeedsPage(categoryId: 1),
-          FeedsPage(categoryId: 2),
-          FeedsPage(categoryId: 3),
-          FeedsPage(categoryId: 4),
-        ],
+      body: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          physics: const BouncingScrollPhysics(), // ✅ Smooth swipe effect
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          children: [
+            FeedsPage(categoryId: 1),
+            FeedsPage(categoryId: 2),
+            FeedsPage(categoryId: 3),
+            FeedsPage(categoryId: 4),
+          ],
+        ),
       ),
 
       bottomNavigationBar: ClipRRect(

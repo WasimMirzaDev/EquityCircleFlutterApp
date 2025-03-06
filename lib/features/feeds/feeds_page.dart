@@ -13,19 +13,40 @@ class FeedsPage extends StatefulWidget {
 }
 
 class _FeedsPageState extends State<FeedsPage> {
+  late ScrollController _scrollController; // ✅ Declare it here
+
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController(); // ✅ Initialize it first
+    _scrollController.addListener(_scrollListener); // ✅ Then add the listener
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final provider = Provider.of<FeedsProvider>(context, listen: false);
-
-      // ✅ Fetch data only if it hasn't been loaded yet
       if (provider.getFeedsByCategory(widget.categoryId).isEmpty) {
         provider.fetchFeeds(context, categoryId: widget.categoryId);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose(); // ✅ Always dispose of the controller
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    final provider = Provider.of<FeedsProvider>(context, listen: false);
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 200 &&
+        provider.hasMore(widget.categoryId) &&
+        !provider.isLoading) {
+      provider.fetchFeeds(
+        context,
+        categoryId: widget.categoryId,
+        loadMore: true,
+      );
+    }
   }
 
   @override
@@ -37,9 +58,7 @@ class _FeedsPageState extends State<FeedsPage> {
     return Scaffold(
       body:
           isLoading && feeds.isEmpty
-              ? Center(
-                child: CircularProgressIndicator(),
-              ) // ✅ Show loader only if empty
+              ? Center(child: CircularProgressIndicator())
               : RefreshIndicator(
                 onRefresh: () async {
                   await feedsProvider.fetchFeeds(
@@ -49,13 +68,24 @@ class _FeedsPageState extends State<FeedsPage> {
                   );
                 },
                 child: ListView.builder(
-                  itemCount: feeds.length,
+                  controller: _scrollController, // ✅ Attach scroll controller
+                  itemCount: feeds.length + 1, // ✅ Add extra item for loader
                   itemBuilder: (context, index) {
-                    return FeedCard(
-                      feed: feeds[index],
-                      loggedInUserId:
-                          Provider.of<AuthProvider>(context).userData!['id'],
-                    );
+                    if (index < feeds.length) {
+                      return FeedCard(
+                        feed: feeds[index],
+                        loggedInUserId:
+                            Provider.of<AuthProvider>(context).userData!['id'],
+                      );
+                    } else if (feedsProvider.hasMore(widget.categoryId)) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    return SizedBox(); // ✅ No more items to load
                   },
                 ),
               ),
