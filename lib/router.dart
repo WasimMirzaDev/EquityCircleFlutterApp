@@ -1,4 +1,6 @@
 import 'package:equitycircle/features/auth/register_page.dart';
+import 'package:equitycircle/features/feeds/feedNav.dart';
+import 'package:equitycircle/features/feeds/feedScreen.dart';
 import 'package:equitycircle/layout/main-layout.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -81,6 +83,15 @@ final GoRouter router = GoRouter(
       redirect: (context, state) {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         return authProvider.isAuthenticated ? '/' : null;
+      },
+    ),
+
+    GoRoute(
+      path: '/feedback',
+      builder: (context, state) => Feednav(),
+      redirect: (context, state) {
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        return authProvider.isAuthenticated ? null : '/login';
       },
     ),
   ],
