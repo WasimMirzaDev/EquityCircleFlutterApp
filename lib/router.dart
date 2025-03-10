@@ -88,7 +88,7 @@ final GoRouter router = GoRouter(
 
     GoRoute(
       path: '/feedback',
-      builder: (context, state) => Feednav(),
+      builder: (context, state) => Feedscreen(),
       redirect: (context, state) {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         return authProvider.isAuthenticated ? null : '/login';
