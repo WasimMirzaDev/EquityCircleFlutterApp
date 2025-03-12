@@ -48,6 +48,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.4.0
   photo_view: ^0.15.0
   flutter_svg: ^2.0.17
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

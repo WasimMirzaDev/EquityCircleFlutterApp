@@ -1,7 +1,6 @@
 import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:equitycircle/features/feeds/feeds_page.dart';
 import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
-import 'package:equitycircle/features/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -109,12 +108,12 @@ class _MainLayoutState extends State<MainLayout> {
             ListTile(
               leading: Icon(Icons.school),
               title: Text("Education", style: GoogleFonts.poppins()),
-              onTap: () => context.go('/education'),
+              onTap: () => context.push('/education'),
             ),
             ListTile(
               leading: Icon(Icons.work_outline),
-              title: Text("Joblish", style: GoogleFonts.poppins()),
-              onTap: () => context.go('/joblish'),
+              title: Text("Joblist", style: GoogleFonts.poppins()),
+              onTap: () => context.go('/Joblist'),
             ),
             ListTile(
               leading: Icon(Icons.calendar_today),
