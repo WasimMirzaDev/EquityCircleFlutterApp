@@ -1,0 +1,142 @@
+{
+  "project_info": {
+    "project_number": "37092018117",
+    "project_id": "equitycircle-86363",
+    "storage_bucket": "equitycircle-86363.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37092018117:android:82b21bb5e0c805f3e16dac",
+        "android_client_info": {
+          "package_name": "com.equitycircle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37092018117-1osl7b8v128dije5kdohlhcs1shcm5b3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.equitycircle",
+            "certificate_hash": "309282c606739a91990054c577e1b948e00bb9c0"
+          }
+        },
+        {
+          "client_id": "37092018117-6ddnl48lmteot9iijsk66q0epsjbfgno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJNCHij12lr2-uNiEqTW746MCk6RdRqUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37092018117-6ddnl48lmteot9iijsk66q0epsjbfgno.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "37092018117-954ja39dcp7ghcje6b37v9v6lus33707.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.equityCircle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37092018117:android:e6bb2e1f862f9131e16dac",
+        "android_client_info": {
+          "package_name": "com.example.equity_circle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37092018117-gpmek0iqimvnoa7mnvncd11bedhgp9o7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.equity_circle",
+            "certificate_hash": "309282c606739a91990054c577e1b948e00bb9c0"
+          }
+        },
+        {
+          "client_id": "37092018117-6ddnl48lmteot9iijsk66q0epsjbfgno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJNCHij12lr2-uNiEqTW746MCk6RdRqUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37092018117-6ddnl48lmteot9iijsk66q0epsjbfgno.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "37092018117-954ja39dcp7ghcje6b37v9v6lus33707.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.equityCircle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37092018117:android:dcd0859cdad2c0a5e16dac",
+        "android_client_info": {
+          "package_name": "com.example.equitycircle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37092018117-t8rqochvuac09mdgq6nd43dr3eugds8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.equitycircle",
+            "certificate_hash": "309282c606739a91990054c577e1b948e00bb9c0"
+          }
+        },
+        {
+          "client_id": "37092018117-6ddnl48lmteot9iijsk66q0epsjbfgno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJNCHij12lr2-uNiEqTW746MCk6RdRqUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37092018117-6ddnl48lmteot9iijsk66q0epsjbfgno.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "37092018117-954ja39dcp7ghcje6b37v9v6lus33707.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.equityCircle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

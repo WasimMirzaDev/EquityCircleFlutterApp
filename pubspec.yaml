@@ -49,6 +49,13 @@ dependencies:
   photo_view: ^0.15.0
   flutter_svg: ^2.0.17
   cached_network_image: ^3.4.1
+  firebase_core: ^3.12.1
+  firebase_auth: ^5.5.1
+  cloud_firestore: ^5.6.5
+  firebase_storage: ^12.4.4
+  firebase_messaging: ^15.2.4
+  firebase_analytics: ^11.4.4
+  google_sign_in: ^6.3.0
 
 dev_dependencies:
   flutter_test:
