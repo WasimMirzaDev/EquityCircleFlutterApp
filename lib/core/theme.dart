@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'constants/appColors.dart';
+
 final ThemeData appTheme = ThemeData(
   colorScheme: const ColorScheme(
     brightness: Brightness.light, // Set theme brightness
-    primary: Color(0xFF6043D1), // Bottom active navigation bar color
-    onPrimary: Colors.white, // Text/icons on primary color
+    primary: AppColors.purpleColor, // Bottom active navigation bar color
+    onPrimary: AppColors.white, // Text/icons on primary color
     secondary: Color(0xFF897FFF), // Business badge gradient end color
     onSecondary: Colors.white, // Text/icons on secondary color
     background: Color(0xFFEBEAF0), // Background color
