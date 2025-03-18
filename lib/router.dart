@@ -1,5 +1,5 @@
-import 'package:equitycircle/features/auth/register_page.dart';
 import 'package:equitycircle/features/auth/login_page.dart';
+import 'package:equitycircle/features/auth/register_page.dart';
 import 'package:equitycircle/features/education/education_page.dart';
 import 'package:equitycircle/features/feeds/feedScreen.dart';
 import 'package:equitycircle/features/feeds/feeds_page.dart';
@@ -8,6 +8,7 @@ import 'package:equitycircle/layout/main-layout.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import 'core/providers/auth_provider.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -21,7 +22,7 @@ GoRouter createRouter(AuthProvider authProvider) {
       /// 🏠 **Main Shell Route** (Wraps Only Bottom Navigation Pages)
       ShellRoute(
         builder:
-            (context, state, child) => MainLayout(child: child, state: state),
+            (context, state, child) => MainLayout(state: state, child: child),
         routes: [
           _protectedRoute('/', FeedsPage(categoryId: 1)),
           _protectedRoute('/crypto', FeedsPage(categoryId: 2)),

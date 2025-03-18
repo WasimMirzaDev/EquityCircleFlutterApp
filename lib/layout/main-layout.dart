@@ -1,10 +1,14 @@
+import 'package:equitycircle/core/constants/appColors.dart';
+import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:equitycircle/features/feeds/feeds_page.dart';
 import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class MainLayout extends StatefulWidget {
   final Widget child;
@@ -158,7 +162,7 @@ class _MainLayoutState extends State<MainLayout> {
       ),
 
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () {
@@ -249,7 +253,7 @@ class _MainLayoutState extends State<MainLayout> {
       body: Scaffold(
         body: PageView(
           controller: _pageController,
-          physics: const BouncingScrollPhysics(), // ✅ Smooth swipe effect
+          physics: const BouncingScrollPhysics(),
           onPageChanged: (index) {
             setState(() {
               _currentIndex = index;
@@ -285,10 +289,8 @@ class _MainLayoutState extends State<MainLayout> {
             ],
           ),
           child: BottomNavigationBar(
-            type:
-                BottomNavigationBarType
-                    .fixed, // ✅ Ensures labels are always shown
-            backgroundColor: Colors.white, // Match the container color
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
             fixedColor: Theme.of(context).colorScheme.primary,
             unselectedItemColor: Theme.of(context).textTheme.bodyMedium!.color,
             unselectedLabelStyle: TextStyle(
@@ -305,21 +307,63 @@ class _MainLayoutState extends State<MainLayout> {
                 );
               });
             },
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.business_center_outlined),
+                icon: SvgPicture.asset(
+                  width: 24.w,
+                  height: 24.h,
+                  Assets.bussinesIcon,
+                  color:
+                      _currentIndex == 0
+                          ? AppColors.purpleColor
+                          : AppColors.greyColor,
+                ),
                 label: 'Business',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.currency_bitcoin_sharp),
-                label: 'Crypto',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.fitness_center_sharp),
+                icon: SvgPicture.asset(
+                  width: 24.w,
+                  height: 24.h,
+                  Assets.fitnessIcon,
+                  color:
+                      _currentIndex == 1
+                          ? AppColors.purpleColor
+                          : AppColors.greyColor,
+                ),
                 label: 'Fitness',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.lightbulb_outlined),
+                icon: SvgPicture.asset(
+                  Assets.addPostIcon,
+                  // color:
+                  //     _currentIndex == 2
+                  //         ? AppColors.purpleColor
+                  //         : AppColors.greyColor,
+                ),
+                label: 'Add post',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  width: 24.w,
+                  height: 24.h,
+                  Assets.cryptoIcon,
+                  color:
+                      _currentIndex == 3
+                          ? AppColors.purpleColor
+                          : AppColors.greyColor,
+                ),
+                label: 'Crypto',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  Assets.mindsetIcon,
+                  color:
+                      _currentIndex == 4
+                          ? AppColors.purpleColor
+                          : AppColors.greyColor,
+                  width: 24.w,
+                  height: 24.h,
+                ),
                 label: 'Mindset',
               ),
             ],

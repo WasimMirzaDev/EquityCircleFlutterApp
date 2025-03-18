@@ -4,16 +4,18 @@ import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:equitycircle/core/providers/education_provider.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
 import 'package:equitycircle/core/providers/job_provider.dart';
+import 'package:equitycircle/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:equitycircle/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: "assets/.env");
+  await ScreenUtil.ensureScreenSize();
   runApp(
     MultiProvider(
       providers: [
