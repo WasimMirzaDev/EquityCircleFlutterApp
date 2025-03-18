@@ -69,6 +69,33 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> googleLogin(
+    String? name,
+    String? email,
+    String? photo,
+    String? idToken,
+  ) async {
+    try {
+      final data = await AuthApi.sendUserDataToBackend(
+        name,
+        email,
+        photo,
+        idToken,
+      );
+      _token = data['access_token']; // assuming the API returns a token
+
+      // Optionally, store token locally
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('access_token', _token!);
+      notifyListeners();
+      return true;
+    } catch (error) {
+      // Handle errors
+      print("Error during sending user data: $error");
+      return false;
+    }
+  }
+
   Future<void> fetchUser() async {
     try {
       if (_token == null) return;

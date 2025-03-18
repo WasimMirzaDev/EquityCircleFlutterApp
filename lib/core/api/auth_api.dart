@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'api_service.dart'; // your centralized API service
 
 class AuthApi {
@@ -47,6 +49,26 @@ class AuthApi {
     } catch (error) {
       // Handle errors appropriately
       throw Exception("Login failed: $error");
+    }
+  }
+
+  static Future<Map<String, dynamic>> sendUserDataToBackend(
+    String? name,
+    String? email,
+    String? photo,
+    String? idToken,
+  ) async {
+    final response = await ApiService.postRequest('/auth/google-login', {
+      'name': name,
+      'email': email,
+      'photo': photo,
+      'id_token': idToken,
+    });
+
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception("Login failed: ${response}");
     }
   }
 }
