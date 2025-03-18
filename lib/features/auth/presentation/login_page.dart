@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:equitycircle/core/providers/auth_provider.dart'
     as auth_provider;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -58,49 +63,45 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
   Future<void> _handleGoogleSignIn() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return; // User canceled sign-in
 
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithCredential(credential);
+      // Ensure idToken is obtained
+      final String? idToken = googleAuth.idToken;
+      if (idToken == null) throw Exception("Failed to retrieve ID Token");
 
-    User? user = userCredential.user;
+      print("Google ID Token: $idToken"); // Debugging
 
-    if (user != null) {
-      String? googleIdToken = googleAuth.idToken; // Important for verification!
-
-      // Send this to your Laravel backend
-      final authProvider = Provider.of<auth_provider.AuthProvider>(
-        context,
-        listen: false,
-      );
-      bool success = await authProvider.googleLogin(
-        user.displayName,
-        user.email,
-        user.photoURL,
-        googleIdToken,
+      final response = await http.post(
+        Uri.parse("${dotenv.env['API_URL']}/api/auth/google/callback/app"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"id_token": idToken}),
       );
 
-      if (success) {
-        context.go('/feeds');
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final accessToken = data["access_token"]; // Get backend's token
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('access_token', accessToken);
+
+        _showSnackBar("Google Sign-In successful!");
+        context.go('/home');
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Login failed!')));
+        print("Backend Response: ${response.body}"); // Debugging
+        _showSnackBar("Google authentication failed: ${response.body}");
       }
-      print('''
-        displayName: ${user.displayName}
-        email: ${user.email}
-        photoURL: ${user.photoURL}
-        googleIdToken: $googleIdToken
-        ''');
+    } catch (error) {
+      print("Google Sign-In Error: $error"); // Debugging
+      _showSnackBar("Google Sign-In failed: $error");
     }
   }
 

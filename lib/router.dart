@@ -1,8 +1,8 @@
-import 'package:equitycircle/features/auth/login_page.dart';
-import 'package:equitycircle/features/auth/register_page.dart';
+import 'package:equitycircle/features/auth/presentation/login_page.dart';
+import 'package:equitycircle/features/auth/presentation/register_page.dart';
+import 'package:equitycircle/features/bussiness/presentation/bussiness_screen.dart';
 import 'package:equitycircle/features/education/education_page.dart';
 import 'package:equitycircle/features/feeds/feedScreen.dart';
-import 'package:equitycircle/features/feeds/feeds_page.dart';
 import 'package:equitycircle/features/job_list/joblist_page.dart';
 import 'package:equitycircle/layout/main-layout.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +24,10 @@ GoRouter createRouter(AuthProvider authProvider) {
         builder:
             (context, state, child) => MainLayout(state: state, child: child),
         routes: [
-          _protectedRoute('/', FeedsPage(categoryId: 1)),
-          _protectedRoute('/crypto', FeedsPage(categoryId: 2)),
-          _protectedRoute('/fitness', FeedsPage(categoryId: 3)),
-          _protectedRoute('/mindset', FeedsPage(categoryId: 4)),
+          _protectedRoute('/', BussinessScreen(categoryId: 1)),
+          _protectedRoute('/crypto', BussinessScreen(categoryId: 2)),
+          _protectedRoute('/fitness', BussinessScreen(categoryId: 3)),
+          _protectedRoute('/mindset', BussinessScreen(categoryId: 4)),
         ],
       ),
 

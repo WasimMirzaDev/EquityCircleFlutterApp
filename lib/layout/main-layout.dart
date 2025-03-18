@@ -1,14 +1,21 @@
 import 'package:equitycircle/core/constants/appColors.dart';
+import 'package:equitycircle/core/constants/appFonts.dart';
 import 'package:equitycircle/core/constants/assets.dart';
+import 'package:equitycircle/core/constants/constants.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart';
-import 'package:equitycircle/features/feeds/feeds_page.dart';
+import 'package:equitycircle/features/bussiness/presentation/bussiness_screen.dart';
+import 'package:equitycircle/features/bussiness/presentation/widgets/drawer_widget.dart';
+import 'package:equitycircle/features/crypto/presentation/crypto_screen.dart';
 import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
+import 'package:equitycircle/features/mindset/presentation/mindset_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import '../features/fitness/presentation/fitness_screen.dart';
 
 class MainLayout extends StatefulWidget {
   final Widget child;
@@ -70,183 +77,134 @@ class _MainLayoutState extends State<MainLayout> {
         ),
       ),*/
       drawer: Drawer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  bottom: BorderSide(color: Colors.blueGrey, width: 0.01),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/logo_icons/Equity_Circle_full.png',
-                        height: 40,
-                        width: 40,
-                      ),
-
-                      Text(
-                        "Equity Circle",
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Home", style: GoogleFonts.poppins()),
-              onTap: () => context.go('/home'),
-            ),
-            ListTile(
-              leading: Icon(Icons.school),
-              title: Text("Education", style: GoogleFonts.poppins()),
-              onTap: () => context.push('/education'),
-            ),
-            ListTile(
-              leading: Icon(Icons.work_outline),
-              title: Text("Joblist", style: GoogleFonts.poppins()),
-              onTap: () => context.go('/Joblist'),
-            ),
-            ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text("Calendar", style: GoogleFonts.poppins()),
-              onTap: () => context.go('/calendar'),
-            ),
-            ListTile(
-              leading: Icon(Icons.notifications),
-              title: Text("Notifications", style: GoogleFonts.poppins()),
-              onTap: () => context.go('/notifications'),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                color: Theme.of(context).iconTheme.color,
-              ),
-              title: Text("Settings", style: GoogleFonts.poppins()),
-              onTap: () {
-                context.go('/settings');
-              },
-            ),
-
-            ListTile(
-              leading: Icon(Icons.feedback),
-              title: Text("Feedback"),
-              onTap: () {
-                context.go('/feedback');
-              },
-            ),
-            GestureDetector(
-              onTap: () {
-                Provider.of<AuthProvider>(context, listen: false).logout();
-                context.go('/login');
-              },
-              child: ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Logout"),
-              ),
-            ),
-          ],
+        width: 320.w,
+        backgroundColor: AppColors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20.r),
+            bottomRight: Radius.circular(20.r),
+          ),
         ),
+        child: DrawerContent(),
       ),
 
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState
-                ?.openDrawer(); // ✅ Open drawer using GlobalKey
-          },
+        backgroundColor: AppColors.offWhite,
+        leading: Padding(
+          padding: EdgeInsets.only(left: PAGE_MARGIN_HOR),
+          child: IconButton(
+            icon: SvgPicture.asset(
+              Assets.drawerIcon,
+              // fit: BoxFit.cover,
+            ),
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+          ),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               "assets/icon/Equity_Circle_icon.png",
-              height: 30,
-              width: 30,
+              height: 30.h,
+              width: 30.w,
             ),
-            const SizedBox(width: 10),
+            8.widthBox,
             Text(
               'Equity Circle',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontFamily: AppFonts.inter,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
               ),
             ),
           ],
         ),
         actions: [
-          PopupMenuButton(
-            child:
-                authProvider.userData == null
-                    ? Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Icon(Icons.more_vert),
-                    )
-                    : Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          getProfileImageUrl(authProvider.userData),
-                        ),
-                      ),
-                    ),
-            itemBuilder:
-                (context) => [
-                  if (!authProvider.isAuthenticated)
-                    const PopupMenuItem<String>(
-                      value: 'Sign In',
-                      child: Text('Sign In'),
-                    ),
-                  if (authProvider.isAuthenticated)
-                    PopupMenuItem<String>(
-                      onTap: () {
-                        Provider.of<AuthProvider>(
-                          context,
-                          listen: false,
-                        ).logout();
-                        context.go('/login');
-                      },
-                      value: 'Sign Out',
-                      child: const Text('Sign Out'),
-                    ),
-                  const PopupMenuItem<String>(
-                    value: 'Edit Profile',
-                    child: Text('Edit Profile'),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'Account Settings',
-                    child: Text('Account Settings'),
-                  ),
-                ],
-            onSelected: (value) {
-              switch (value) {
-                case 'Sign In':
-                  GoRouter.of(context).push('/login');
-                  break;
-                case 'Sign Up':
-                  GoRouter.of(context).push('/register');
-                  break;
-                case 'Edit Profile':
-                  break;
-                case 'Account Settings':
-                  break;
-              }
-            },
+          16.widthBox,
+          SvgPicture.asset(
+            width: 24.w,
+            height: 24.h,
+            Assets.notificationIcon,
+            // fit: BoxFit.cover,
           ),
+          14.widthBox,
+          Container(
+            width: 30.r,
+            height: 30.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.purpleColor, width: 1.w),
+            ),
+            child: CircleAvatar(
+              backgroundColor: AppColors.lightGreyColor,
+              radius: 20.r,
+              backgroundImage: NetworkImage(
+                getProfileImageUrl(authProvider.userData),
+              ),
+            ),
+          ),
+          16.widthBox,
+          // PopupMenuButton(
+          //   child:
+          //   authProvider.userData == null
+          //       ? Padding(
+          //         padding: const EdgeInsets.only(right: 10.0),
+          //         child: Icon(Icons.more_vert),
+          //       )
+          //       :
+          //   CircleAvatar(
+          //     backgroundColor: AppColors.lightGreyColor,
+          //     radius: 20.r,
+          //     backgroundImage: NetworkImage(
+          //       getProfileImageUrl(authProvider.userData),
+          //     ),
+          //   ),
+          //   itemBuilder:
+          //       (context) => [
+          //         if (!authProvider.isAuthenticated)
+          //           const PopupMenuItem<String>(
+          //             value: 'Sign In',
+          //             child: Text('Sign In'),
+          //           ),
+          //         if (authProvider.isAuthenticated)
+          //           PopupMenuItem<String>(
+          //             onTap: () {
+          //               Provider.of<AuthProvider>(
+          //                 context,
+          //                 listen: false,
+          //               ).logout();
+          //               context.go('/login');
+          //             },
+          //             value: 'Sign Out',
+          //             child: const Text('Sign Out'),
+          //           ),
+          //         const PopupMenuItem<String>(
+          //           value: 'Edit Profile',
+          //           child: Text('Edit Profile'),
+          //         ),
+          //         const PopupMenuItem<String>(
+          //           value: 'Account Settings',
+          //           child: Text('Account Settings'),
+          //         ),
+          //       ],
+          //   onSelected: (value) {
+          //     switch (value) {
+          //       case 'Sign In':
+          //         GoRouter.of(context).push('/login');
+          //         break;
+          //       case 'Sign Up':
+          //         GoRouter.of(context).push('/register');
+          //         break;
+          //       case 'Edit Profile':
+          //         break;
+          //       case 'Account Settings':
+          //         break;
+          //     }
+          //   },
+          // ),
         ],
       ),
 
@@ -260,114 +218,131 @@ class _MainLayoutState extends State<MainLayout> {
             });
           },
           children: [
-            FeedsPage(categoryId: 1),
-            FeedsPage(categoryId: 2),
-            FeedsPage(categoryId: 3),
-            FeedsPage(categoryId: 4),
+            BussinessScreen(categoryId: 1),
+            FitnessScreen(categoryId: 2),
+            BussinessScreen(categoryId: 3),
+            CryptoScreen(categoryId: 4),
+            MindsetScreen(categoryId: 5),
           ],
         ),
       ),
 
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: const Border(
+            top: BorderSide(color: AppColors.lightGreyColor, width: 0.5),
+          ),
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white, // Ensure background color matches your theme
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 5,
-                spreadRadius: 2,
-              ),
-            ],
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: AppColors.purpleColor,
+          unselectedItemColor: AppColors.greyColor,
+          selectedLabelStyle: TextStyle(
+            fontSize: 12.sp,
+            fontFamily: AppFonts.inter,
+            fontWeight: FontWeight.w400,
           ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.white,
-            fixedColor: Theme.of(context).colorScheme.primary,
-            unselectedItemColor: Theme.of(context).textTheme.bodyMedium!.color,
-            unselectedLabelStyle: TextStyle(
-              color: Theme.of(context).textTheme.bodyMedium!.color,
-            ),
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-                _pageController.animateToPage(
-                  index,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  width: 24.w,
-                  height: 24.h,
-                  Assets.bussinesIcon,
-                  color:
-                      _currentIndex == 0
-                          ? AppColors.purpleColor
-                          : AppColors.greyColor,
-                ),
-                label: 'Business',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  width: 24.w,
-                  height: 24.h,
-                  Assets.fitnessIcon,
-                  color:
-                      _currentIndex == 1
-                          ? AppColors.purpleColor
-                          : AppColors.greyColor,
-                ),
-                label: 'Fitness',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  Assets.addPostIcon,
-                  // color:
-                  //     _currentIndex == 2
-                  //         ? AppColors.purpleColor
-                  //         : AppColors.greyColor,
-                ),
-                label: 'Add post',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  width: 24.w,
-                  height: 24.h,
-                  Assets.cryptoIcon,
-                  color:
-                      _currentIndex == 3
-                          ? AppColors.purpleColor
-                          : AppColors.greyColor,
-                ),
-                label: 'Crypto',
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  Assets.mindsetIcon,
-                  color:
-                      _currentIndex == 4
-                          ? AppColors.purpleColor
-                          : AppColors.greyColor,
-                  width: 24.w,
-                  height: 24.h,
-                ),
-                label: 'Mindset',
-              ),
-            ],
+          selectedIconTheme: IconThemeData(color: AppColors.purpleColor),
+          unselectedIconTheme: IconThemeData(color: AppColors.greyColor),
+          unselectedLabelStyle: TextStyle(
+            height: 0,
+            fontSize: 12.sp,
+            fontFamily: AppFonts.inter,
+            fontWeight: FontWeight.w400,
           ),
+
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    width: 24.w,
+                    height: 24.h,
+                    Assets.bussinesIcon,
+                    color:
+                        _currentIndex == 0
+                            ? AppColors.purpleColor
+                            : AppColors.greyColor,
+                  ),
+
+                  3.heightBox,
+                ],
+              ),
+              label: 'Business',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  SvgPicture.asset(
+                    width: 24.w,
+                    height: 24.h,
+                    Assets.fitnessIcon,
+                    color:
+                        _currentIndex == 1
+                            ? AppColors.purpleColor
+                            : AppColors.greyColor,
+                  ),
+                  3.heightBox,
+                ],
+              ),
+              label: 'Fitness',
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [SvgPicture.asset(Assets.addPostIcon), 3.heightBox],
+              ),
+              label: 'Add post',
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  SvgPicture.asset(
+                    width: 24.w,
+                    height: 24.h,
+                    Assets.cryptoIcon,
+                    color:
+                        _currentIndex == 3
+                            ? AppColors.purpleColor
+                            : AppColors.greyColor,
+                  ),
+                  3.heightBox,
+                ],
+              ),
+              label: 'Crypto',
+            ),
+            BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  3.heightBox,
+                  SvgPicture.asset(
+                    Assets.mindsetIcon,
+                    color:
+                        _currentIndex == 4
+                            ? AppColors.purpleColor
+                            : AppColors.greyColor,
+                    width: 24.w,
+                    height: 24.h,
+                  ),
+                ],
+              ),
+              label: 'Mindset',
+            ),
+          ],
         ),
       ),
     );
