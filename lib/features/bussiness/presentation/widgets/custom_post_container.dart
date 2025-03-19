@@ -1,0 +1,235 @@
+import 'package:equitycircle/core/constants/appColors.dart';
+import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/constants/assets.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/features/add_post/presentation/edit_post_screen.dart';
+import 'package:equitycircle/features/feeds/widgets/media_grid.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart' show SvgPicture;
+
+Widget customPostContainer(
+  String profileUrl,
+  String name,
+  String date,
+  String discription,
+  VoidCallback commentTap,
+  VoidCallback favTap,
+  String tab,
+  Color tabBgColor,
+  Color tabTextColor,
+  List<dynamic> media,
+  BuildContext context,
+  List<dynamic> likes,
+  bool isLiked,
+  List<dynamic> comments,
+) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10.r),
+      color: AppColors.white,
+      border: Border.all(color: AppColors.lightGreyColor),
+    ),
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(backgroundImage: NetworkImage(profileUrl)),
+                  10.widthBox,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontFamily: AppFonts.inter,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
+                      ),
+                      Text(
+                        date,
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          fontFamily: AppFonts.inter,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.darkGrey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditPostScreen()),
+                  );
+                },
+                child: SvgPicture.asset(Assets.moreHorizontal),
+              ),
+            ],
+          ),
+          20.heightBox,
+
+          Row(
+            children: [
+              Container(
+                // height: 30.h,
+                decoration: BoxDecoration(
+                  color: tabBgColor,
+                  borderRadius: BorderRadius.circular(50.r),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                  child: Center(
+                    child: Text(
+                      tab,
+                      style: TextStyle(
+                        fontSize: 10.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: tabTextColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          8.heightBox,
+          Text(
+            discription,
+            style: TextStyle(
+              fontSize: 12.sp,
+              fontFamily: AppFonts.inter,
+              fontWeight: FontWeight.w400,
+              color: AppColors.black,
+            ),
+          ),
+          12.heightBox,
+          if (media.isNotEmpty) MediaGrid(media: media),
+          12.heightBox,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 6.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                commentsFavRow(
+                  context,
+
+                  favTap,
+                  likes.length.toString(),
+                  SvgPicture.asset(
+                    isLiked ? Assets.heartFilled : Assets.heartunFilled,
+                  ),
+                ),
+                commentsFavRow(
+                  context,
+                  commentTap,
+                  comments.length.toString(),
+                  SvgPicture.asset(Assets.commentIcon),
+                ),
+                commentsFavRow(
+                  context,
+
+                  () {},
+                  "0",
+                  SvgPicture.asset(Assets.reposticon),
+                ),
+              ],
+            ),
+          ),
+          12.heightBox,
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 36.h,
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.fieldgrey,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: "Write a comment",
+                            border: InputBorder.none,
+                            fillColor: AppColors.fieldgrey,
+                            hintStyle: TextStyle(
+                              fontSize: 12.sp,
+                              fontFamily: AppFonts.inter,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.darkGrey,
+                            ),
+                            isDense: true,
+                          ),
+                        ),
+                      ),
+
+                      SvgPicture.asset(Assets.mediaIcon),
+                      10.widthBox,
+                      SvgPicture.asset(Assets.imageicon),
+                      10.widthBox,
+                      SvgPicture.asset(Assets.camera),
+                    ],
+                  ),
+                ),
+              ),
+              8.widthBox,
+              Container(
+                height: 36.h,
+                width: 36.w,
+                decoration: BoxDecoration(
+                  color: AppColors.purpleColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Center(child: SvgPicture.asset(Assets.sendicon)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget commentsFavRow(
+  BuildContext context,
+
+  VoidCallback onTap,
+  String length,
+
+  Widget img,
+) {
+  return Row(
+    children: [
+      GestureDetector(onTap: onTap, child: img),
+      5.widthBox,
+      Text(
+        length,
+        style: TextStyle(
+          fontSize: 12.sp,
+          fontFamily: AppFonts.inter,
+          fontWeight: FontWeight.w500,
+          color: AppColors.black,
+        ),
+      ),
+    ],
+  );
+}

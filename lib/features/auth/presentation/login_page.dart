@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (success) {
-      context.go('/feeds');
+      context.go('/');
     } else {
       // Show error message
       ScaffoldMessenger.of(

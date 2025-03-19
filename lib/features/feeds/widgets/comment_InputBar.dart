@@ -1,6 +1,9 @@
+import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
 import 'package:equitycircle/core/providers/feeds_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/widgets/loading_indicator.dart' show LoadingIndicator;
 
 class CommentInputBar extends StatefulWidget {
   final int feedId;
@@ -72,11 +75,12 @@ class _CommentInputBarState extends State<CommentInputBar> {
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child:
                   Provider.of<FeedsProvider>(context).isLoadingComment
-                      ? const CircularProgressIndicator(
-                        semanticsLabel: 'Loading...',
-                        semanticsValue: 'Loading...',
-                        color: Colors.blue,
-                        strokeWidth: 2,
+                      ? const LoadingIndicator(
+                        radius: 15,
+                        activeColor: AppColors.purpleColor,
+                        inactiveColor: AppColors.greyColor,
+
+                        animationDuration: Duration(milliseconds: 500),
                       )
                       : Icon(Icons.send, color: Colors.blue, size: 28),
             ),

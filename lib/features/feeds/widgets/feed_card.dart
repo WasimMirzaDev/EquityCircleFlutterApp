@@ -1,9 +1,10 @@
+import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
+import 'package:equitycircle/features/bussiness/presentation/widgets/custom_post_container.dart';
 import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
 import 'package:equitycircle/features/feeds/widgets/comment_InputBar.dart';
-import 'package:html/parser.dart' as htmlParser;
-import 'package:equitycircle/features/feeds/widgets/media_grid.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:html/parser.dart' as htmlParser;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -27,102 +28,53 @@ class _FeedCardState extends State<FeedCard> {
       (like) => like['user_id'] == widget.loggedInUserId,
     );
 
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // User Info
-          ListTile(
-            dense: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 5),
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(
-                getProfileImageUrl(widget.feed['user']),
-              ),
-            ),
-            title: Text(
-              widget.feed['user']['name'],
-              style: TextStyle(
-                fontSize: 17,
-                color: Theme.of(context).textTheme.bodyLarge!.color,
-              ),
-            ),
-            subtitle: Text(
-              DateFormat.jm().format(DateTime.parse(widget.feed['created_at'])),
-              style: TextStyle(
-                fontSize: 12,
-                color: Theme.of(context).textTheme.bodyMedium!.color,
-              ),
-            ),
-          ),
-
-          // Post Content
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              widget.feed['title'] ?? '',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              htmlParser
-                      .parse(widget.feed['description'] ?? '')
-                      .documentElement
-                      ?.text ??
-                  '',
-            ),
-          ),
-          if (media.isNotEmpty) const SizedBox(height: 10),
-          if (media.isNotEmpty) MediaGrid(media: media),
-
-          // Like, Comment & Share Icons
-          Row(
-            children: [
-              // Like Button
-              IconButton(
-                icon: Icon(
-                  isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: isLiked ? Colors.red : Colors.grey,
-                ),
-                onPressed: () {
-                  Provider.of<FeedsProvider>(context, listen: false)
-                      .likeFeed(
-                        widget.feed['id'],
-                        context,
-                        widget.feed['category_id'],
-                      )
-                      .then((response) {
-                        response;
-                      });
-                },
-              ),
-              Text("${likes.length}"),
-
-              // Comment Button
-              IconButton(
-                icon: const Icon(Icons.comment, color: Colors.grey),
-                onPressed: () => _showCommentsBottomSheet(context, comments),
-              ),
-              Text("${comments.length}"),
-
-              // Share Button
-              IconButton(
-                icon: const Icon(Icons.share, color: Colors.grey),
-                onPressed: () {
-                  // TODO: Handle share action
-                },
-              ),
-            ],
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.h),
+      child: customPostContainer(
+        getProfileImageUrl(widget.feed['user']),
+        widget.feed['user']['name'],
+        _formatDateTime(widget.feed['created_at']),
+        htmlParser
+                .parse(widget.feed['description'] ?? '')
+                .documentElement
+                ?.text ??
+            '',
+        () {
+          showCommentsBottomSheet(context, comments);
+        },
+        () {
+          Provider.of<FeedsProvider>(context, listen: false)
+              .likeFeed(widget.feed['id'], context, widget.feed['category_id'])
+              .then((response) {
+                response;
+              });
+        },
+        "Business",
+        AppColors.lightpurple,
+        AppColors.purpleColor,
+        media,
+        context,
+        likes,
+        isLiked,
+        comments,
       ),
     );
   }
 
-  void _showCommentsBottomSheet(BuildContext context, List<dynamic> comments) {
+  String _formatDateTime(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    DateTime now = DateTime.now();
+
+    if (dateTime.year == now.year &&
+        dateTime.month == now.month &&
+        dateTime.day == now.day) {
+      return "Today at ${DateFormat.jm().format(dateTime)}";
+    } else {
+      return DateFormat.jm().format(dateTime);
+    }
+  }
+
+  void showCommentsBottomSheet(BuildContext context, List<dynamic> comments) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

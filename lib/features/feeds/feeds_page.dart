@@ -1,5 +1,8 @@
+import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
 import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
+import 'package:equitycircle/core/widgets/loading_indicator.dart'
+    show LoadingIndicator;
 import 'package:equitycircle/features/feeds/widgets/feed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +61,15 @@ class _FeedsPageState extends State<FeedsPage> {
     return Scaffold(
       body:
           isLoading && feeds.isEmpty
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                child: LoadingIndicator(
+                  radius: 15,
+                  activeColor: AppColors.purpleColor,
+                  inactiveColor: AppColors.greyColor,
+
+                  animationDuration: Duration(milliseconds: 500),
+                ),
+              )
               : RefreshIndicator(
                 onRefresh: () async {
                   await feedsProvider.fetchFeeds(
@@ -82,7 +93,13 @@ class _FeedsPageState extends State<FeedsPage> {
                       return Center(
                         child: Padding(
                           padding: EdgeInsets.all(10),
-                          child: CircularProgressIndicator(),
+                          child: LoadingIndicator(
+                            radius: 15,
+                            activeColor: AppColors.purpleColor,
+                            inactiveColor: AppColors.greyColor,
+
+                            animationDuration: Duration(milliseconds: 500),
+                          ),
                         ),
                       );
                     }

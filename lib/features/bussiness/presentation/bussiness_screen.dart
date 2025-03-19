@@ -4,6 +4,7 @@ import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
+import 'package:equitycircle/core/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,10 +63,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
 
   List<String> images = [
     Assets.carousalImg,
-    Assets.carousalImg,
-    Assets.carousalImg,
-    Assets.carousalImg,
+    Assets.cryptoImg,
+    Assets.fitnessImg,
+    Assets.mindsetImg,
   ];
+
   @override
   Widget build(BuildContext context) {
     final feedsProvider = Provider.of<FeedsProvider>(context);
@@ -76,7 +78,15 @@ class _BussinessScreenState extends State<BussinessScreen> {
       backgroundColor: AppColors.offWhite,
       body:
           isLoading && feeds.isEmpty
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                child: LoadingIndicator(
+                  radius: 15,
+                  activeColor: AppColors.purpleColor,
+                  inactiveColor: AppColors.greyColor,
+
+                  animationDuration: Duration(milliseconds: 500),
+                ),
+              )
               : RefreshIndicator(
                 onRefresh: () async {
                   await feedsProvider.fetchFeeds(
@@ -90,41 +100,46 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   child: Column(
                     children: [
                       20.heightBox,
-                      customeSearchWidget(
-                        "   Search for users",
-                        searchController,
-                      ),
-                      12.heightBox,
 
-                      customCarousalSlider(
-                        images,
-                        _pageController,
-                        (index) => setState(() => currentIndex = index),
-                        currentIndex,
-                      ),
-                      20.heightBox,
                       Expanded(
-                        child: ListView.builder(
-                          controller:
-                              _scrollController, // ✅ Attach scroll controller
-                          itemCount:
-                              feeds.length + 1, // ✅ Add extra item for loader
-                          itemBuilder: (context, index) {
-                            if (index < feeds.length) {
-                              return FeedCard(
-                                feed: feeds[index],
+                        child: ListView(
+                          controller: _scrollController,
+                          padding: EdgeInsets.zero,
+                          children: [
+                            customeSearchWidget(
+                              "   Search for users",
+                              searchController,
+                            ),
+                            12.heightBox,
+                            customCarousalSlider(
+                              images,
+                              _pageController,
+                              (index) => setState(() => currentIndex = index),
+                              currentIndex,
+                            ),
+                            20.heightBox,
+                            ...feeds.map(
+                              (feed) => FeedCard(
+                                feed: feed,
                                 loggedInUserId:
                                     Provider.of<AuthProvider>(
                                       context,
                                     ).userData!['id'],
-                              );
-                            } else if (feedsProvider.hasMore(
-                              widget.categoryId,
-                            )) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            return SizedBox(); // ✅ No more items to load
-                          },
+                              ),
+                            ),
+                            if (feedsProvider.hasMore(widget.categoryId))
+                              Center(
+                                child: LoadingIndicator(
+                                  radius: 15,
+                                  activeColor: AppColors.purpleColor,
+                                  inactiveColor: AppColors.greyColor,
+
+                                  animationDuration: Duration(
+                                    milliseconds: 500,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                     ],

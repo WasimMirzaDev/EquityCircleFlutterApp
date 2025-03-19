@@ -15,6 +15,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../features/add_post/presentation/addpost_bottomsheet.dart';
 import '../features/fitness/presentation/fitness_screen.dart';
 
 class MainLayout extends StatefulWidget {
@@ -51,33 +52,9 @@ class _MainLayoutState extends State<MainLayout> {
 
     return Scaffold(
       key: _scaffoldKey, // ✅ Assign the GlobalKey here
-      /*drawer: Drawer(
-        child: Column(
-          children: [
-            DrawerHeader(child: Text("Equity Circle Menu")),
-            ListTile(leading: Icon(Icons.settings), title: Text("Settings")),
-            ListTile(
-              leading: Icon(Icons.feedback),
-              title: Text("Feedback"),
-              onTap: () {
-                context.go('/feedback');
-              },
-            ),
-            GestureDetector(
-              onTap: () {
-                Provider.of<AuthProvider>(context, listen: false).logout();
-                context.go('/login');
-              },
-              child: ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Logout"),
-              ),
-            ),
-          ],
-        ),
-      ),*/
+
       drawer: Drawer(
-        width: 320.w,
+        width: 330.w,
         backgroundColor: AppColors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -147,64 +124,6 @@ class _MainLayoutState extends State<MainLayout> {
             ),
           ),
           16.widthBox,
-          // PopupMenuButton(
-          //   child:
-          //   authProvider.userData == null
-          //       ? Padding(
-          //         padding: const EdgeInsets.only(right: 10.0),
-          //         child: Icon(Icons.more_vert),
-          //       )
-          //       :
-          //   CircleAvatar(
-          //     backgroundColor: AppColors.lightGreyColor,
-          //     radius: 20.r,
-          //     backgroundImage: NetworkImage(
-          //       getProfileImageUrl(authProvider.userData),
-          //     ),
-          //   ),
-          //   itemBuilder:
-          //       (context) => [
-          //         if (!authProvider.isAuthenticated)
-          //           const PopupMenuItem<String>(
-          //             value: 'Sign In',
-          //             child: Text('Sign In'),
-          //           ),
-          //         if (authProvider.isAuthenticated)
-          //           PopupMenuItem<String>(
-          //             onTap: () {
-          //               Provider.of<AuthProvider>(
-          //                 context,
-          //                 listen: false,
-          //               ).logout();
-          //               context.go('/login');
-          //             },
-          //             value: 'Sign Out',
-          //             child: const Text('Sign Out'),
-          //           ),
-          //         const PopupMenuItem<String>(
-          //           value: 'Edit Profile',
-          //           child: Text('Edit Profile'),
-          //         ),
-          //         const PopupMenuItem<String>(
-          //           value: 'Account Settings',
-          //           child: Text('Account Settings'),
-          //         ),
-          //       ],
-          //   onSelected: (value) {
-          //     switch (value) {
-          //       case 'Sign In':
-          //         GoRouter.of(context).push('/login');
-          //         break;
-          //       case 'Sign Up':
-          //         GoRouter.of(context).push('/register');
-          //         break;
-          //       case 'Edit Profile':
-          //         break;
-          //       case 'Account Settings':
-          //         break;
-          //     }
-          //   },
-          // ),
         ],
       ),
 
@@ -219,8 +138,9 @@ class _MainLayoutState extends State<MainLayout> {
           },
           children: [
             BussinessScreen(categoryId: 1),
+
             FitnessScreen(categoryId: 2),
-            BussinessScreen(categoryId: 3),
+            SizedBox(),
             CryptoScreen(categoryId: 4),
             MindsetScreen(categoryId: 5),
           ],
@@ -255,15 +175,20 @@ class _MainLayoutState extends State<MainLayout> {
 
           currentIndex: _currentIndex,
           onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-              _pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              );
-            });
+            if (index == 2) {
+              showPostOptions(context);
+            } else {
+              setState(() {
+                _currentIndex = index;
+                _pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              });
+            }
           },
+
           items: [
             BottomNavigationBarItem(
               icon: Column(
@@ -303,8 +228,18 @@ class _MainLayoutState extends State<MainLayout> {
               label: 'Fitness',
             ),
             BottomNavigationBarItem(
-              icon: Column(
-                children: [SvgPicture.asset(Assets.addPostIcon), 3.heightBox],
+              icon: GestureDetector(
+                onTap: () {
+                  showPostOptions(context);
+                },
+                child: Column(
+                  children: [
+                    _currentIndex == 2
+                        ? SvgPicture.asset(Assets.addPostPurpleIcon)
+                        : SvgPicture.asset(Assets.addPostIcon),
+                    3.heightBox,
+                  ],
+                ),
               ),
               label: 'Add post',
             ),

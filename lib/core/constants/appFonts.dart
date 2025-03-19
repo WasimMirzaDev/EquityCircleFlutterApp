@@ -1,3 +1,3 @@
 class AppFonts {
-  static const String inter = "Poppins";
+  static const String inter = "inter";
 }

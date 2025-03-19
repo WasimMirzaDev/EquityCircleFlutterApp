@@ -65,7 +65,12 @@ class CustomTextField extends StatelessWidget {
         keyboardType: keyBoardType,
         enabled: isEditable,
         validator: validator,
-        style: TextStyle(),
+        style: TextStyle(
+          fontFamily: AppFonts.inter,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.black,
+        ),
         textAlign: textAlign ?? TextAlign.left,
         focusNode: focusNode,
         autofocus: autoFocus,
