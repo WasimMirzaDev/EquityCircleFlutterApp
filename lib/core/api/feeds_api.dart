@@ -43,4 +43,26 @@ class FeedsApi {
       throw Exception("Failed to fetch data: $e");
     }
   }
+
+  static Future<Response> postComment(
+    BuildContext context,
+    int feedId,
+    String comment,
+  ) async {
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      String? token = authProvider.token;
+
+      if (token == null) throw Exception("User not authenticated");
+
+      Response response = await ApiService.postRequest(
+        '/posts/$feedId/comment',
+        {'content': comment},
+        token,
+      );
+      return response;
+    } catch (e) {
+      throw Exception("Failed to post comment: $e");
+    }
+  }
 }

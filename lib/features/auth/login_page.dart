@@ -1,16 +1,10 @@
-import 'dart:convert';
-
-import 'package:equitycircle/core/api/auth_api.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart'
     as auth_provider;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -65,9 +59,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _handleGoogleSignIn() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    // Ensure previous account is signed out to always show account selection
+    await googleSignIn.signOut();
+
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser == null) {
+      _showSnackBar('Google Sign-In canceled');
+      return;
+    }
+
     final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+        await googleUser.authentication;
 
     final OAuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
@@ -76,17 +80,16 @@ class _LoginPageState extends State<LoginPage> {
 
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithCredential(credential);
-
     User? user = userCredential.user;
 
     if (user != null) {
-      String? googleIdToken = googleAuth.idToken; // Important for verification!
+      String? googleIdToken = googleAuth.idToken;
 
-      // Send this to your Laravel backend
       final authProvider = Provider.of<auth_provider.AuthProvider>(
         context,
         listen: false,
       );
+
       bool success = await authProvider.googleLogin(
         user.displayName,
         user.email,
@@ -97,16 +100,8 @@ class _LoginPageState extends State<LoginPage> {
       if (success) {
         context.go('/feeds');
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Login failed!')));
+        _showSnackBar('Login failed!');
       }
-      print('''
-        displayName: ${user.displayName}
-        email: ${user.email}
-        photoURL: ${user.photoURL}
-        googleIdToken: $googleIdToken
-        ''');
     }
   }
 

@@ -1,7 +1,10 @@
-import 'package:equitycircle/core/providers/auth_provider.dart';
+import 'package:equitycircle/core/providers/auth_provider.dart'
+    as auth_provider;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -51,7 +54,10 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider = Provider.of<auth_provider.AuthProvider>(
+      context,
+      listen: false,
+    );
     bool success = await authProvider.register(
       nameController!.text.trim(),
       emailController!.text.trim(),
@@ -67,6 +73,50 @@ class _RegisterPageState extends State<RegisterPage> {
         context,
       ).showSnackBar(SnackBar(content: Text('Registration failed!')));
     }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
+
+    User? user = userCredential.user;
+
+    if (user != null) {
+      String? googleIdToken = googleAuth.idToken; // Important for verification!
+
+      // Send this to your Laravel backend
+      final authProvider = Provider.of<auth_provider.AuthProvider>(
+        context,
+        listen: false,
+      );
+      bool success = await authProvider.googleLogin(
+        user.displayName,
+        user.email,
+        user.photoURL,
+        googleIdToken,
+      );
+
+      if (success) {
+        context.go('/feeds');
+      } else {
+        _showSnackBar('Login failed!');
+      }
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -158,7 +208,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _handleGoogleSignIn();
+                  },
                   icon: const Icon(Icons.login, color: Colors.blue),
                   label: const Text(
                     'Sign in with Google',

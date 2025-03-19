@@ -7,8 +7,10 @@ class FeedsProvider with ChangeNotifier {
   final Map<int, bool> _hasMorePerCategory = {};
   final Map<int, int> _currentPagePerCategory = {};
   bool _isLoading = false;
+  bool _isLoadingComment = false;
 
   bool get isLoading => _isLoading;
+  bool get isLoadingComment => _isLoadingComment;
 
   List<Map<String, dynamic>> getFeedsByCategory(int categoryId) {
     return _feedsPerCategory[categoryId] ?? [];
@@ -88,6 +90,37 @@ class FeedsProvider with ChangeNotifier {
       }
     } catch (e) {
       print("Error liking/unliking post: $e");
+    }
+  }
+
+  Future<void> postComment(
+    int feedId,
+    String comment,
+    BuildContext context,
+    int categoryId,
+  ) async {
+    try {
+      _isLoadingComment = true;
+      notifyListeners();
+      Response response = await FeedsApi.postComment(context, feedId, comment);
+      final index =
+          _feedsPerCategory[categoryId]?.indexWhere(
+            (feed) => feed['id'] == feedId,
+          ) ??
+          -1;
+      if (index != -1) {
+        _feedsPerCategory[categoryId]![index]['comments'] = [
+          ...?_feedsPerCategory[categoryId]![index]['comments'],
+          response.data['comment'],
+        ];
+        _feedsPerCategory[categoryId]![index]['comments_count'] =
+            _feedsPerCategory[categoryId]![index]['comments'].length;
+
+        notifyListeners();
+        _isLoadingComment = false;
+      }
+    } catch (e) {
+      print("Error posting comment: $e");
     }
   }
 }

@@ -71,7 +71,8 @@ class _FeedsPageState extends State<FeedsPage> {
                   controller: _scrollController, // ✅ Attach scroll controller
                   itemCount: feeds.length + 1, // ✅ Add extra item for loader
                   itemBuilder: (context, index) {
-                    if (index < feeds.length) {
+                    if (index < feeds.length &&
+                        Provider.of<AuthProvider>(context).isAuthenticated) {
                       return FeedCard(
                         feed: feeds[index],
                         loggedInUserId:

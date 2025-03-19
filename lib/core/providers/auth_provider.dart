@@ -87,6 +87,7 @@ class AuthProvider with ChangeNotifier {
       // Optionally, store token locally
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('access_token', _token!);
+      await fetchUser(); // Fetch user data after login
       notifyListeners();
       return true;
     } catch (error) {
