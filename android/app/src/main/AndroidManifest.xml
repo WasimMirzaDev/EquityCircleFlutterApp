@@ -4,6 +4,7 @@
     <!-- ✅ Add Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     
+    
     <!-- ✅ Enable ClearText Traffic (For HTTP API Calls) -->
     <application
         android:label="equitycircle"

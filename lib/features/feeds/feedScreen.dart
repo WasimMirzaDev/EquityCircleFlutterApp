@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:equitycircle/core/constants/appFonts.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -55,12 +56,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.menu, color: Colors.black),
-        ),
+
         title:
             isSearhing
                 ? TextField(
@@ -104,7 +103,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             children: [
               DefaultTextStyle(
                 style: TextStyle(
-                  fontFamily: 'Poppins',
+                  fontFamily: AppFonts.inter,
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF1E1E1E),
@@ -190,7 +189,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               CarouselIndicator(carouselImages.length, currentIndex),
               DefaultTextStyle(
                 style: TextStyle(
-                  fontFamily: 'Poppins',
+                  fontFamily: AppFonts.inter,
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF1E1E1E),
@@ -499,10 +498,10 @@ class FullScreenGallery extends StatelessWidget {
   final List<String> images;
 
   const FullScreenGallery({
-    Key? key,
+    super.key,
     required this.images,
     required int initialIndex,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

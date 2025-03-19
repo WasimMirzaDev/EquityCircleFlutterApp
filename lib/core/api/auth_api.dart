@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'api_service.dart'; // your centralized API service
 
 class AuthApi {
@@ -68,7 +66,7 @@ class AuthApi {
     if (response.statusCode == 200) {
       return response.data;
     } else {
-      throw Exception("Login failed: ${response}");
+      throw Exception("Login failed: $response");
     }
   }
 }

@@ -1,10 +1,10 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
   static final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: dotenv.env['API_URL']! + "/api",
+      baseUrl: "${dotenv.env['API_URL']!}/api",
       connectTimeout: Duration(seconds: 10),
       receiveTimeout: Duration(seconds: 10),
       headers: {
@@ -41,9 +41,10 @@ class ApiService {
         ),
         data: data,
       );
+      print("Response $response");
       return response;
     } catch (e) {
-      throw Exception("Failed to post data");
+      throw Exception("Failed to post data $e");
     }
   }
 }
