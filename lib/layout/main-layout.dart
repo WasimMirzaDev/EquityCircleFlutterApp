@@ -54,12 +54,12 @@ class _MainLayoutState extends State<MainLayout> {
       key: _scaffoldKey, // ✅ Assign the GlobalKey here
 
       drawer: Drawer(
-        width: 330.w,
+        width: double.infinity,
         backgroundColor: AppColors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20.r),
-            bottomRight: Radius.circular(20.r),
+            topRight: Radius.circular(0.r),
+            bottomRight: Radius.circular(0.r),
           ),
         ),
         child: DrawerContent(),

@@ -59,6 +59,7 @@ class CustomTextField extends StatelessWidget {
         ),
       ),
       child: TextFormField(
+        onTap: onTap,
         controller: controller,
         readOnly: readOnly,
         obscureText: isObscure,

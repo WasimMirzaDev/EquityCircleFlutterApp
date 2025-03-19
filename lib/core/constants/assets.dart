@@ -44,8 +44,8 @@ class Assets {
   static final profileImg = "assets/icon/profileImg.svg";
   static final dp = "assets/icon/dp.jpeg";
   static final drawerbg = "assets/images/drawerbg.png";
-  // static final dp = "  assets/icon/dp.jpeg";
-  // static final dp = "  assets/icon/dp.jpeg";
-  // static final dp = "  assets/icon/dp.jpeg";
+  static final clock = "assets/icon/clock.svg";
+  static final calendar = "assets/icon/calendar.svg";
+  static final arrowDown = "assets/icon/arrow_down.svg";
   // static final dp = "  assets/icon/dp.jpeg";
 }

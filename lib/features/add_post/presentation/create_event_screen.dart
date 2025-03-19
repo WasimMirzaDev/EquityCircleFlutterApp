@@ -18,9 +18,37 @@ class CreateEventScreen extends StatefulWidget {
 }
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
-  final TextEditingController titleController = TextEditingController();
+  final TextEditingController eventTypeController = TextEditingController();
   final TextEditingController discriptionController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController subtitleController = TextEditingController();
+  final TextEditingController eventDateController = TextEditingController();
+
+  final TextEditingController startDateController = TextEditingController();
+  final TextEditingController endDateController = TextEditingController();
+
   bool isActive = true;
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        eventDateController.text =
+            "${picked.day}/${picked.month}/${picked.year}";
+      });
+    }
+  }
+
+  final List<String> eventTypes = [
+    "Conference",
+    "Workshop",
+    "Meetup",
+    "Webinar",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,10 +99,64 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     ),
                   ),
                   8.heightBox,
-                  CustomTextField(
-                    controller: titleController,
-                    hint: "Conference",
-                    // suffixIcon: Icon(Icons.arrow_drop_down),
+                  DropdownButtonFormField<String>(
+                    icon: SizedBox.shrink(),
+                    value:
+                        eventTypes.contains(eventTypeController.text)
+                            ? eventTypeController.text
+                            : null,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      filled: true,
+                      fillColor: AppColors.white,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 12.h,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: AppColors.lightGreyColor,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.lightGreyColor,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      hintText: "Select Event Type",
+                      hintStyle: TextStyle(
+                        fontFamily: AppFonts.inter,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGrey,
+                      ),
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            Assets.arrowDown,
+                            height: 16.h,
+                            width: 16.w,
+                          ),
+                        ],
+                      ),
+                    ),
+                    items:
+                        eventTypes.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        eventTypeController.text = newValue!;
+                      });
+                    },
                   ),
                   16.heightBox,
                   Text(
@@ -103,7 +185,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   8.heightBox,
                   CustomTextField(
-                    controller: titleController,
+                    controller: subtitleController,
                     hint: "Enter subtitle",
                   ),
                   16.heightBox,
@@ -118,7 +200,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   8.heightBox,
                   CustomTextField(
-                    controller: titleController,
+                    controller: discriptionController,
                     hint: "Write here...",
                     maxLines: 5,
                   ),
@@ -134,8 +216,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   8.heightBox,
                   CustomTextField(
-                    controller: titleController,
+                    controller: eventDateController,
                     hint: "dd/mm/yyyy",
+                    onTap: () => _selectDate(context),
+                    suffixIcon: Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: SvgPicture.asset(Assets.calendar),
+                    ),
                   ),
                   16.heightBox,
                   Text(
@@ -154,9 +241,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         child: SizedBox(
                           height: 40.h,
                           child: CustomTextField(
-                            controller: titleController,
+                            controller: startDateController,
                             hint: "Start time",
                             maxLines: 5,
+                            suffixIcon: Padding(
+                              padding: EdgeInsets.only(right: 10.w),
+                              child: SvgPicture.asset(Assets.clock),
+                            ),
                           ),
                         ),
                       ),
@@ -165,8 +256,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         child: SizedBox(
                           height: 40.h,
                           child: CustomTextField(
-                            controller: titleController,
+                            controller: endDateController,
                             hint: "End time",
+                            suffixIcon: Padding(
+                              padding: EdgeInsets.only(right: 10.w),
+                              child: SvgPicture.asset(Assets.clock),
+                            ),
                             maxLines: 5,
                           ),
                         ),

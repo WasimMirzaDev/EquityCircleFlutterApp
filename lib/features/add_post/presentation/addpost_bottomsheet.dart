@@ -25,7 +25,7 @@ void showPostOptions(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            10.heightBox,
+            12.heightBox,
             Center(
               child: Container(
                 height: 4.h,
@@ -45,7 +45,7 @@ void showPostOptions(BuildContext context) {
                 child: Icon(Icons.close, color: AppColors.black),
               ),
             ),
-            20.heightBox,
+            6.heightBox,
             Text(
               "Select post type",
               style: TextStyle(

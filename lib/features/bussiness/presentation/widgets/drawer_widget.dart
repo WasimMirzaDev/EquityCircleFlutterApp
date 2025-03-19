@@ -25,37 +25,21 @@ class DrawerContent extends StatelessWidget {
             children: [
               70.heightBox,
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        "assets/icon/Equity_Circle_icon.png",
-                        height: 30.h,
-                        width: 30.w,
-                      ),
-                      8.widthBox,
-                      Text(
-                        'Equity Circle',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontFamily: AppFonts.inter,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
-                        ),
-                      ),
-                    ],
+                  Image.asset(
+                    "assets/icon/Equity_Circle_icon.png",
+                    height: 30.h,
+                    width: 30.w,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: SvgPicture.asset(
-                      width: 24.w,
-                      height: 24.h,
-                      Assets.closeCircle,
-                      // fit: BoxFit.cover,
+                  8.widthBox,
+                  Text(
+                    'Equity Circle',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontFamily: AppFonts.inter,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.black,
                     ),
                   ),
                 ],
@@ -92,8 +76,21 @@ class DrawerContent extends StatelessWidget {
               drawerRow("Mange Users", Assets.user, () {
                 context.go('/Joblist');
               }),
-              30.heightBox,
-
+              Spacer(),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: SvgPicture.asset(
+                    width: 24.w,
+                    height: 24.h,
+                    Assets.closeCircle,
+                    // fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              50.heightBox,
               // GestureDetector(
               //   onTap: () {
               //     Provider.of<AuthProvider>(context, listen: false).logout();
