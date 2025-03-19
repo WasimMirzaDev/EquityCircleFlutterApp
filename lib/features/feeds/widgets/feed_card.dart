@@ -36,17 +36,19 @@ class _FeedCardState extends State<FeedCard> {
             dense: true,
             contentPadding: EdgeInsets.symmetric(horizontal: 5),
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(getProfileImageUrl(feed['user'])),
+              backgroundImage: NetworkImage(
+                getProfileImageUrl(widget.feed['user']),
+              ),
             ),
             title: Text(
-              feed['user']['name'],
+              widget.feed['user']['name'],
               style: TextStyle(
                 fontSize: 17,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             subtitle: Text(
-              DateFormat.jm().format(DateTime.parse(feed['created_at'])),
+              DateFormat.jm().format(DateTime.parse(widget.feed['created_at'])),
               style: TextStyle(
                 fontSize: 12,
                 color: Theme.of(context).textTheme.bodyMedium!.color,
@@ -58,7 +60,7 @@ class _FeedCardState extends State<FeedCard> {
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(
-              feed['title'] ?? '',
+              widget.feed['title'] ?? '',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -67,7 +69,7 @@ class _FeedCardState extends State<FeedCard> {
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(
               htmlParser
-                      .parse(feed['description'] ?? '')
+                      .parse(widget.feed['description'] ?? '')
                       .documentElement
                       ?.text ??
                   '',
@@ -87,7 +89,11 @@ class _FeedCardState extends State<FeedCard> {
                 ),
                 onPressed: () {
                   Provider.of<FeedsProvider>(context, listen: false)
-                      .likeFeed(feed['id'], context, feed['category_id'])
+                      .likeFeed(
+                        widget.feed['id'],
+                        context,
+                        widget.feed['category_id'],
+                      )
                       .then((response) {
                         response;
                       });
