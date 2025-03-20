@@ -59,14 +59,9 @@ class _CommentInputBarState extends State<CommentInputBar> {
           ),
           const SizedBox(width: 5),
           // _buildIcon(Icons.gif, () {
-          //   // TODO: Handle open gif search action
           // }),
-          _buildIcon(Icons.emoji_emotions, () {
-            // TODO: Handle open emoji picker action
-          }),
-          _buildIcon(Icons.image, () {
-            // TODO: Handle open gallery action
-          }),
+          _buildIcon(Icons.emoji_emotions, () {}),
+          _buildIcon(Icons.image, () {}),
           GestureDetector(
             onTap: () {
               _handleComment();

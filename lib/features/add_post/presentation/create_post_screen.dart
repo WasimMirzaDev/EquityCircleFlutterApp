@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
@@ -5,9 +7,12 @@ import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/widgets/custom_button.dart';
+import 'package:equitycircle/features/add_post/presentation/widget/custom_quill_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/widgets/custom_textfield.dart';
 
@@ -23,11 +28,43 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String selectedCategory = "Business";
   final TextEditingController titleController = TextEditingController();
   final TextEditingController discriptionController = TextEditingController();
+  final quill.QuillController _controller = quill.QuillController.basic();
+  List<String> attachments = []; // Store attachment paths
+
+  Future<void> _pickAttachment() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        attachments.add(pickedFile.path);
+      });
+    }
+  }
+
+  void _removeAttachment(int index) {
+    setState(() {
+      attachments.removeAt(index);
+    });
+  }
+
+  Color _selectedBackground = Colors.white;
+  final List<Color> _backgrounds = [
+    Colors.white,
+    Color(0xFFFFF0D6),
+    Color(0xFFE0C3FC),
+    Color(0xFFB2EBF2),
+    Color(0xFFF8BBD0),
+    Color(0xFFC8E6C9),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.offWhite,
+
       appBar: AppBar(
         centerTitle: true,
         scrolledUnderElevation: 0,
@@ -121,6 +158,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   //   ),
                   // ),
                   Text(
+                    "• ",
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontFamily: AppFonts.inter,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.darkGrey,
+                    ),
+                  ),
+                  Text(
                     "Anyone can see your post",
                     style: TextStyle(
                       fontSize: 12.sp,
@@ -178,11 +224,21 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ),
                   8.heightBox,
-                  CustomTextField(
-                    controller: titleController,
-                    hint: "Write here...",
-                    maxLines: 5,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border.all(
+                        color: AppColors.lightGreyColor,
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: CustomQuillEditor(
+                      controller: _controller,
+                      backgroundColor: _selectedBackground,
+                    ),
                   ),
+
                   16.heightBox,
                   Text(
                     "Select Background",
@@ -194,7 +250,31 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ),
                   8.heightBox,
-                  _buildBackgroundSelector(),
+                  // _buildBackgroundSelector(),
+                  Wrap(
+                    spacing: 10,
+                    children:
+                        _backgrounds.map((color) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedBackground = color;
+                              });
+                            },
+                            child: Container(
+                              width: 40.w,
+                              height: 40.h,
+                              decoration: BoxDecoration(
+                                color: color,
+                                borderRadius: BorderRadius.circular(8.r),
+                                border: Border.all(
+                                  color: AppColors.lightGreyColor,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                  ),
                   16.heightBox,
                   Text(
                     "Attachments",
@@ -209,12 +289,120 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   _buildAttachments(),
                   35.heightBox,
 
-                  CustomButton(text: "Post", onTap: () {}),
+                  CustomButton(
+                    text: "Post",
+                    onTap: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
                   24.heightBox,
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAttachments() {
+    return Wrap(
+      spacing: 10,
+
+      children: [
+        _attachmentBox(Assets.pauseiCON, "video"),
+        // _attachmentBox(Assets.photoIcon, "photo"),
+        ...attachments.map((path) => _attachmentPreview(path)),
+        _addAttachmentBox(),
+      ],
+    );
+  }
+
+  Widget _attachmentBox(String icon, String type) {
+    return GestureDetector(
+      onTap: () {
+        if (type == "video") {
+        } else if (type == "photo") {
+          _pickAttachment();
+        }
+      },
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(8.r),
+        strokeWidth: 0.5,
+        dashPattern: [6, 4],
+        color: AppColors.purpleColor,
+        child: Container(
+          width: 66.w,
+          height: 66.h,
+          decoration: BoxDecoration(
+            color: AppColors.babyPink,
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: Center(
+            child: SvgPicture.asset(
+              icon,
+              height: 18.h,
+              width: 18.w,
+              color: AppColors.purpleColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _attachmentPreview(String path) {
+    return Stack(
+      children: [
+        Container(
+          width: 66.w,
+          height: 66.h,
+          decoration: BoxDecoration(
+            color: AppColors.babyPink,
+            borderRadius: BorderRadius.circular(8.r),
+            image: DecorationImage(
+              image: FileImage(File(path)),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Positioned(
+          top: 2,
+          right: 2,
+          child: GestureDetector(
+            onTap: () => _removeAttachment(attachments.indexOf(path)),
+            child: Icon(Icons.cancel, size: 16, color: Colors.red),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _addAttachmentBox() {
+    return GestureDetector(
+      onTap: _pickAttachment,
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(8.r),
+        strokeWidth: 0.5,
+        dashPattern: [6, 4],
+        color: AppColors.purpleColor,
+        child: Container(
+          width: 66.w,
+          height: 66.h,
+          decoration: BoxDecoration(
+            color: AppColors.babyPink,
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          child: Center(
+            child: SvgPicture.asset(
+              Assets.photoIcon,
+              height: 18.h,
+              width: 18.w,
+              color: AppColors.purpleColor,
+            ),
+          ),
         ),
       ),
     );
@@ -337,63 +525,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         : AppColors.black,
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBackgroundSelector() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(6, (index) {
-        return Padding(
-          padding: EdgeInsets.only(right: 10.w),
-          child: Container(
-            width: 40.w,
-            height: 40.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.primaries[index],
-            ),
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildAttachments() {
-    return Row(
-      children: [
-        _attachmentBox(Assets.pauseiCON),
-        SizedBox(width: 12),
-        _attachmentBox(Assets.photoIcon),
-      ],
-    );
-  }
-
-  Widget _attachmentBox(String icon) {
-    return DottedBorder(
-      borderType: BorderType.RRect,
-      radius: Radius.circular(8.r),
-      strokeWidth: 0.5,
-      dashPattern: [6, 4],
-      color: AppColors.purpleColor,
-      child: Container(
-        width: 66.w,
-        height: 66.h,
-        decoration: BoxDecoration(
-          color: AppColors.babyPink,
-          // border: Border.all(color: AppColors.purpleColor),
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Center(
-          child: SvgPicture.asset(
-            icon,
-            height: 18.h,
-            width: 18.w,
-            color: AppColors.purpleColor,
           ),
         ),
       ),

@@ -71,14 +71,50 @@ Widget customPostContainer(
                 ],
               ),
 
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EditPostScreen()),
-                  );
+              PopupMenuButton<String>(
+                icon: SvgPicture.asset(
+                  Assets.moreHorizontal,
+                ), // The three-dot icon
+                onSelected: (value) {
+                  if (value == 'edit') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditPostScreen()),
+                    );
+                  } else if (value == 'delete') {
+                    // Perform delete operation
+                    print("Delete Post");
+                  }
                 },
-                child: SvgPicture.asset(Assets.moreHorizontal),
+                itemBuilder:
+                    (BuildContext context) => [
+                      PopupMenuItem<String>(
+                        value: 'edit',
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit, color: AppColors.black, size: 18),
+                            SizedBox(width: 8),
+                            Text("Edit", style: TextStyle(fontSize: 14.sp)),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete, color: Colors.red, size: 18),
+                            SizedBox(width: 8),
+                            Text(
+                              "Delete",
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
               ),
             ],
           ),

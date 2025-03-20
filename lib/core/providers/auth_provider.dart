@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../api/auth_api.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -118,7 +119,7 @@ class AuthProvider with ChangeNotifier {
     _userData = null;
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('access_token'); // Remove token from storage
+    await prefs.remove('access_token');
 
     notifyListeners();
   }

@@ -4,7 +4,9 @@ import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/widgets/custom_button.dart';
+import 'package:equitycircle/features/add_post/presentation/widget/custom_quill_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -26,7 +28,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
-
+  final quill.QuillController _controller = quill.QuillController.basic();
   bool isActive = true;
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
@@ -39,6 +41,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       setState(() {
         eventDateController.text =
             "${picked.day}/${picked.month}/${picked.year}";
+      });
+    }
+  }
+
+  Future<void> _selectTime(
+    BuildContext context,
+    TextEditingController controller,
+  ) async {
+    TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        controller.text = picked.format(context); // Formats the time
       });
     }
   }
@@ -134,22 +151,39 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         fontWeight: FontWeight.w400,
                         color: AppColors.darkGrey,
                       ),
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SvgPicture.asset(
-                            Assets.arrowDown,
-                            height: 16.h,
-                            width: 16.w,
-                          ),
-                        ],
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              Assets.arrowDown,
+                              height: 16.h,
+                              width: 16.w,
+                            ),
+                          ],
+                        ),
+                      ),
+                      suffixIconConstraints: const BoxConstraints(
+                        maxHeight: 43,
+                      ),
+                      prefixIconConstraints: const BoxConstraints(
+                        maxHeight: 35,
                       ),
                     ),
                     items:
                         eventTypes.map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value),
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontFamily: AppFonts.inter,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.darkGrey,
+                              ),
+                            ),
                           );
                         }).toList(),
                     onChanged: (newValue) {
@@ -199,10 +233,19 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     ),
                   ),
                   8.heightBox,
-                  CustomTextField(
-                    controller: discriptionController,
-                    hint: "Write here...",
-                    maxLines: 5,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border.all(
+                        color: AppColors.lightGreyColor,
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: CustomQuillEditor(
+                      controller: _controller,
+                      backgroundColor: AppColors.white,
+                    ),
                   ),
                   16.heightBox,
                   Text(
@@ -220,7 +263,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     hint: "dd/mm/yyyy",
                     onTap: () => _selectDate(context),
                     suffixIcon: Padding(
-                      padding: EdgeInsets.only(right: 10.w),
+                      padding: EdgeInsets.only(right: 12.w),
                       child: SvgPicture.asset(Assets.calendar),
                     ),
                   ),
@@ -243,9 +286,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           child: CustomTextField(
                             controller: startDateController,
                             hint: "Start time",
+                            onTap:
+                                () => _selectTime(context, startDateController),
                             maxLines: 5,
                             suffixIcon: Padding(
-                              padding: EdgeInsets.only(right: 10.w),
+                              padding: EdgeInsets.only(right: 12.w),
                               child: SvgPicture.asset(Assets.clock),
                             ),
                           ),
@@ -257,9 +302,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: 40.h,
                           child: CustomTextField(
                             controller: endDateController,
+                            onTap:
+                                () => _selectTime(context, endDateController),
                             hint: "End time",
                             suffixIcon: Padding(
-                              padding: EdgeInsets.only(right: 10.w),
+                              padding: EdgeInsets.only(right: 12.w),
                               child: SvgPicture.asset(Assets.clock),
                             ),
                             maxLines: 5,
@@ -297,7 +344,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     ],
                   ),
                   30.heightBox,
-                  CustomButton(text: "Create event", onTap: () {}),
+                  CustomButton(
+                    text: "Create event",
+                    onTap: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
                   24.heightBox,
                 ],
               ),

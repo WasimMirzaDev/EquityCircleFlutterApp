@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
@@ -5,9 +7,12 @@ import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/widgets/custom_button.dart';
+import 'package:equitycircle/features/add_post/presentation/widget/custom_quill_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/widgets/custom_textfield.dart';
 
@@ -21,7 +26,9 @@ class CreateJobScreen extends StatefulWidget {
 class _CreateJobScreenState extends State<CreateJobScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController discriptionController = TextEditingController();
-
+  final quill.QuillController _controller = quill.QuillController.basic();
+  final ImagePicker _picker = ImagePicker();
+  XFile? _selectedImage;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,27 +79,39 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                     ),
                   ),
                   8.heightBox,
-                  DottedBorder(
-                    borderType: BorderType.RRect,
-                    radius: Radius.circular(8.r),
-                    strokeWidth: 0.5,
-                    dashPattern: [6, 4],
-                    color: AppColors.purpleColor,
-                    child: Container(
-                      width: double.infinity,
-                      height: 150.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.babyPink,
-                        // border: Border.all(color: AppColors.purpleColor),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          Assets.photoIcon,
-                          height: 18.h,
-                          width: 18.w,
-                          color: AppColors.purpleColor,
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: DottedBorder(
+                      borderType: BorderType.RRect,
+                      radius: Radius.circular(8.r),
+                      strokeWidth: 0.5,
+                      dashPattern: [6, 4],
+                      color: AppColors.purpleColor,
+                      child: Container(
+                        width: double.infinity,
+                        height: 150.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.babyPink,
+                          // border: Border.all(color: AppColors.purpleColor),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
+                        child:
+                            _selectedImage == null
+                                ? Center(
+                                  child: SvgPicture.asset(
+                                    Assets.photoIcon,
+                                    height: 18.h,
+                                    width: 18.w,
+                                    color: AppColors.purpleColor,
+                                  ),
+                                )
+                                : ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: Image.file(
+                                    File(_selectedImage!.path),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                       ),
                     ),
                   ),
@@ -138,14 +157,28 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                     ),
                   ),
                   8.heightBox,
-                  CustomTextField(
-                    controller: titleController,
-                    hint: "Write here...",
-                    maxLines: 5,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border.all(
+                        color: AppColors.lightGreyColor,
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: CustomQuillEditor(
+                      controller: _controller,
+                      backgroundColor: AppColors.white,
+                    ),
                   ),
                   30.heightBox,
 
-                  CustomButton(text: "Create job", onTap: () {}),
+                  CustomButton(
+                    text: "Create job",
+                    onTap: () {
+                      Navigator.pop(context, true);
+                    },
+                  ),
                   24.heightBox,
                 ],
               ),
@@ -154,5 +187,14 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedImage = image;
+      });
+    }
   }
 }

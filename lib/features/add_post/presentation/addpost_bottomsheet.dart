@@ -15,7 +15,7 @@ void showPostOptions(BuildContext context) {
   showModalBottomSheet(
     context: context,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
     ),
     builder: (context) {
       return Padding(
@@ -42,7 +42,7 @@ void showPostOptions(BuildContext context) {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(Icons.close, color: AppColors.black),
+                child: SvgPicture.asset(Assets.close),
               ),
             ),
             6.heightBox,

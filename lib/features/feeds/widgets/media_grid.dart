@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/widgets/loading_indicator.dart'
+    show LoadingIndicator;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -42,7 +44,13 @@ class _MediaGridState extends State<MediaGrid> {
                   imageUrl: widget.media[index]['url'],
                   placeholder:
                       (context, url) => Center(
-                        child: CircularProgressIndicator(color: Colors.purple),
+                        child: LoadingIndicator(
+                          radius: 15,
+                          activeColor: AppColors.purpleColor,
+                          inactiveColor: AppColors.greyColor,
+
+                          animationDuration: Duration(milliseconds: 500),
+                        ),
                       ),
                   errorWidget:
                       (context, url, error) => Icon(Icons.error, size: 50),

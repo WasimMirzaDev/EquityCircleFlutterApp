@@ -47,5 +47,5 @@ class Assets {
   static final clock = "assets/icon/clock.svg";
   static final calendar = "assets/icon/calendar.svg";
   static final arrowDown = "assets/icon/arrow_down.svg";
-  // static final dp = "  assets/icon/dp.jpeg";
+  static final close = "assets/icon/close.svg";
 }
