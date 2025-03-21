@@ -1,84 +1,130 @@
 import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/constants/assets.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/appColors.dart';
+import '../../../../core/constants/constants.dart';
 
-Future<void> showDiscardDialog(BuildContext context) async {
+Future<void> showDiscardDialog(
+  BuildContext context,
+  String title,
+  String discription,
+  cancelText,
+  confirmText,
+  VoidCallback cancelOntap,
+  VoidCallback confirmOntap,
+) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: Text(
-          "Discard Changes?",
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontFamily: AppFonts.inter,
-            fontWeight: FontWeight.w500,
-            color: AppColors.darkGrey,
-          ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.r),
         ),
-        content: Text(
-          "Are you sure you want to discard your changes? All unsaved modifications will be lost.",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontFamily: AppFonts.inter,
-            fontWeight: FontWeight.w400,
-            color: AppColors.darkGrey,
-          ),
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context, true);
-            },
-            child: Container(
-              height: 82.h,
 
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4.r),
-                border: Border.all(color: AppColors.purpleColor),
-                color: AppColors.white,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            5.heightBox,
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: SvgPicture.asset(Assets.close),
               ),
-
+            ),
+            Center(
               child: Text(
-                "Cancel",
+                title,
                 style: TextStyle(
-                  fontSize: 12.sp,
+                  fontSize: 14.sp,
                   fontFamily: AppFonts.inter,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.white,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black,
                 ),
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context, true);
-            },
-            child: Container(
-              height: 82.h,
-
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4.r),
-
-                color: AppColors.purpleColor,
-              ),
-
-              child: Text(
-                "Discard",
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontFamily: AppFonts.inter,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.white,
-                ),
+            14.heightBox,
+            Text(
+              discription,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontFamily: AppFonts.inter,
+                fontWeight: FontWeight.w400,
+                color: AppColors.darkGrey,
               ),
             ),
-          ),
-        ],
+
+            20.heightBox,
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: cancelOntap,
+                      child: Container(
+                        height: 26.h,
+
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+                          border: Border.all(color: AppColors.purpleColor),
+                          color: AppColors.white,
+                        ),
+
+                        child: Center(
+                          child: Text(
+                            cancelText,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontFamily: AppFonts.inter,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.purpleColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  10.widthBox,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: confirmOntap,
+                      child: Container(
+                        height: 26.h,
+
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+
+                          color: AppColors.purpleColor,
+                        ),
+
+                        child: Center(
+                          child: Text(
+                            confirmText,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontFamily: AppFonts.inter,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       );
     },
   );

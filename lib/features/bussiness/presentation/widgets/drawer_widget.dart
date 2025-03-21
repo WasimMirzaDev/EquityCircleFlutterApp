@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/constants/appFonts.dart' show AppFonts;
 import '../../../../core/constants/assets.dart';
+import '../../../../core/providers/auth_provider.dart';
+import '../../../add_post/presentation/widget/discard_dialogbox.dart';
 
 class DrawerContent extends StatelessWidget {
   const DrawerContent({super.key});
@@ -80,9 +82,25 @@ class DrawerContent extends StatelessWidget {
                 context.go('/Joblist');
               }),
               30.heightBox,
-              drawerRow("Log out", Assets.user, () {
-                authProvider.logout();
+              drawerRow("Sign Out", Assets.user, () {
+                showDiscardDialog(
+                  context,
+
+                  "Logout",
+                  "Are you sure you want to logout?",
+                  "Cancel",
+                  "Confirm",
+
+                  () {
+                    Navigator.pop(context, true);
+                  },
+                  () {
+                    Provider.of<AuthProvider>(context, listen: false).logout();
+                    context.go('/login');
+                  },
+                );
               }),
+
               Spacer(),
               Center(
                 child: GestureDetector(
@@ -98,13 +116,6 @@ class DrawerContent extends StatelessWidget {
                 ),
               ),
               50.heightBox,
-              // GestureDetector(
-              //   onTap: () {
-              //     Provider.of<AuthProvider>(context, listen: false).logout();
-              //     context.go('/login');
-              //   },
-              //   child: ListTile(leading: Icon(Icons.logout), title: Text("Logout")),
-              // ),
             ],
           ),
         ),
