@@ -1,9 +1,16 @@
-import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
-import 'package:equitycircle/core/providers/feeds_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'dart:io';
 
-import '../../../core/widgets/loading_indicator.dart' show LoadingIndicator;
+import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
+import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/constants/assets.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/providers/feeds_provider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class CommentInputBar extends StatefulWidget {
   final int feedId;
@@ -20,7 +27,7 @@ class CommentInputBar extends StatefulWidget {
 
 class _CommentInputBarState extends State<CommentInputBar> {
   final TextEditingController textController = TextEditingController();
-
+  File? selectedFile;
   void _handleComment() {
     final String comment = textController.text.trim();
     if (comment.isNotEmpty) {
@@ -36,62 +43,113 @@ class _CommentInputBarState extends State<CommentInputBar> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: textController,
-              decoration: InputDecoration(
-                hintText: "Type your comment...",
-                hintStyle: TextStyle(color: Colors.grey.shade600),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          const SizedBox(width: 5),
-          // _buildIcon(Icons.gif, () {
-          // }),
-          _buildIcon(Icons.emoji_emotions, () {}),
-          _buildIcon(Icons.image, () {}),
-          GestureDetector(
-            onTap: () {
-              _handleComment();
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child:
-                  Provider.of<FeedsProvider>(context).isLoadingComment
-                      ? const LoadingIndicator(
-                        radius: 15,
-                        activeColor: AppColors.purpleColor,
-                        inactiveColor: AppColors.greyColor,
-
-                        animationDuration: Duration(milliseconds: 500),
-                      )
-                      : Icon(Icons.send, color: Colors.blue, size: 28),
-            ),
-          ),
-        ],
-      ),
-    );
+  Future<void> _pickMedia() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null && result.files.single.path != null) {
+      setState(() {
+        selectedFile = File(result.files.single.path!);
+      });
+    }
   }
 
-  Widget _buildIcon(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: Icon(icon, color: Colors.blue, size: 28),
-      ),
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        selectedFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _openCamera() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        selectedFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            height: 36.h,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            decoration: BoxDecoration(
+              color: AppColors.fieldgrey,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: textController,
+                    decoration: InputDecoration(
+                      hintText: "Write a comment",
+                      border: InputBorder.none,
+                      fillColor: AppColors.fieldgrey,
+                      hintStyle: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGrey,
+                      ),
+                      isDense: true,
+                    ),
+                  ),
+                ),
+
+                GestureDetector(
+                  onTap: _pickMedia,
+
+                  child: SvgPicture.asset(Assets.mediaIcon),
+                ),
+                10.widthBox,
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: SvgPicture.asset(Assets.imageicon),
+                ),
+                10.widthBox,
+                GestureDetector(
+                  onTap: _openCamera,
+                  child: SvgPicture.asset(Assets.camera),
+                ),
+              ],
+            ),
+          ),
+        ),
+        8.widthBox,
+        GestureDetector(
+          onTap: () {
+            _handleComment();
+          },
+          child:
+          // Provider.of<FeedsProvider>(context).isLoadingComment
+          //     ? LoadingIndicator(
+          //       radius: 12.r,
+          //       activeColor: AppColors.purpleColor,
+          //       inactiveColor: AppColors.greyColor,
+          //       animationDuration: Duration(milliseconds: 500),
+          //     )
+          //     :
+          Container(
+            height: 36.h,
+            width: 36.w,
+            decoration: BoxDecoration(
+              color: AppColors.purpleColor,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Center(child: SvgPicture.asset(Assets.sendicon)),
+          ),
+        ),
+      ],
     );
   }
 }

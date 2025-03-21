@@ -132,15 +132,22 @@ class _MainLayoutState extends State<MainLayout> {
           controller: _pageController,
           physics: const BouncingScrollPhysics(),
           onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
+            if (index != 2) {
+              // Prevent landing on Add Post
+              setState(() {
+                _currentIndex = index;
+              });
+            } else {
+              _pageController.jumpToPage(
+                _currentIndex,
+              ); // Stay on previous index
+            }
           },
           children: [
-            BussinessScreen(categoryId: 1),
+            BusinessScreen(categoryId: 1),
             FitnessScreen(categoryId: 2),
-            SizedBox(),
-            CryptoScreen(categoryId: 4),
+            Container(),
+            CryptoScreen(categoryId: 3),
             MindsetScreen(categoryId: 5),
           ],
         ),

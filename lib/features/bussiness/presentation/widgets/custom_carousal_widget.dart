@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// ✅ Corrected `customCarousalSlider` function
-Widget customCarousalSlider(
+Widget customCarouselSlider(
   List<String> images,
   PageController pageController,
   Function(int) onPageChanged,

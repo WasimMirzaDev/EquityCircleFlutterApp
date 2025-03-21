@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
-import '../api/feeds_api.dart';
 import 'package:dio/dio.dart';
+import 'package:equitycircle/core/models/feeds_model.dart';
+import 'package:flutter/material.dart';
+
+import '../api/feeds_api.dart';
 
 class FeedsProvider with ChangeNotifier {
-  final Map<int, List<Map<String, dynamic>>> _feedsPerCategory = {};
+  final Map<int, List<DataByFeed>> _feedsPerCategory = {};
   final Map<int, bool> _hasMorePerCategory = {};
   final Map<int, int> _currentPagePerCategory = {};
   bool _isLoading = false;
@@ -12,13 +14,10 @@ class FeedsProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isLoadingComment => _isLoadingComment;
 
-  List<Map<String, dynamic>> getFeedsByCategory(int categoryId) {
-    return _feedsPerCategory[categoryId] ?? [];
-  }
+  List<DataByFeed> getFeedsByCategory(int categoryId) =>
+      _feedsPerCategory[categoryId] ?? [];
 
-  bool hasMore(int categoryId) {
-    return _hasMorePerCategory[categoryId] ?? true;
-  }
+  bool hasMore(int categoryId) => _hasMorePerCategory[categoryId] ?? true;
 
   Future<void> fetchFeeds(
     BuildContext context, {
@@ -35,8 +34,7 @@ class FeedsProvider with ChangeNotifier {
       notifyListeners();
     }
 
-    _isLoading = true;
-    notifyListeners();
+    _setLoading(true);
 
     try {
       Response response = await FeedsApi.getFeeds(
@@ -45,25 +43,22 @@ class FeedsProvider with ChangeNotifier {
         category_id: categoryId,
       );
 
-      List<Map<String, dynamic>> newFeeds = List<Map<String, dynamic>>.from(
-        response.data['data'],
-      );
-
-      _hasMorePerCategory[categoryId] = response.data['has_more'];
+      FeedsModel feedsModel = FeedsModel.fromJson(response.data);
+      _hasMorePerCategory[categoryId] = feedsModel.hasMore ?? false;
+      List<DataByFeed> newFeeds = feedsModel.data ?? [];
 
       if (loadMore) {
-        _feedsPerCategory[categoryId]!.addAll(newFeeds);
+        _feedsPerCategory[categoryId]?.addAll(newFeeds);
       } else {
         _feedsPerCategory[categoryId] = newFeeds;
       }
 
-      _currentPagePerCategory[categoryId] = response.data['current_page'] + 1;
+      _currentPagePerCategory[categoryId] = (feedsModel.currentPage ?? 0) + 1;
     } catch (e) {
       print("Error fetching feeds: $e");
     }
 
-    _isLoading = false;
-    notifyListeners();
+    _setLoading(false);
   }
 
   Future<void> likeFeed(
@@ -74,19 +69,17 @@ class FeedsProvider with ChangeNotifier {
     try {
       Response response = await FeedsApi.likeFeed(context, feedId);
       if (response.data['success']) {
-        final index =
-            _feedsPerCategory[categoryId]?.indexWhere(
-              (feed) => feed['id'] == feedId,
-            ) ??
-            -1;
-        if (index != -1) {
-          _feedsPerCategory[categoryId]![index]['likes'] =
-              response.data['likes'];
-          _feedsPerCategory[categoryId]![index]['likes_count'] =
-              response.data['likes_count'];
-
-          notifyListeners();
-        }
+        _updateFeed(
+          categoryId,
+          feedId,
+          (feed) => feed.copyWith(
+            likes:
+                (response.data['likes'] as List?)
+                    ?.map((e) => LikesByFeeds.fromJson(e))
+                    .toList(),
+            likesCount: response.data['likes_count'],
+          ),
+        );
       }
     } catch (e) {
       print("Error liking/unliking post: $e");
@@ -99,28 +92,51 @@ class FeedsProvider with ChangeNotifier {
     BuildContext context,
     int categoryId,
   ) async {
-    try {
-      _isLoadingComment = true;
-      notifyListeners();
-      Response response = await FeedsApi.postComment(context, feedId, comment);
-      final index =
-          _feedsPerCategory[categoryId]?.indexWhere(
-            (feed) => feed['id'] == feedId,
-          ) ??
-          -1;
-      if (index != -1) {
-        _feedsPerCategory[categoryId]![index]['comments'] = [
-          ...?_feedsPerCategory[categoryId]![index]['comments'],
-          response.data['comment'],
-        ];
-        _feedsPerCategory[categoryId]![index]['comments_count'] =
-            _feedsPerCategory[categoryId]![index]['comments'].length;
+    _setLoadingComment(true);
 
-        notifyListeners();
-        _isLoadingComment = false;
-      }
+    try {
+      Response response = await FeedsApi.postComment(context, feedId, comment);
+      CommentsByFeeds newComment = CommentsByFeeds.fromJson(
+        response.data['comment'],
+      );
+
+      _updateFeed(categoryId, feedId, (feed) {
+        List<CommentsByFeeds> updatedComments = List.from(feed.comments ?? [])
+          ..add(newComment);
+        return feed.copyWith(comments: updatedComments);
+      });
     } catch (e) {
       print("Error posting comment: $e");
+    }
+
+    _setLoadingComment(false);
+  }
+
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  void _setLoadingComment(bool value) {
+    _isLoadingComment = value;
+    notifyListeners();
+  }
+
+  void _updateFeed(
+    int categoryId,
+    int feedId,
+    DataByFeed Function(DataByFeed) update,
+  ) {
+    final index =
+        _feedsPerCategory[categoryId]?.indexWhere(
+          (feed) => feed.id == feedId,
+        ) ??
+        -1;
+    if (index != -1) {
+      _feedsPerCategory[categoryId]![index] = update(
+        _feedsPerCategory[categoryId]![index],
+      );
+      notifyListeners();
     }
   }
 }
