@@ -3,7 +3,9 @@
 
     <!-- ✅ Add Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
-    
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+<uses-permission android:name="android.permission.USE_FINGERPRINT" />
+<uses-feature android:name="android.hardware.fingerprint" android:required="false"/>
     
     <!-- ✅ Enable ClearText Traffic (For HTTP API Calls) -->
     <application
@@ -11,6 +13,9 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">  <!-- Add this line -->
+<meta-data 
+    android:name="android.hardware.biometrics" 
+    android:value="1" />
 
         <activity
             android:name=".MainActivity"

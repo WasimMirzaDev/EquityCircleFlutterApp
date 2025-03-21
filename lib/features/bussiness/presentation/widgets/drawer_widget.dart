@@ -2,10 +2,12 @@ import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
 import 'package:equitycircle/core/constants/constants.dart'
     show PAGE_MARGIN_HOR;
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/appFonts.dart' show AppFonts;
 import '../../../../core/constants/assets.dart';
@@ -15,6 +17,7 @@ class DrawerContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Stack(
       children: [
         Positioned.fill(child: Image.asset(Assets.drawerbg, fit: BoxFit.cover)),
@@ -75,6 +78,10 @@ class DrawerContent extends StatelessWidget {
 
               drawerRow("Mange Users", Assets.user, () {
                 context.go('/Joblist');
+              }),
+              30.heightBox,
+              drawerRow("Log out", Assets.user, () {
+                authProvider.logout();
               }),
               Spacer(),
               Center(

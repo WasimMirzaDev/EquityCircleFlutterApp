@@ -129,19 +129,15 @@ class _FitnessScreenState extends State<FitnessScreen> {
         },
         {
           "url":
-              'https://s3-alpha-sig.figma.com/img/e6da/abf1/e35f04b5f024fe8b3e7a7d6c8d4b78b8?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RQ~iohuC-dDDgetYJ7wOO1MOm2DhQyhvKyBj7iAnBEn6C30-y8rqqcrThK3jqAyDpEbBPlcljoRAgfZWVV2eAY17eCFcvNz7~ezMjVvhX5jZgrDgUMMLb1sNj9fwEWnyjhTXKoTTO26VxMeJ2fnUTeNnYy0SGx~rBa3pkvLvHSvlOAohf0LtK99IDvWDIbDAOrEFe0MX4MMhBTjehBKTu9PYyfq6uu57vfzHHKmOaGP0gLwY5Z5xQulqq0pDXKaCBEpbzbS8I6vFhnq22pwk0vuU07fOOWSFsDlxfhq0N~VwrBaPZQxldczyN1gX3X2CYoTr~QW-2thWqcXknGcxBg__',
+              'https://equity-api.techtrack.online/data/images/1738787948_sporty-motivated-handsome-man-leans-and-does-sport-exercises-poses-outdoor-and-busy-doing-workout-determined-shirtless-guy-wears-sneakers-has-morning-training-in-park-healthy-lifestyle-concept-photo.jpeg',
         },
         {
           "url":
-              'https://s3-alpha-sig.figma.com/img/e6da/abf1/e35f04b5f024fe8b3e7a7d6c8d4b78b8?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RQ~iohuC-dDDgetYJ7wOO1MOm2DhQyhvKyBj7iAnBEn6C30-y8rqqcrThK3jqAyDpEbBPlcljoRAgfZWVV2eAY17eCFcvNz7~ezMjVvhX5jZgrDgUMMLb1sNj9fwEWnyjhTXKoTTO26VxMeJ2fnUTeNnYy0SGx~rBa3pkvLvHSvlOAohf0LtK99IDvWDIbDAOrEFe0MX4MMhBTjehBKTu9PYyfq6uu57vfzHHKmOaGP0gLwY5Z5xQulqq0pDXKaCBEpbzbS8I6vFhnq22pwk0vuU07fOOWSFsDlxfhq0N~VwrBaPZQxldczyN1gX3X2CYoTr~QW-2thWqcXknGcxBg__',
+              'https://equity-api.techtrack.online/data/images/1738787602__7b5e3c6c-402d-11eb-846d-e0066b9df566.jpg',
         },
         {
           "url":
-              'https://s3-alpha-sig.figma.com/img/e6da/abf1/e35f04b5f024fe8b3e7a7d6c8d4b78b8?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RQ~iohuC-dDDgetYJ7wOO1MOm2DhQyhvKyBj7iAnBEn6C30-y8rqqcrThK3jqAyDpEbBPlcljoRAgfZWVV2eAY17eCFcvNz7~ezMjVvhX5jZgrDgUMMLb1sNj9fwEWnyjhTXKoTTO26VxMeJ2fnUTeNnYy0SGx~rBa3pkvLvHSvlOAohf0LtK99IDvWDIbDAOrEFe0MX4MMhBTjehBKTu9PYyfq6uu57vfzHHKmOaGP0gLwY5Z5xQulqq0pDXKaCBEpbzbS8I6vFhnq22pwk0vuU07fOOWSFsDlxfhq0N~VwrBaPZQxldczyN1gX3X2CYoTr~QW-2thWqcXknGcxBg__',
-        },
-        {
-          "url":
-              'https://s3-alpha-sig.figma.com/img/e6da/abf1/e35f04b5f024fe8b3e7a7d6c8d4b78b8?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RQ~iohuC-dDDgetYJ7wOO1MOm2DhQyhvKyBj7iAnBEn6C30-y8rqqcrThK3jqAyDpEbBPlcljoRAgfZWVV2eAY17eCFcvNz7~ezMjVvhX5jZgrDgUMMLb1sNj9fwEWnyjhTXKoTTO26VxMeJ2fnUTeNnYy0SGx~rBa3pkvLvHSvlOAohf0LtK99IDvWDIbDAOrEFe0MX4MMhBTjehBKTu9PYyfq6uu57vfzHHKmOaGP0gLwY5Z5xQulqq0pDXKaCBEpbzbS8I6vFhnq22pwk0vuU07fOOWSFsDlxfhq0N~VwrBaPZQxldczyN1gX3X2CYoTr~QW-2thWqcXknGcxBg__',
+              'https://equity-api.techtrack.online/data/images/1738787602_man-2604149_1280.jpg',
         },
       ],
       "is_liked": true,

@@ -1,17 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:local_auth/local_auth.dart'; // 🔥 Import Biometric Authentication
 import '../api/auth_api.dart';
 
 class AuthProvider with ChangeNotifier {
   String? _token;
   Map<String, dynamic>? _userData; // Store user data
+  bool _isBiometricVerified = false; // Track biometric verification
+  final LocalAuthentication auth = LocalAuthentication(); // Biometric instance
 
   String? get token => _token;
   Map<String, dynamic>? get userData => _userData;
-  bool get isAuthenticated => _token != null; // Check if user is logged in
+
+  // ✅ User is authenticated only if they have a token & passed biometric auth
+  bool get isAuthenticated => _token != null && _isBiometricVerified;
 
   AuthProvider() {
-    _loadUserData(); // Load token & fetch user on app start
+    _loadUserData(); // Load token & check biometric
+  }
+
+  // ✅ Prompt Biometric Authentication
+  Future<bool> promptBiometricAuth() async {
+    bool canAuthenticate = await auth.canCheckBiometrics;
+
+    if (!canAuthenticate) return false; // ❌ No biometric support
+
+    try {
+      _isBiometricVerified = await auth.authenticate(
+        localizedReason: 'Authenticate to access your account',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
+        ),
+      );
+      return _isBiometricVerified;
+    } catch (e) {
+      print("Biometric Auth Error: $e");
+      return false;
+    }
   }
 
   Future<void> _loadUserData() async {
@@ -19,7 +45,13 @@ class AuthProvider with ChangeNotifier {
     _token = prefs.getString('access_token');
 
     if (_token != null) {
-      await fetchUser(); // Fetch user data if token exists
+      bool biometricSuccess = await promptBiometricAuth();
+      if (biometricSuccess) {
+        await fetchUser(); // Fetch user data after successful biometric
+      } else {
+        _token = null; // ❌ Reset token if biometric fails
+      }
+      notifyListeners();
     }
   }
 
@@ -28,13 +60,18 @@ class AuthProvider with ChangeNotifier {
       final data = await AuthApi.login(email, password);
       _token = data['access_token'];
 
-      // Store token locally
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('access_token', _token!);
 
-      await fetchUser(); // Fetch user data after login
-      notifyListeners();
-      return true;
+      bool biometricSuccess = await promptBiometricAuth();
+      if (biometricSuccess) {
+        await fetchUser();
+        notifyListeners();
+        return true;
+      } else {
+        _token = null; // Reset token if biometric fails
+        return false;
+      }
     } catch (error) {
       print("Error during login: $error");
       return false;
@@ -60,8 +97,15 @@ class AuthProvider with ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('access_token', _token!);
 
-      notifyListeners();
-      return true;
+      bool biometricSuccess = await promptBiometricAuth();
+      if (biometricSuccess) {
+        await fetchUser();
+        notifyListeners();
+        return true;
+      } else {
+        _token = null; // Reset token if biometric fails
+        return false;
+      }
     } catch (error) {
       // Handle login errors
       print("Error during login: $error");
@@ -87,9 +131,16 @@ class AuthProvider with ChangeNotifier {
       // Optionally, store token locally
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('access_token', _token!);
-      await fetchUser(); // Fetch user data after login
-      notifyListeners();
-      return true;
+
+      bool biometricSuccess = await promptBiometricAuth();
+      if (biometricSuccess) {
+        await fetchUser();
+        notifyListeners();
+        return true;
+      } else {
+        _token = null; // Reset token if biometric fails
+        return false;
+      }
     } catch (error) {
       // Handle errors
       print("Error during sending user data: $error");
@@ -116,9 +167,10 @@ class AuthProvider with ChangeNotifier {
   Future<void> logout() async {
     _token = null;
     _userData = null;
+    _isBiometricVerified = false;
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('access_token'); // Remove token from storage
+    await prefs.remove('access_token');
 
     notifyListeners();
   }

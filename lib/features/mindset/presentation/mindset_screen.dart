@@ -57,7 +57,7 @@ class _MindsetScreenState extends State<MindsetScreen> {
       "time": "Yesterday at 5:00 pm",
       "content":
           "📢 The Future is Decentralized! 🚀 Are you ready to explore the world of cryptocurrencies and blockchain technology? Here’s why crypto is shaping the future of finance: 🌐 Borderless Transactions: Transfer funds globally in minutes. 🔒 Enhanced Security: Built on blockchain for transparency and security. 📈 Investment Opportunities: Bitcoin, Ethereum, and other cryptocurrencies offer potential for significant returns.",
-      "category": "Bitcoin",
+      "category": "Technology",
       "lightColor": AppColors.lightPink,
       "darkColor": AppColors.darkPink,
       "attachments": [
@@ -131,7 +131,7 @@ class _MindsetScreenState extends State<MindsetScreen> {
       "content": """✅ Secure & Transparent – Blockchain ensures safety.
 ✅ Global Access – Anyone, anywhere, anytime.
 ✅ High Growth Potential – A new era of investment.""",
-      "category": "Ethereum",
+      "category": "Technology",
       "lightColor": AppColors.lightPink,
       "darkColor": AppColors.darkPink,
       "attachments": [
@@ -141,19 +141,11 @@ class _MindsetScreenState extends State<MindsetScreen> {
         },
         {
           "url":
-              'https://s3-alpha-sig.figma.com/img/8b08/b730/fc61666e2c6e3d72ccb2b43b1cbd2772?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=TMoWZQYdAHp7hl3TPjpvmvyRKfOCvsYocLsf19ewpkpFkLxKeSI7j96UHMGJJdrOqFtmxO9k5zBnxmEjp9dP~1-mWIRmhoLCtmK7s-j89MxCS2QiegsysILRJqxtqiRZcXo5mBIdzd2Y0ogZnU4~VAabI32muT10wIDfDcouytGauQf9LUhV7Q23~8XbLvCX42QclIOdmGtLmyF9Eo-UR-SlBJea4MCwEDL3JzYMkInpxR-i9FQhY-Nf0NQUxJ8~LDMNFpGr9-OkqdXaghK1CbMPYsoXbQKRoYyk28YogrsEh-u25dlrPZrj6cCL4qn-FeGj3rBfb~lqRo3eFe9Xdg__',
+              'https://equity-api.techtrack.online/data/images/1738788160_AdobeStock_56915425.jpeg',
         },
         {
           "url":
-              'https://s3-alpha-sig.figma.com/img/8b08/b730/fc61666e2c6e3d72ccb2b43b1cbd2772?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=TMoWZQYdAHp7hl3TPjpvmvyRKfOCvsYocLsf19ewpkpFkLxKeSI7j96UHMGJJdrOqFtmxO9k5zBnxmEjp9dP~1-mWIRmhoLCtmK7s-j89MxCS2QiegsysILRJqxtqiRZcXo5mBIdzd2Y0ogZnU4~VAabI32muT10wIDfDcouytGauQf9LUhV7Q23~8XbLvCX42QclIOdmGtLmyF9Eo-UR-SlBJea4MCwEDL3JzYMkInpxR-i9FQhY-Nf0NQUxJ8~LDMNFpGr9-OkqdXaghK1CbMPYsoXbQKRoYyk28YogrsEh-u25dlrPZrj6cCL4qn-FeGj3rBfb~lqRo3eFe9Xdg__',
-        },
-        {
-          "url":
-              'https://s3-alpha-sig.figma.com/img/8b08/b730/fc61666e2c6e3d72ccb2b43b1cbd2772?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=TMoWZQYdAHp7hl3TPjpvmvyRKfOCvsYocLsf19ewpkpFkLxKeSI7j96UHMGJJdrOqFtmxO9k5zBnxmEjp9dP~1-mWIRmhoLCtmK7s-j89MxCS2QiegsysILRJqxtqiRZcXo5mBIdzd2Y0ogZnU4~VAabI32muT10wIDfDcouytGauQf9LUhV7Q23~8XbLvCX42QclIOdmGtLmyF9Eo-UR-SlBJea4MCwEDL3JzYMkInpxR-i9FQhY-Nf0NQUxJ8~LDMNFpGr9-OkqdXaghK1CbMPYsoXbQKRoYyk28YogrsEh-u25dlrPZrj6cCL4qn-FeGj3rBfb~lqRo3eFe9Xdg__',
-        },
-        {
-          "url":
-              'https://s3-alpha-sig.figma.com/img/8b08/b730/fc61666e2c6e3d72ccb2b43b1cbd2772?Expires=1743379200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=TMoWZQYdAHp7hl3TPjpvmvyRKfOCvsYocLsf19ewpkpFkLxKeSI7j96UHMGJJdrOqFtmxO9k5zBnxmEjp9dP~1-mWIRmhoLCtmK7s-j89MxCS2QiegsysILRJqxtqiRZcXo5mBIdzd2Y0ogZnU4~VAabI32muT10wIDfDcouytGauQf9LUhV7Q23~8XbLvCX42QclIOdmGtLmyF9Eo-UR-SlBJea4MCwEDL3JzYMkInpxR-i9FQhY-Nf0NQUxJ8~LDMNFpGr9-OkqdXaghK1CbMPYsoXbQKRoYyk28YogrsEh-u25dlrPZrj6cCL4qn-FeGj3rBfb~lqRo3eFe9Xdg__',
+              'https://uprisehealth.com/wp-content/uploads/2022/10/mindset-chart-min.jpg',
         },
       ],
       "is_liked": true,

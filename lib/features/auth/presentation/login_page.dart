@@ -63,45 +63,50 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
   Future<void> _handleGoogleSignIn() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return; // User canceled sign-in
+    final GoogleSignIn googleSignIn = GoogleSignIn();
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+    // Ensure previous account is signed out to always show account selection
+    await googleSignIn.signOut();
 
-      // Ensure idToken is obtained
-      final String? idToken = googleAuth.idToken;
-      if (idToken == null) throw Exception("Failed to retrieve ID Token");
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser == null) {
+      _showSnackBar('Google Sign-In canceled');
+      return;
+    }
 
-      print("Google ID Token: $idToken"); // Debugging
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
-      final response = await http.post(
-        Uri.parse("${dotenv.env['API_URL']}/api/auth/google/callback/app"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"id_token": idToken}),
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
+    User? user = userCredential.user;
+
+    if (user != null) {
+      String? googleIdToken = googleAuth.idToken;
+
+      final authProvider = Provider.of<auth_provider.AuthProvider>(
+        context,
+        listen: false,
       );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final accessToken = data["access_token"]; // Get backend's token
+      bool success = await authProvider.googleLogin(
+        user.displayName,
+        user.email,
+        user.photoURL,
+        googleIdToken,
+      );
 
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('access_token', accessToken);
-
-        _showSnackBar("Google Sign-In successful!");
-        context.go('/home');
+      if (success) {
+        context.go('/feeds');
       } else {
-        print("Backend Response: ${response.body}"); // Debugging
-        _showSnackBar("Google authentication failed: ${response.body}");
+        _showSnackBar('Login failed!');
       }
-    } catch (error) {
-      print("Google Sign-In Error: $error"); // Debugging
-      _showSnackBar("Google Sign-In failed: $error");
     }
   }
 
