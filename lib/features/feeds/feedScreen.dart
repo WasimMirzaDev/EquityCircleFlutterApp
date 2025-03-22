@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -90,7 +91,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             ),
           ),
           CircleAvatar(backgroundImage: AssetImage('assets/images/p1.png')),
-          SizedBox(width: 10),
+          10.widthBox,
         ],
       ),
 
@@ -111,7 +112,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 child: Text("Upcoming Events"),
               ),
 
-              SizedBox(height: 5),
+              5.heightBox,
               CarouselSlider(
                 options: CarouselOptions(
                   height: 206,
@@ -185,7 +186,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       );
                     }).toList(),
               ),
-              SizedBox(height: 2),
+              2.heightBox,
               CarouselIndicator(carouselImages.length, currentIndex),
               DefaultTextStyle(
                 style: TextStyle(
@@ -259,7 +260,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       maxLines: 1,
                     ),
                   ),
-                  SizedBox(width: 10), // Space between name and chip
+                  10.heightBox,
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
@@ -305,7 +306,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
               ),
             ),
-            SizedBox(height: 10),
+            10.heightBox,
             buildImageGallery(context, postImages),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -320,14 +321,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         height: 20,
                         color: Colors.black87,
                       ),
-                      SizedBox(width: 12),
+                      12.heightBox,
                       Image.asset(
                         'assets/images/logo_icons/comment.png',
                         width: 20,
                         height: 20,
                         color: Colors.black87,
                       ),
-                      SizedBox(width: 12),
+                      12.heightBox,
                       Image.asset(
                         'assets/images/logo_icons/share.png',
                         width: 20,
@@ -337,7 +338,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     ],
                   ),
 
-                  SizedBox(height: 5),
+                  5.heightBox,
                   Text(
                     "${post['likes']} Likes",
                     style: TextStyle(
@@ -348,7 +349,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       height: 20 / 12,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  8.heightBox,
                   Row(
                     children: [
                       Expanded(
@@ -378,14 +379,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                 size: 20,
                                 color: Colors.grey,
                               ),
-                              SizedBox(width: 8),
+                              8.heightBox,
                               Icon(
                                 Icons.camera_alt,
                                 size: 20,
                                 color: Colors.grey,
                               ),
 
-                              SizedBox(width: 8),
+                              8.heightBox,
                               Icon(
                                 Icons.emoji_emotions_outlined,
                                 size: 20,
@@ -395,14 +396,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 8),
+                      8.heightBox,
                       Icon(Icons.send, size: 22, color: Colors.grey),
                     ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            10.heightBox,
           ],
         ),
       ),

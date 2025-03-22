@@ -1,6 +1,7 @@
 import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/assets.dart' show Assets;
 import 'package:equitycircle/core/constants/constants.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart'
     show AuthProvider;
 import 'package:equitycircle/core/providers/feeds_provider.dart';
@@ -98,7 +99,7 @@ class _FitnessScreenState extends State<FitnessScreen> {
                   padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
                   child: Column(
                     children: [
-                      const SizedBox(height: 20),
+                      20.heightBox,
                       Expanded(
                         child: ListView(
                           controller: _scrollController,
@@ -108,14 +109,9 @@ class _FitnessScreenState extends State<FitnessScreen> {
                               "   Search for users",
                               searchController,
                             ),
-                            const SizedBox(height: 12),
-                            customCarouselSlider(
-                              images,
-                              _pageController,
-                              (index) => setState(() => currentIndex = index),
-                              currentIndex,
-                            ),
-                            const SizedBox(height: 20),
+                            12.heightBox,
+                            CustomCarouselSlider(images: images),
+                            20.heightBox,
                             ...feeds.map(
                               (feed) => FeedCard(
                                 feed: feed,

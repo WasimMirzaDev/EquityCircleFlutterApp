@@ -12,6 +12,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/widgets/loading_indicator.dart';
+
 class CommentInputBar extends StatefulWidget {
   final int feedId;
   final int categoryId;
@@ -131,23 +133,24 @@ class _CommentInputBarState extends State<CommentInputBar> {
             _handleComment();
           },
           child:
-          // Provider.of<FeedsProvider>(context).isLoadingComment
-          //     ? LoadingIndicator(
-          //       radius: 12.r,
-          //       activeColor: AppColors.purpleColor,
-          //       inactiveColor: AppColors.greyColor,
-          //       animationDuration: Duration(milliseconds: 500),
-          //     )
-          //     :
-          Container(
-            height: 36.h,
-            width: 36.w,
-            decoration: BoxDecoration(
-              color: AppColors.purpleColor,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Center(child: SvgPicture.asset(Assets.sendicon)),
-          ),
+              Provider.of<FeedsProvider>(
+                    context,
+                  ).isLoadingComment(widget.feedId)
+                  ? LoadingIndicator(
+                    radius: 10.r,
+                    activeColor: AppColors.purpleColor,
+                    inactiveColor: AppColors.greyColor,
+                    animationDuration: Duration(milliseconds: 500),
+                  )
+                  : Container(
+                    height: 36.h,
+                    width: 36.w,
+                    decoration: BoxDecoration(
+                      color: AppColors.purpleColor,
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Center(child: SvgPicture.asset(Assets.sendicon)),
+                  ),
         ),
       ],
     );

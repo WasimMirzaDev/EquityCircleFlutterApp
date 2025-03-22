@@ -1,10 +1,11 @@
+import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart'
     as auth_provider;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -134,13 +135,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 80,
                   width: 80,
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 const Text(
                   'Welcome to Equity Circle, a platform to connect with the social world',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-                const SizedBox(height: 20),
+                20.heightBox,
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(
@@ -150,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -160,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 TextField(
                   controller: passwordController,
                   obscureText: true,
@@ -171,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 Row(
                   children: [
                     Checkbox(
@@ -185,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     const Text('I Accept Terms And Conditions'),
                   ],
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -201,9 +202,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                20.heightBox,
                 const Text('OR'),
-                const SizedBox(height: 10),
+                10.heightBox,
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -217,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                   onPressed: () {},
@@ -226,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                const SizedBox(height: 20),
+                20.heightBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -1,6 +1,7 @@
+import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart' as htmlParser;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:html/parser.dart' as htmlParser;
 
 class EducationCard extends StatelessWidget {
   final Map<String, dynamic> education;
@@ -57,7 +58,7 @@ class EducationCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  10.heightBox,
                   Text(
                     htmlParser
                             .parse(education['short_description'] ?? '')
@@ -65,7 +66,7 @@ class EducationCard extends StatelessWidget {
                             ?.text ??
                         '',
                   ),
-                  const SizedBox(height: 20),
+                  20.heightBox,
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(

@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/constants/appFonts.dart' show AppFonts;
 import '../../../../core/constants/assets.dart';
-import '../../../../core/providers/auth_provider.dart';
 import '../../../add_post/presentation/widget/discard_dialogbox.dart';
 
 class DrawerContent extends StatelessWidget {
@@ -82,11 +81,11 @@ class DrawerContent extends StatelessWidget {
                 context.go('/Joblist');
               }),
               30.heightBox,
-              drawerRow("Sign Out", Assets.user, () {
+              drawerRow("Log out", Assets.logoutIcon, () {
                 showDiscardDialog(
                   context,
 
-                  "Logout",
+                  "Log out",
                   "Are you sure you want to logout?",
                   "Cancel",
                   "Confirm",
@@ -108,8 +107,8 @@ class DrawerContent extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                   child: SvgPicture.asset(
-                    width: 24.w,
-                    height: 24.h,
+                    width: 32.w,
+                    height: 32.h,
                     Assets.closeCircle,
                     // fit: BoxFit.cover,
                   ),
@@ -138,7 +137,7 @@ class DrawerContent extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.black,
+                  color: title == "Log out" ? Colors.red : AppColors.black,
                   fontSize: 14.sp,
                 ),
               ),

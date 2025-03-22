@@ -99,7 +99,7 @@ Widget customPostContainer(
                         child: Row(
                           children: [
                             Icon(Icons.edit, color: AppColors.black, size: 18),
-                            SizedBox(width: 8),
+                            10.widthBox,
                             Text("Edit", style: TextStyle(fontSize: 14.sp)),
                           ],
                         ),
@@ -109,7 +109,7 @@ Widget customPostContainer(
                         child: Row(
                           children: [
                             Icon(Icons.delete, color: Colors.red, size: 18),
-                            SizedBox(width: 8),
+                            10.widthBox,
                             Text(
                               "Delete",
                               style: TextStyle(
@@ -177,6 +177,8 @@ Widget customPostContainer(
                   likes.length.toString(),
                   SvgPicture.asset(
                     isLiked ? Assets.heartFilled : Assets.heartunFilled,
+                    height: 20.h,
+                    width: 20.w,
                   ),
                 ),
                 commentsFavRow(
@@ -212,19 +214,22 @@ Widget commentsFavRow(
 
   Widget img,
 ) {
-  return Row(
-    children: [
-      GestureDetector(onTap: onTap, child: img),
-      5.widthBox,
-      Text(
-        length,
-        style: TextStyle(
-          fontSize: 12.sp,
-          fontFamily: AppFonts.inter,
-          fontWeight: FontWeight.w500,
-          color: AppColors.black,
+  return GestureDetector(
+    onTap: onTap,
+    child: Row(
+      children: [
+        img,
+        5.widthBox,
+        Text(
+          length,
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontFamily: AppFonts.inter,
+            fontWeight: FontWeight.w500,
+            color: AppColors.black,
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

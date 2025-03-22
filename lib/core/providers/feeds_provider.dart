@@ -8,11 +8,14 @@ class FeedsProvider with ChangeNotifier {
   final Map<int, List<DataByFeed>> _feedsPerCategory = {};
   final Map<int, bool> _hasMorePerCategory = {};
   final Map<int, int> _currentPagePerCategory = {};
+  final Map<int, bool> _isLoadingCommentPerFeed = {};
   bool _isLoading = false;
-  bool _isLoadingComment = false;
+  // bool _isLoadingComment = false;
 
   bool get isLoading => _isLoading;
-  bool get isLoadingComment => _isLoadingComment;
+  // bool get isLoadingComment => _isLoadingComment;
+  bool isLoadingComment(int feedId) =>
+      _isLoadingCommentPerFeed[feedId] ?? false;
 
   List<DataByFeed> getFeedsByCategory(int categoryId) =>
       _feedsPerCategory[categoryId] ?? [];
@@ -92,7 +95,7 @@ class FeedsProvider with ChangeNotifier {
     BuildContext context,
     int categoryId,
   ) async {
-    _setLoadingComment(true);
+    _setLoadingComment(feedId, true);
 
     try {
       Response response = await FeedsApi.postComment(context, feedId, comment);
@@ -109,7 +112,7 @@ class FeedsProvider with ChangeNotifier {
       print("Error posting comment: $e");
     }
 
-    _setLoadingComment(false);
+    _setLoadingComment(feedId, false);
   }
 
   void _setLoading(bool value) {
@@ -117,8 +120,8 @@ class FeedsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _setLoadingComment(bool value) {
-    _isLoadingComment = value;
+  void _setLoadingComment(int feedId, bool value) {
+    _isLoadingCommentPerFeed[feedId] = value;
     notifyListeners();
   }
 

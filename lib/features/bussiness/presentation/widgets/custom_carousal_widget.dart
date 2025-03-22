@@ -1,38 +1,60 @@
+/// ✅ Corrected `customCarousalSlider` function
+library;
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// ✅ Corrected `customCarousalSlider` function
-Widget customCarouselSlider(
-  List<String> images,
-  PageController pageController,
-  Function(int) onPageChanged,
-  int currentIndex,
-) {
-  return Column(
-    children: [
-      SizedBox(
-        height: 200,
-        width: double.infinity,
-        child: PageView.builder(
-          controller: pageController,
-          itemCount: images.length,
-          onPageChanged: onPageChanged,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.r),
-                child: Image.asset(images[index], fit: BoxFit.cover),
-              ),
-            );
-          },
+class CustomCarouselSlider extends StatefulWidget {
+  final List<String> images;
+
+  const CustomCarouselSlider({super.key, required this.images});
+
+  @override
+  State<CustomCarouselSlider> createState() => _CustomCarouselSliderState();
+}
+
+class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
+  int _currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CarouselSlider(
+          items:
+              widget.images.map((image) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(10.r),
+                  child: Image.asset(
+                    image,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  ),
+                );
+              }).toList(),
+          options: CarouselOptions(
+            height: 200.h,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 3),
+            autoPlayAnimationDuration: Duration(milliseconds: 800),
+            enlargeCenterPage: true,
+            viewportFraction: 1.0,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
         ),
-      ),
-      8.heightBox,
-      if (images.length > 1) carouselIndicator(images.length, currentIndex),
-    ],
-  );
+        8.heightBox,
+        if (widget.images.length > 1)
+          carouselIndicator(widget.images.length, _currentIndex),
+      ],
+    );
+  }
 }
 
 Widget carouselIndicator(int itemCount, int currentIndex) {

@@ -133,7 +133,6 @@ class _MainLayoutState extends State<MainLayout> {
           physics: const BouncingScrollPhysics(),
           onPageChanged: (index) {
             if (index != 2) {
-              // Prevent landing on Add Post
               setState(() {
                 _currentIndex = index;
               });
