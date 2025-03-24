@@ -19,7 +19,25 @@ class AuthApi {
     }
   }
 
+  static Future<Map<String, dynamic>> saveToken(
+    String firebaseUid,
+    String token,
+  ) async {
+    try {
+      final response = await ApiService.postRequest('/save-token', {
+        'firebase_uid': firebaseUid,
+        'fcm_token': token,
+      });
+      return response
+          .data; // assuming it returns a JSON map containing user data and token
+    } catch (error) {
+      // Handle errors appropriately
+      throw Exception("Login failed: $error");
+    }
+  }
+
   static Future<Map<String, dynamic>> register(
+    String firebaseUid,
     String name,
     String email,
     String password,
@@ -27,16 +45,16 @@ class AuthApi {
   ) async {
     try {
       final response = await ApiService.postRequest('/register', {
+        'firebase_uid': firebaseUid,
         'name': name,
         'email': email,
         'password': password,
         'password_confirmation': passwordConfirmation,
       });
-      return response
-          .data; // assuming it returns a JSON map containing user data and token
+      return response.data;
     } catch (error) {
       // Handle errors appropriately
-      throw Exception("Login failed: $error");
+      throw Exception("Register failed: $error");
     }
   }
 

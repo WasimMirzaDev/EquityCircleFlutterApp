@@ -6,16 +6,28 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 <uses-feature android:name="android.hardware.fingerprint" android:required="false"/>
-    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <!-- ✅ Enable ClearText Traffic (For HTTP API Calls) -->
     <application
+        android:enableOnBackInvokedCallback="true"
         android:label="equitycircle"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">  <!-- Add this line -->
-<meta-data 
-    android:name="android.hardware.biometrics" 
-    android:value="1" />
+        <service
+    android:name=".FirebaseMessagingService"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+    </intent-filter>
+</service>
+<meta-data android:name="androidx.biometric.Authenticator"
+    android:value="BIOMETRIC_STRONG | DEVICE_CREDENTIAL"/>
+<meta-data
+    android:name="com.google.firebase.messaging.default_notification_channel_id"
+    android:value="high_importance_channel"/>
+
 
         <activity
             android:name=".MainActivity"

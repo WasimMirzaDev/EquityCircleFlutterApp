@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -58,7 +59,15 @@ class _RegisterPageState extends State<RegisterPage> {
       context,
       listen: false,
     );
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+          email: emailController!.text.trim(),
+          password: passwordController!.text,
+        );
+    String firebaseUid = userCredential.user!.uid;
+
     bool success = await authProvider.register(
+      firebaseUid,
       nameController!.text.trim(),
       emailController!.text.trim(),
       passwordController!.text,

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart'; // 🔥 Import Biometric Authentication
 import '../api/auth_api.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthProvider with ChangeNotifier {
   String? _token;
   Map<String, dynamic>? _userData; // Store user data
   bool _isBiometricVerified = false; // Track biometric verification
   final LocalAuthentication auth = LocalAuthentication(); // Biometric instance
-
+  bool supportsFaceRecognition = false; // ✅ Track Face Recognition Support
   String? get token => _token;
   Map<String, dynamic>? get userData => _userData;
 
@@ -19,20 +21,56 @@ class AuthProvider with ChangeNotifier {
     _loadUserData(); // Load token & check biometric
   }
 
-  // ✅ Prompt Biometric Authentication
-  Future<bool> promptBiometricAuth() async {
-    bool canAuthenticate = await auth.canCheckBiometrics;
+  Future<void> getTokenAndSaveToDatabase() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken();
 
-    if (!canAuthenticate) return false; // ❌ No biometric support
+    if (token != null) {
+      String firebaseUid =
+          FirebaseAuth.instance.currentUser!.uid; // Firebase UID
+
+      // Call Laravel API to save token
+      final response = await AuthApi.saveToken(firebaseUid, token);
+
+      if (response['success']) {
+        print("FCM Token saved successfully: $token");
+      } else {
+        print("Error saving FCM token");
+      }
+      // Save this token to Firestore or your Laravel backend
+      print("User FCM Token: $token");
+    }
+  }
+
+  // ✅ Prompt Biometric Authentication
+  /// **🔹 Step 3: Check Biometric & Face Recognition Support**
+  Future<void> _checkBiometricSupport() async {
+    List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+
+    if (availableBiometrics.contains(BiometricType.face)) {
+      supportsFaceRecognition = true; // ✅ Face Recognition is available
+    }
+  }
+
+  /// **🔹 Step 4: Prompt Biometric Authentication**
+  Future<bool> promptBiometricAuth() async {
+    await _checkBiometricSupport(); // Check if face unlock is available
+
+    bool canAuthenticate =
+        await auth.canCheckBiometrics || await auth.isDeviceSupported();
+    if (!canAuthenticate) return false;
 
     try {
       _isBiometricVerified = await auth.authenticate(
-        localizedReason: 'Authenticate to access your account',
+        localizedReason: 'Authenticate using Face or Fingerprint',
         options: const AuthenticationOptions(
           biometricOnly: true,
           stickyAuth: true,
+          useErrorDialogs: true,
         ),
       );
+      notifyListeners();
       return _isBiometricVerified;
     } catch (e) {
       print("Biometric Auth Error: $e");
@@ -79,6 +117,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> register(
+    String firebaseUid,
     String name,
     String email,
     String password,
@@ -86,6 +125,7 @@ class AuthProvider with ChangeNotifier {
   ) async {
     try {
       final data = await AuthApi.register(
+        firebaseUid,
         name,
         email,
         password,
@@ -151,6 +191,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> fetchUser() async {
     try {
       if (_token == null) return;
+      await getTokenAndSaveToDatabase();
 
       final data = await AuthApi.getUserData(
         _token!,
