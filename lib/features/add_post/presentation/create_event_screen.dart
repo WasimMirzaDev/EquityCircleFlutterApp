@@ -117,6 +117,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   8.heightBox,
                   DropdownButtonFormField<String>(
+                    style: TextStyle(
+                      fontFamily: AppFonts.inter,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.darkGrey,
+                    ),
                     icon: SizedBox.shrink(),
                     value:
                         eventTypes.contains(eventTypeController.text)

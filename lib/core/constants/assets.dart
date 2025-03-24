@@ -49,4 +49,14 @@ class Assets {
   static final arrowDown = "assets/icon/arrow_down.svg";
   static final close = "assets/icon/close.svg";
   static final logoutIcon = "assets/icon/logoutIcon.svg";
+  static final smileIcon = "assets/icon/smileIcon.svg";
+
+  static final playIcon = "assets/icon/playIcon.svg";
+
+  static final jobImgIcon = "assets/icon/jobImgIcon.svg";
+  static final equityIcon = "assets/icon/equityIcon.svg";
+  // static final smileIcon = "assets/icon/smileIcon.svg";
+  // static final smileIcon = "assets/icon/smileIcon.svg";
+  // static final smileIcon = "assets/icon/smileIcon.svg";
+  // static final smileIcon = "assets/icon/smileIcon.svg";
 }
