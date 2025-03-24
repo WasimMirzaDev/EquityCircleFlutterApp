@@ -42,7 +42,11 @@ void showPostOptions(BuildContext context) {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: SvgPicture.asset(Assets.close),
+                child: SvgPicture.asset(
+                  Assets.close,
+                  height: 12.h,
+                  width: 12.w,
+                ),
               ),
             ),
             6.heightBox,
@@ -84,7 +88,14 @@ void showPostOptions(BuildContext context) {
                   label: "Post a video",
                   color: AppColors.seeGreen,
                   textColor: AppColors.green,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreatePostScreen(),
+                      ),
+                    );
+                  },
                 ),
                 _buildOption(
                   imgUrl: Assets.createJobIcon,

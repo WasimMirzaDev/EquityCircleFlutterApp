@@ -1,17 +1,21 @@
 import 'package:equitycircle/core/constants/appColors.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/models/feeds_model.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
 import 'package:equitycircle/features/bussiness/presentation/widgets/custom_post_container.dart';
-import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
-import 'package:equitycircle/features/feeds/widgets/comment_InputBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:html/parser.dart' as htmlParser;
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/appFonts.dart';
+import '../../../core/constants/assets.dart';
+
 class FeedCard extends StatefulWidget {
-  final Map<String, dynamic> feed;
-  final int? loggedInUserId; // Pass the logged-in user ID
+  final DataByFeed feed;
+  final int? loggedInUserId;
+
   const FeedCard({super.key, required this.feed, this.loggedInUserId});
 
   @override
@@ -21,38 +25,38 @@ class FeedCard extends StatefulWidget {
 class _FeedCardState extends State<FeedCard> {
   @override
   Widget build(BuildContext context) {
-    final List<dynamic> media = widget.feed['media'] ?? [];
-    final List<dynamic> likes = widget.feed['likes'] ?? [];
-    final List<dynamic> comments = widget.feed['comments'] ?? [];
+    final List<MediaByFeeds> media = widget.feed.media ?? [];
+    final List<LikesByFeeds> likes = widget.feed.likes ?? [];
+    final List<CommentsByFeeds> comments = widget.feed.comments ?? [];
+
     final bool isLiked = likes.any(
-      (like) => like['user_id'] == widget.loggedInUserId,
+      (like) => like.userId == widget.loggedInUserId,
     );
 
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: customPostContainer(
-        getProfileImageUrl(widget.feed['user']),
-        widget.feed['user']['name'],
-        _formatDateTime(widget.feed['created_at']),
-        htmlParser
-                .parse(widget.feed['description'] ?? '')
-                .documentElement
-                ?.text ??
-            '',
-        () {
-          showCommentsBottomSheet(context, comments);
-        },
+        widget.feed.id ?? 0,
+        widget.feed.categoryId ?? 0,
+        widget.feed.user?.profileImage ?? '',
+        widget.feed.user?.name ?? 'Unknown',
+        _formatDateTime(widget.feed.createdAt),
+        widget.feed.description ?? '',
+        () => showCommentsBottomSheet(context, comments),
         () {
           Provider.of<FeedsProvider>(context, listen: false)
-              .likeFeed(widget.feed['id'], context, widget.feed['category_id'])
-              .then((response) {
-                response;
-              });
+              .likeFeed(
+                widget.feed.id ?? 0,
+                context,
+                widget.feed.categoryId ?? 0,
+              )
+              .then((response) => response);
         },
-        "Business",
-        AppColors.lightpurple,
-        AppColors.purpleColor,
-        media,
+        _getCategoryName(widget.feed.categoryId ?? 0),
+        _getColor(widget.feed.categoryId ?? 0, true),
+        _getColor(widget.feed.categoryId ?? 0, false),
+        media.where((e) => e.url != null && e.url!.isNotEmpty).toList(),
+
         context,
         likes,
         isLiked,
@@ -61,32 +65,69 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
-  String _formatDateTime(String dateString) {
-    DateTime dateTime = DateTime.parse(dateString);
-    DateTime now = DateTime.now();
-
-    if (dateTime.year == now.year &&
-        dateTime.month == now.month &&
-        dateTime.day == now.day) {
-      return "Today at ${DateFormat.jm().format(dateTime)}";
-    } else {
-      return DateFormat.jm().format(dateTime);
+  Color _getColor(int categoryId, bool isLight) {
+    switch (categoryId) {
+      case 1:
+        return isLight ? AppColors.lightpurple : AppColors.purpleColor;
+      case 2:
+        return isLight ? AppColors.lightGreen : AppColors.green;
+      case 3:
+        return isLight ? AppColors.lightYellow : AppColors.yellow;
+      case 5:
+        return isLight ? AppColors.lightPink : AppColors.darkPink;
+      default:
+        return Colors.transparent;
     }
   }
 
-  void showCommentsBottomSheet(BuildContext context, List<dynamic> comments) {
+  String _formatDateTime(String? dateString) {
+    if (dateString == null) return "Unknown Date";
+    try {
+      DateTime dateTime = DateTime.parse(dateString);
+      DateTime now = DateTime.now();
+      if (dateTime.year == now.year &&
+          dateTime.month == now.month &&
+          dateTime.day == now.day) {
+        return "Today at ${DateFormat.jm().format(dateTime)}";
+      } else {
+        return DateFormat('MMM d, yyyy h:mm a').format(dateTime);
+      }
+    } catch (e) {
+      return "Invalid Date";
+    }
+  }
+
+  String _getCategoryName(int? categoryId) {
+    switch (categoryId) {
+      case 1:
+        return "Business";
+      case 2:
+        return "Fitness";
+      case 3:
+        return "Crypto";
+      case 5:
+        return "Mindset";
+      default:
+        return "General";
+    }
+  }
+
+  void showCommentsBottomSheet(
+    BuildContext context,
+    List<CommentsByFeeds> comments,
+  ) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder:
           (context) => DraggableScrollableSheet(
-            initialChildSize: 0.5, // Half screen
-            minChildSize: 0.3, // Minimum height
-            maxChildSize: 0.9, // Almost full screen
+            initialChildSize: 0.5,
+            minChildSize: 0.3,
+            maxChildSize: 0.9,
             builder:
                 (_, scrollController) => Container(
-                  padding: const EdgeInsets.all(15),
+                  padding: EdgeInsets.all(10.r),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.vertical(
@@ -95,37 +136,50 @@ class _FeedCardState extends State<FeedCard> {
                   ),
                   child: Column(
                     children: [
-                      const Text(
-                        "Comments",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                      10.heightBox,
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: SvgPicture.asset(Assets.close, height: 12.h),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-
-                      const Divider(),
-                      CommentInputBar(
-                        feedId: widget.feed['id'],
-                        categoryId: widget.feed['category_id'],
+                      Text(
+                        "Comments",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontFamily: AppFonts.inter,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
                       ),
-                      const SizedBox(height: 10),
+                      20.heightBox,
+                      Divider(color: AppColors.lightGreyColor, height: 0.5.h),
+                      20.heightBox,
 
+                      // CommentInputBar(
+                      //   feedId: widget.feed.id ?? 0,
+                      //   categoryId: widget.feed.categoryId ?? 0,
+                      // ),
                       Expanded(
                         child: ListView.builder(
                           controller: scrollController,
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
-                            final comment =
-                                comments[comments.length - 1 - index];
+                            final comment = comments.reversed.toList()[index];
                             return ListTile(
                               leading: CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  getProfileImageUrl(comment['user']),
+                                  comment.user?.profileImage ?? '',
                                 ),
                               ),
-                              title: Text(comment['user']['name']),
-                              subtitle: Text(comment['content']),
+                              title: Text(comment.user?.name ?? 'Anonymous'),
+                              subtitle: Text(comment.content ?? ''),
                             );
                           },
                         ),

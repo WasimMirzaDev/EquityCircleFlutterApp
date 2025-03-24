@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart'; // 🔥 Import Biometric Authentication
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../api/auth_api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +16,8 @@ class AuthProvider with ChangeNotifier {
   Map<String, dynamic>? get userData => _userData;
 
   // ✅ User is authenticated only if they have a token & passed biometric auth
-  bool get isAuthenticated => _token != null && _isBiometricVerified;
+  bool get isAuthenticated => _token != null;
+  //  && _isBiometricVerified;
 
   AuthProvider() {
     _loadUserData(); // Load token & check biometric
@@ -100,16 +102,18 @@ class AuthProvider with ChangeNotifier {
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('access_token', _token!);
-
-      bool biometricSuccess = await promptBiometricAuth();
-      if (biometricSuccess) {
-        await fetchUser();
-        notifyListeners();
-        return true;
-      } else {
-        _token = null; // Reset token if biometric fails
-        return false;
-      }
+      await fetchUser();
+      notifyListeners();
+      return true;
+      // bool biometricSuccess = await promptBiometricAuth();
+      // if (biometricSuccess) {
+      //   await fetchUser();
+      //   notifyListeners();
+      //   return true;
+      // } else {
+      //   _token = null; // Reset token if biometric fails
+      //   return false;
+      // }
     } catch (error) {
       print("Error during login: $error");
       return false;

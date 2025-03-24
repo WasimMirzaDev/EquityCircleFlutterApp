@@ -48,4 +48,5 @@ class Assets {
   static final calendar = "assets/icon/calendar.svg";
   static final arrowDown = "assets/icon/arrow_down.svg";
   static final close = "assets/icon/close.svg";
+  static final logoutIcon = "assets/icon/logoutIcon.svg";
 }

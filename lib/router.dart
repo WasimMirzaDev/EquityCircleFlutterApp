@@ -24,10 +24,10 @@ GoRouter createRouter(AuthProvider authProvider) {
         builder:
             (context, state, child) => MainLayout(state: state, child: child),
         routes: [
-          _protectedRoute('/', BussinessScreen(categoryId: 1)),
-          _protectedRoute('/crypto', BussinessScreen(categoryId: 2)),
-          _protectedRoute('/fitness', BussinessScreen(categoryId: 3)),
-          _protectedRoute('/mindset', BussinessScreen(categoryId: 4)),
+          _protectedRoute('/', BusinessScreen(categoryId: 1)),
+          _protectedRoute('/crypto', BusinessScreen(categoryId: 2)),
+          _protectedRoute('/fitness', BusinessScreen(categoryId: 3)),
+          _protectedRoute('/mindset', BusinessScreen(categoryId: 4)),
         ],
       ),
 

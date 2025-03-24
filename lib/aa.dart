@@ -1,5 +1,6 @@
-import 'package:equitycircle/features/feeds/feedScreen.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/features/feeds/feedScreen.dart';
 import 'package:flutter/material.dart';
 
 class Feednav extends StatefulWidget {
@@ -66,7 +67,7 @@ class _FeednavState extends State<Feednav> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 5),
+                  5.heightBox,
                   ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return isActive
@@ -94,7 +95,7 @@ class _FeednavState extends State<Feednav> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  5.heightBox,
                   Padding(
                     padding: const EdgeInsets.only(left: 6.0),
                     child: Text(

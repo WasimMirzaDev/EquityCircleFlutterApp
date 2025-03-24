@@ -12,23 +12,25 @@ import '../../feeds/widgets/feed_card.dart';
 import 'widgets/custom_carousal_widget.dart';
 import 'widgets/custom_search_field.dart';
 
-class BussinessScreen extends StatefulWidget {
+class BusinessScreen extends StatefulWidget {
   final int categoryId;
-  const BussinessScreen({super.key, required this.categoryId});
+  const BusinessScreen({super.key, required this.categoryId});
 
   @override
-  State<BussinessScreen> createState() => _BussinessScreenState();
+  State<BusinessScreen> createState() => _BusinessScreenState();
 }
 
-class _BussinessScreenState extends State<BussinessScreen> {
-  late ScrollController _scrollController; // ✅ Declare it here
+class _BusinessScreenState extends State<BusinessScreen> {
+  late ScrollController _scrollController;
   final TextEditingController searchController = TextEditingController();
+  final PageController _pageController = PageController();
+  int currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController(); // ✅ Initialize it first
-    _scrollController.addListener(_scrollListener); // ✅ Then add the listener
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<FeedsProvider>(context, listen: false);
@@ -38,12 +40,9 @@ class _BussinessScreenState extends State<BussinessScreen> {
     });
   }
 
-  final PageController _pageController = PageController();
-  int currentIndex = 0; // ✅ Initialize curr index
-
   @override
   void dispose() {
-    _scrollController.dispose(); // ✅ Always dispose of the controller
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -83,8 +82,7 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   radius: 15,
                   activeColor: AppColors.purpleColor,
                   inactiveColor: AppColors.greyColor,
-
-                  animationDuration: Duration(milliseconds: 500),
+                  animationDuration: const Duration(milliseconds: 500),
                 ),
               )
               : RefreshIndicator(
@@ -100,23 +98,18 @@ class _BussinessScreenState extends State<BussinessScreen> {
                   child: Column(
                     children: [
                       20.heightBox,
-
                       Expanded(
                         child: ListView(
                           controller: _scrollController,
                           padding: EdgeInsets.zero,
                           children: [
-                            customeSearchWidget(
+                            customSearchWidget(
                               "   Search for users",
                               searchController,
                             ),
                             12.heightBox,
-                            customCarousalSlider(
-                              images,
-                              _pageController,
-                              (index) => setState(() => currentIndex = index),
-                              currentIndex,
-                            ),
+
+                            CustomCarouselSlider(images: images),
                             20.heightBox,
                             ...feeds.map(
                               (feed) => FeedCard(
@@ -128,12 +121,11 @@ class _BussinessScreenState extends State<BussinessScreen> {
                               ),
                             ),
                             if (feedsProvider.hasMore(widget.categoryId))
-                              Center(
+                              const Center(
                                 child: LoadingIndicator(
                                   radius: 15,
                                   activeColor: AppColors.purpleColor,
                                   inactiveColor: AppColors.greyColor,
-
                                   animationDuration: Duration(
                                     milliseconds: 500,
                                   ),

@@ -2,13 +2,19 @@ import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart';
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/models/feeds_model.dart';
 import 'package:equitycircle/features/add_post/presentation/edit_post_screen.dart';
+import 'package:equitycircle/features/feeds/widgets/comment_InputBar.dart'
+    show CommentInputBar;
 import 'package:equitycircle/features/feeds/widgets/media_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart' show SvgPicture;
+import 'package:html/parser.dart' as htmlParser;
 
 Widget customPostContainer(
+  int feedId,
+  int categoryId,
   String profileUrl,
   String name,
   String date,
@@ -18,7 +24,7 @@ Widget customPostContainer(
   String tab,
   Color tabBgColor,
   Color tabTextColor,
-  List<dynamic> media,
+  List<MediaByFeeds> media,
   BuildContext context,
   List<dynamic> likes,
   bool isLiked,
@@ -93,7 +99,7 @@ Widget customPostContainer(
                         child: Row(
                           children: [
                             Icon(Icons.edit, color: AppColors.black, size: 18),
-                            SizedBox(width: 8),
+                            10.widthBox,
                             Text("Edit", style: TextStyle(fontSize: 14.sp)),
                           ],
                         ),
@@ -103,7 +109,7 @@ Widget customPostContainer(
                         child: Row(
                           children: [
                             Icon(Icons.delete, color: Colors.red, size: 18),
-                            SizedBox(width: 8),
+                            10.widthBox,
                             Text(
                               "Delete",
                               style: TextStyle(
@@ -147,7 +153,7 @@ Widget customPostContainer(
           ),
           8.heightBox,
           Text(
-            discription,
+            htmlParser.parse(discription).body?.text ?? '',
             style: TextStyle(
               fontSize: 12.sp,
               fontFamily: AppFonts.inter,
@@ -155,6 +161,7 @@ Widget customPostContainer(
               color: AppColors.black,
             ),
           ),
+
           12.heightBox,
           if (media.isNotEmpty) MediaGrid(media: media),
           12.heightBox,
@@ -170,6 +177,8 @@ Widget customPostContainer(
                   likes.length.toString(),
                   SvgPicture.asset(
                     isLiked ? Assets.heartFilled : Assets.heartunFilled,
+                    height: 20.h,
+                    width: 20.w,
                   ),
                 ),
                 commentsFavRow(
@@ -189,56 +198,8 @@ Widget customPostContainer(
             ),
           ),
           12.heightBox,
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 36.h,
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: AppColors.fieldgrey,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: "Write a comment",
-                            border: InputBorder.none,
-                            fillColor: AppColors.fieldgrey,
-                            hintStyle: TextStyle(
-                              fontSize: 12.sp,
-                              fontFamily: AppFonts.inter,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.darkGrey,
-                            ),
-                            isDense: true,
-                          ),
-                        ),
-                      ),
 
-                      SvgPicture.asset(Assets.mediaIcon),
-                      10.widthBox,
-                      SvgPicture.asset(Assets.imageicon),
-                      10.widthBox,
-                      SvgPicture.asset(Assets.camera),
-                    ],
-                  ),
-                ),
-              ),
-              8.widthBox,
-              Container(
-                height: 36.h,
-                width: 36.w,
-                decoration: BoxDecoration(
-                  color: AppColors.purpleColor,
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Center(child: SvgPicture.asset(Assets.sendicon)),
-              ),
-            ],
-          ),
+          CommentInputBar(feedId: feedId, categoryId: categoryId),
         ],
       ),
     ),
@@ -253,19 +214,22 @@ Widget commentsFavRow(
 
   Widget img,
 ) {
-  return Row(
-    children: [
-      GestureDetector(onTap: onTap, child: img),
-      5.widthBox,
-      Text(
-        length,
-        style: TextStyle(
-          fontSize: 12.sp,
-          fontFamily: AppFonts.inter,
-          fontWeight: FontWeight.w500,
-          color: AppColors.black,
+  return GestureDetector(
+    onTap: onTap,
+    child: Row(
+      children: [
+        img,
+        5.widthBox,
+        Text(
+          length,
+          style: TextStyle(
+            fontSize: 12.sp,
+            fontFamily: AppFonts.inter,
+            fontWeight: FontWeight.w500,
+            color: AppColors.black,
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

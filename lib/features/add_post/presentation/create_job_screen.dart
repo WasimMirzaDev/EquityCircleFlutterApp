@@ -26,6 +26,9 @@ class CreateJobScreen extends StatefulWidget {
 class _CreateJobScreenState extends State<CreateJobScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController discriptionController = TextEditingController();
+  final TextEditingController shortdiscriptionController =
+      TextEditingController();
+
   final quill.QuillController _controller = quill.QuillController.basic();
   final ImagePicker _picker = ImagePicker();
   XFile? _selectedImage;
@@ -142,8 +145,8 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                   ),
                   8.heightBox,
                   CustomTextField(
-                    controller: titleController,
-                    hint: "Enter title*",
+                    controller: shortdiscriptionController,
+                    hint: "Enter Short Description*",
                     maxLines: 5,
                   ),
                   16.heightBox,

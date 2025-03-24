@@ -1,3 +1,4 @@
+import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart'
     as auth_provider;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -126,13 +127,13 @@ class _LoginPageState extends State<LoginPage> {
                   height: 80,
                   width: 80,
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 const Text(
                   'Welcome to Equity Circle, a platform to connect with the social world',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -142,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 TextField(
                   controller: passwordController,
                   obscureText: true,
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -169,9 +170,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                10.heightBox,
                 const Text('OR'),
-                const SizedBox(height: 10),
+                10.heightBox,
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -185,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                const SizedBox(height: 10),
+                10.heightBox,
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                   onPressed: () {},
@@ -194,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                const SizedBox(height: 20),
+                20.heightBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
