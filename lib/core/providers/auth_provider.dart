@@ -51,7 +51,7 @@ class AuthProvider with ChangeNotifier {
         await auth.getAvailableBiometrics();
 
     if (availableBiometrics.contains(BiometricType.face)) {
-      supportsFaceRecognition = true; // ✅ Face Recognition is available
+      supportsFaceRecognition = true;
     }
   }
 
