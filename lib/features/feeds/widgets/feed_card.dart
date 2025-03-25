@@ -36,6 +36,7 @@ class _FeedCardState extends State<FeedCard> {
     return Padding(
       padding: EdgeInsets.only(bottom: 10.h),
       child: customPostContainer(
+        widget.feed,
         widget.feed.id ?? 0,
         widget.feed.categoryId ?? 0,
         widget.feed.user?.profileImage ?? '',

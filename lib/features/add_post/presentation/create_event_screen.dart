@@ -90,7 +90,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
           onPressed: () {
             Navigator.pop(context);
-            Navigator.pop(context);
           },
         ),
       ),

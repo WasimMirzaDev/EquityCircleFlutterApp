@@ -54,7 +54,7 @@ class _MediaGridState extends State<MediaGrid> {
                         ),
                       ),
                   errorWidget:
-                      (context, url, error) => Icon(Icons.error, size: 50),
+                      (context, url, error) => Icon(Icons.error, size: 20),
                 ),
               );
             },

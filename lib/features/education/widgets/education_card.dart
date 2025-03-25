@@ -71,7 +71,7 @@ class EducationCard extends StatelessWidget {
                             ),
                           ],
                         )
-                        : const Icon(Icons.error, size: 30),
+                        : const Icon(Icons.error, size: 20),
               ),
               10.heightBox,
               Text(

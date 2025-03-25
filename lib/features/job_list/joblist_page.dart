@@ -11,6 +11,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import 'job_detail_screen.dart';
+
 class JoblistPage extends StatefulWidget {
   const JoblistPage({super.key});
 
@@ -77,19 +79,19 @@ class _JoblistPageState extends State<JoblistPage> {
                   padding: EdgeInsets.only(top: 10.h),
                   child: GestureDetector(
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder:
-                      //         (context) => JobDetailScreen(
-                      //           title: jobProvider.jobLists[index].title,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => JobDetailScreen(
+                                title: jobProvider.jobLists[index].title,
 
-                      //           image: jobProvider.jobLists[index].mainImage,
-                      //           discription:
-                      //               jobProvider.jobLists[index].description,
-                      //         ),
-                      //   ),
-                      // );
+                                image: jobProvider.jobLists[index].mainImage,
+                                discription:
+                                    jobProvider.jobLists[index].description,
+                              ),
+                        ),
+                      );
                     },
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -107,6 +109,7 @@ class _JoblistPageState extends State<JoblistPage> {
               },
             ),
           ),
+          20.heightBox,
         ],
       ),
       floatingActionButton: Row(

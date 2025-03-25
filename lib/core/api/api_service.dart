@@ -30,13 +30,15 @@ class ApiService {
 
   static Future<Response> postRequest(
     String endpoint,
-    Map<String, dynamic> data, [
+    dynamic data, [
     String? token,
   ]) async {
     try {
       Response response = await _dio.post(
         endpoint,
         options: Options(
+          contentType:
+              data is FormData ? "multipart/form-data" : "application/json",
           headers: token == null ? null : {'Authorization': 'Bearer $token'},
         ),
         data: data,

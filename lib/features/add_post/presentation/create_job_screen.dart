@@ -56,7 +56,6 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
           icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
           onPressed: () {
             Navigator.pop(context);
-            Navigator.pop(context);
           },
         ),
       ),

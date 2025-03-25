@@ -75,6 +75,7 @@ void showPostOptions(BuildContext context) {
                   color: AppColors.skyBlue,
                   textColor: AppColors.blue,
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -89,6 +90,7 @@ void showPostOptions(BuildContext context) {
                   color: AppColors.seeGreen,
                   textColor: AppColors.green,
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -103,6 +105,7 @@ void showPostOptions(BuildContext context) {
                   color: AppColors.lightorange,
                   textColor: AppColors.orange,
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
