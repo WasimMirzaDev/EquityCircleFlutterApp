@@ -95,9 +95,9 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String firebaseUid, String email, String password) async {
     try {
-      final data = await AuthApi.login(email, password);
+      final data = await AuthApi.login(firebaseUid, email, password);
       _token = data['access_token'];
 
       final prefs = await SharedPreferences.getInstance();

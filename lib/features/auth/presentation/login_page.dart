@@ -44,7 +44,14 @@ class _LoginPageState extends State<LoginPage> {
       context,
       listen: false,
     );
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+          email: emailController!.text.trim(),
+          password: passwordController!.text,
+        );
+    String firebaseUid = userCredential.user!.uid;
     bool success = await authProvider.login(
+      firebaseUid,
       emailController!.text.trim(),
       passwordController!.text,
     );
