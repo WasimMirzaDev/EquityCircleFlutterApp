@@ -3,11 +3,13 @@ import 'api_service.dart'; // your centralized API service
 class AuthApi {
   // Function to handle user login
   static Future<Map<String, dynamic>> login(
+    String firebaseUid,
     String email,
     String password,
   ) async {
     try {
       final response = await ApiService.postRequest('/login', {
+        'firebase_uid': firebaseUid,
         'email': email,
         'password': password,
       });

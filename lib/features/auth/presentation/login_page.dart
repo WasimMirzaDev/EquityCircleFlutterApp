@@ -60,10 +60,11 @@ class _LoginPageState extends State<LoginPage> {
         context,
         listen: false,
       );
+
       bool success = await authProvider.login(
+        firebaseUid,
         emailController.text.trim(),
         passwordController.text,
-        firebaseUid,
       );
 
       if (success) {
