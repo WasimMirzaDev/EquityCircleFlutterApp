@@ -95,7 +95,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String email, String password, String text) async {
     try {
       final data = await AuthApi.login(email, password);
       _token = data['access_token'];

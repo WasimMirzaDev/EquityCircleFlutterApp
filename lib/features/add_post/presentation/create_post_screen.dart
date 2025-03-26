@@ -11,11 +11,10 @@ import 'package:equitycircle/core/providers/feeds_provider.dart';
 import 'package:equitycircle/core/widgets/custom_button.dart';
 import 'package:equitycircle/core/widgets/custom_snackbar.dart';
 import 'package:equitycircle/core/widgets/loading_indicator.dart';
-import 'package:equitycircle/features/add_post/presentation/widget/custom_quill_editor.dart';
 import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
+import 'package:flex_color_picker/flex_color_picker.dart' show ColorPicker;
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:flutter_quill/quill_delta.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,7 +37,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String selectedCategory = "Business";
   final TextEditingController titleController = TextEditingController();
   final TextEditingController discriptionController = TextEditingController();
-  quill.QuillController _controller = quill.QuillController.basic();
+  final quill.QuillController _controller = quill.QuillController.basic();
   List<String> attachments = []; // Store attachment paths
 
   // final List<File> _selectedImages = [];
@@ -76,7 +75,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     Color(0xFFE0C3FC),
     Color(0xFFB2EBF2),
     Color(0xFFF8BBD0),
-    Color(0xFFC8E6C9),
   ];
   @override
   void initState() {
@@ -94,12 +92,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               "Public"; // Trim to avoid spaces
           selectedCategory = _mapCategoryIdToName(widget.post!.categoryId);
 
-          _controller = quill.QuillController(
-            document: quill.Document.fromDelta(
-              quill.Delta()..insert("${widget.post!.description}\n"),
-            ),
-            selection: const TextSelection.collapsed(offset: 0),
-          );
+          // _controller = quill.QuillController(
+          //   document: quill.Document.fromDelta(
+          //     quill.Delta()..insert("${widget.post!.description}\n"),
+          //   ),
+          //   selection: const TextSelection.collapsed(offset: 0),
+          // );
         });
 
         debugPrint("Selected Privacy: $selectedPrivacy");
@@ -120,6 +118,87 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       default:
         return ""; // Handle unexpected values
     }
+  }
+
+  void _pickColor(BuildContext context) {
+    Color pickedColor = _selectedBackground;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          title: Text('Pick a Color'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              // pickerColor: pickedColor,
+              onColorChanged: (color) {
+                pickedColor = color;
+              },
+              // showLabel: true,
+              // pickerAreaHeightPercent: 0.8,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Select'),
+              onPressed: () {
+                setState(() {
+                  _selectedBackground = pickedColor;
+                  _backgrounds.add(pickedColor); // Add custom color to list
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildBackgroundSelector() {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        ..._backgrounds.map((color) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedBackground = color;
+              });
+            },
+            child: Container(
+              width: 40.w,
+              height: 40.h,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: AppColors.lightGreyColor),
+              ),
+            ),
+          );
+        }),
+        GestureDetector(
+          onTap: () => _pickColor(context),
+          child: Container(
+            width: 40.w,
+            height: 40.h,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(color: AppColors.lightGreyColor),
+            ),
+            child: Icon(Icons.color_lens, color: AppColors.darkGrey),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -291,21 +370,27 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ),
                   8.heightBox,
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      border: Border.all(
-                        color: AppColors.lightGreyColor,
-                        width: 0.5,
-                      ),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: CustomQuillEditor(
-                      controller: _controller,
-                      backgroundColor: _selectedBackground,
-                    ),
+                  CustomTextField(
+                    controller: discriptionController,
+                    hint: "Enter Description*",
+                    maxLines: 4,
+                    fillColor: _selectedBackground,
                   ),
 
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: AppColors.white,
+                  //     border: Border.all(
+                  //       color: AppColors.lightGreyColor,
+                  //       width: 0.5,
+                  //     ),
+                  //     borderRadius: BorderRadius.circular(8.r),
+                  //   ),
+                  //   child: CustomQuillEditor(
+                  //     controller: _controller,
+                  //     backgroundColor: _selectedBackground,
+                  //   ),
+                  // ),
                   16.heightBox,
                   Text(
                     "Select Background",
@@ -317,31 +402,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                   ),
                   8.heightBox,
-                  // _buildBackgroundSelector(),
-                  Wrap(
-                    spacing: 10,
-                    children:
-                        _backgrounds.map((color) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedBackground = color;
-                              });
-                            },
-                            child: Container(
-                              width: 40.w,
-                              height: 40.h,
-                              decoration: BoxDecoration(
-                                color: color,
-                                borderRadius: BorderRadius.circular(8.r),
-                                border: Border.all(
-                                  color: AppColors.lightGreyColor,
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                  ),
+                  _buildBackgroundSelector(),
+
                   16.heightBox,
                   Text(
                     "Attachments",
@@ -360,20 +422,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     text: _isEditing ? "Update Post" : "Post",
                     onTap: () async {
                       if (titleController.text.isEmpty ||
-                          _controller.document.isEmpty() ||
+                          discriptionController.text.isEmpty ||
                           selectedCategory.isEmpty ||
                           selectedPrivacy.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "Please fill all required fields: Title, Description, Category, and Privacy.",
-                            ),
-                          ),
+                        showTopSnackbar(
+                          context,
+                          "Title, Description, Category, and Privacy is required.",
+                          true,
                         );
+
                         return;
                       }
 
-                      // Map category to its respective ID
                       Map<String, String> categoryIds = {
                         "Business": "1",
                         "Fitness": "2",
@@ -422,7 +482,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             context,
                             widget.post?.id.toString() ?? "",
                             titleController.text,
-                            _controller.document.toPlainText(),
+                            discriptionController.text,
                             categoryId,
 
                             selectedPrivacy,
@@ -452,7 +512,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           final response = await feedsProvider.createPost(
                             context,
                             titleController.text,
-                            _controller.document.toPlainText(),
+                            discriptionController.text,
                             categoryId, // Pass category ID instead of the name
 
                             selectedPrivacy,

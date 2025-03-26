@@ -296,17 +296,17 @@ class UsersByFeeds {
     roles = json['roles'];
     profileImage = json['profile_image'];
     backgroundImage = json['background_image'];
-    emailVerifiedAt = json['email_verified_at'];
-    googleId = json['google_id'];
-    permissionId = json['permission_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    emailVerifiedAt = json['email_verified_at']?.toString();
+    googleId = json['google_id']?.toString();
+    permissionId = json['permission_id']?.toString();
+    createdAt = json['created_at']?.toString();
+    updatedAt = json['updated_at']?.toString();
     firstName = json['first_name'];
     lastName = json['last_name'];
     username = json['username'];
     city = json['city'];
     gender = json['gender'];
-    dateOfBirth = json['date_of_birth'];
+
     maritalStatus = json['marital_status'];
     ageGroup = json['age_group'];
     country = json['country'];
@@ -317,8 +317,9 @@ class UsersByFeeds {
     emailNotification = json['email_notification'];
     smsNotification = json['sms_notification'];
     awardPoints = json['award_points'];
-    facebookId = json['facebook_id'];
-    instagramId = json['instagram_id'];
+    dateOfBirth = json['date_of_birth']?.toString();
+    facebookId = json['facebook_id']?.toString();
+    instagramId = json['instagram_id']?.toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -418,9 +419,10 @@ class CommentsByFeeds {
     userId = json['user_id'];
     postId = json['post_id'];
     content = json['content'];
-    parentId = json['parent_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    parentId = json['parent_id']?.toString();
+
+    createdAt = json['created_at']?.toString();
+    updatedAt = json['updated_at']?.toString();
     media = json['media'];
     user = json['user'] != null ? UsersByFeeds.fromJson(json['user']) : null;
   }

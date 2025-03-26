@@ -52,7 +52,7 @@ class FeedsProvider with ChangeNotifier {
       notifyListeners();
       return response;
     } catch (error) {
-      print("Error during post creation: $error");
+      print("Error during post: $error");
       return null;
     }
   }

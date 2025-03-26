@@ -68,9 +68,10 @@ class Post {
     categoryId = json['category_id'];
     title = json['title'];
     description = json['description'];
-    images = json['images'];
-    videos = json['videos'];
-    documents = json['documents'];
+    images = json['images'].toString();
+    videos = json['videos'].toString();
+    documents = json['documents'].toString();
+
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
     id = json['id'];
@@ -227,7 +228,7 @@ class User {
     backgroundImage = json['background_image'];
     emailVerifiedAt = json['email_verified_at'];
     googleId = json['google_id'];
-    permissionId = json['permission_id'];
+    permissionId = json['permission_id'].toString();
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     firstName = json['first_name'];
