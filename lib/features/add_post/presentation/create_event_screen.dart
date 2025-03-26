@@ -90,7 +90,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
           icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
           onPressed: () {
             Navigator.pop(context);
-            Navigator.pop(context);
           },
         ),
       ),
@@ -117,6 +116,12 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                   8.heightBox,
                   DropdownButtonFormField<String>(
+                    style: TextStyle(
+                      fontFamily: AppFonts.inter,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.darkGrey,
+                    ),
                     icon: SizedBox.shrink(),
                     value:
                         eventTypes.contains(eventTypeController.text)

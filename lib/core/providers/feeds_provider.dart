@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:equitycircle/core/models/feeds_model.dart';
 import 'package:flutter/material.dart';
 
 import '../api/feeds_api.dart';
+import '../models/create_post_model.dart';
 
 class FeedsProvider with ChangeNotifier {
   final Map<int, List<DataByFeed>> _feedsPerCategory = {};
@@ -21,6 +24,68 @@ class FeedsProvider with ChangeNotifier {
       _feedsPerCategory[categoryId] ?? [];
 
   bool hasMore(int categoryId) => _hasMorePerCategory[categoryId] ?? true;
+  Future<CreatePostResponse?> editPost(
+    BuildContext context,
+    String id,
+    String title,
+    String description,
+    String categoryId,
+
+    String visibility,
+    List<File> images,
+    List<File> videos,
+  ) async {
+    try {
+      final response = await FeedsApi.editPost(
+        context,
+        id,
+        title,
+        description,
+        categoryId,
+
+        visibility,
+        images,
+        videos,
+      );
+
+      debugPrint("Response Edit Post: ${response?.post!}");
+      notifyListeners();
+      return response;
+    } catch (error) {
+      print("Error during post creation: $error");
+      return null;
+    }
+  }
+
+  Future<CreatePostResponse?> createPost(
+    BuildContext context,
+    String title,
+    String description,
+    String categoryId,
+    String visibility,
+    List<File> images,
+    List<File> videos,
+  ) async {
+    try {
+      final response = await FeedsApi.createPost(
+        context,
+        title,
+        description,
+        categoryId,
+
+        visibility,
+        images,
+        videos,
+      );
+
+      debugPrint("Response Create Post: ${response?.post!}");
+      notifyListeners();
+      return response;
+    } catch (error) {
+      print("Error during post creation: $error");
+      return null;
+    }
+  }
 
   Future<void> fetchFeeds(
     BuildContext context, {

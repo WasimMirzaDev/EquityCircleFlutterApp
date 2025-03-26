@@ -16,14 +16,14 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../core/widgets/custom_textfield.dart';
 
-class CreateJobScreen extends StatefulWidget {
-  const CreateJobScreen({super.key});
+class CreatNewJobScreen extends StatefulWidget {
+  const CreatNewJobScreen({super.key});
 
   @override
-  _CreateJobScreenState createState() => _CreateJobScreenState();
+  _CreatNewJobScreenState createState() => _CreatNewJobScreenState();
 }
 
-class _CreateJobScreenState extends State<CreateJobScreen> {
+class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController discriptionController = TextEditingController();
   final TextEditingController shortdiscriptionController =
@@ -72,7 +72,7 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                 children: [
                   20.heightBox,
                   Text(
-                    "Main image*",
+                    "Main image",
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
@@ -88,12 +88,12 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                       radius: Radius.circular(8.r),
                       strokeWidth: 0.5,
                       dashPattern: [6, 4],
-                      color: AppColors.purpleColor,
+                      color: AppColors.lightGreyColor,
                       child: Container(
                         width: double.infinity,
                         height: 150.h,
                         decoration: BoxDecoration(
-                          color: AppColors.babyPink,
+                          color: AppColors.white,
                           // border: Border.all(color: AppColors.purpleColor),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
@@ -101,10 +101,9 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                             _selectedImage == null
                                 ? Center(
                                   child: SvgPicture.asset(
-                                    Assets.photoIcon,
-                                    height: 18.h,
-                                    width: 18.w,
-                                    color: AppColors.purpleColor,
+                                    Assets.jobImgIcon,
+                                    height: 24.h,
+                                    width: 24.w,
                                   ),
                                 )
                                 : ClipRRect(
@@ -131,6 +130,10 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                   CustomTextField(
                     controller: titleController,
                     hint: "Enter title*",
+                    suffixIcon: Padding(
+                      padding: EdgeInsets.only(right: 12.w),
+                      child: SvgPicture.asset(Assets.smileIcon),
+                    ),
                   ),
                   16.heightBox,
                   Text(
@@ -168,9 +171,20 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
                       ),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
-                    child: CustomQuillEditor(
-                      controller: _controller,
-                      backgroundColor: AppColors.white,
+                    child: Column(
+                      children: [
+                        CustomQuillEditor(
+                          controller: _controller,
+                          backgroundColor: AppColors.white,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 12.w, bottom: 12.h),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: SvgPicture.asset(Assets.smileIcon),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   30.heightBox,

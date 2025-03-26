@@ -6,18 +6,28 @@ import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/models/feeds_model.dart';
+import 'package:equitycircle/core/providers/feeds_provider.dart';
 import 'package:equitycircle/core/widgets/custom_button.dart';
+import 'package:equitycircle/core/widgets/custom_snackbar.dart';
+import 'package:equitycircle/core/widgets/loading_indicator.dart';
 import 'package:equitycircle/features/add_post/presentation/widget/custom_quill_editor.dart';
+import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/quill_delta.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart' show Provider;
 
+import '../../../core/providers/auth_provider.dart';
 import '../../../core/widgets/custom_textfield.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({super.key});
+  final DataByFeed? post;
+
+  const CreatePostScreen({super.key, this.post});
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -28,18 +38,27 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String selectedCategory = "Business";
   final TextEditingController titleController = TextEditingController();
   final TextEditingController discriptionController = TextEditingController();
-  final quill.QuillController _controller = quill.QuillController.basic();
+  quill.QuillController _controller = quill.QuillController.basic();
   List<String> attachments = []; // Store attachment paths
 
-  Future<void> _pickAttachment() async {
+  // final List<File> _selectedImages = [];
+  // final List<File> _selectedVideos = [];
+  bool _isEditing = false;
+  Future<void> _pickAttachment({bool isVideo = false}) async {
     final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-    );
+    XFile? pickedFile;
+
+    if (isVideo) {
+      // Pick a video file
+      pickedFile = await picker.pickVideo(source: ImageSource.gallery);
+    } else {
+      // Pick an image file
+      pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    }
 
     if (pickedFile != null) {
       setState(() {
-        attachments.add(pickedFile.path);
+        attachments.add(pickedFile?.path ?? "");
       });
     }
   }
@@ -59,9 +78,54 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     Color(0xFFF8BBD0),
     Color(0xFFC8E6C9),
   ];
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.post?.id != null) {
+      _isEditing = true;
+      titleController.text = widget.post!.title ?? "";
+      discriptionController.text = widget.post!.description ?? "";
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          selectedPrivacy =
+              widget.post!.visibility?.trim() ??
+              "Public"; // Trim to avoid spaces
+          selectedCategory = _mapCategoryIdToName(widget.post!.categoryId);
+
+          _controller = quill.QuillController(
+            document: quill.Document.fromDelta(
+              quill.Delta()..insert("${widget.post!.description}\n"),
+            ),
+            selection: const TextSelection.collapsed(offset: 0),
+          );
+        });
+
+        debugPrint("Selected Privacy: $selectedPrivacy");
+      });
+    }
+  }
+
+  String _mapCategoryIdToName(int? categoryId) {
+    switch (categoryId) {
+      case 1:
+        return "Business";
+      case 2:
+        return "Fitness";
+      case 3:
+        return "Crypto";
+      case 5:
+        return "Mindset";
+      default:
+        return ""; // Handle unexpected values
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // final feedsProvider = Provider.of<FeedsProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.offWhite,
 
@@ -73,7 +137,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         shadowColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: Text(
-          "Create post",
+          _isEditing ? "Edit Post" : "Create post",
           style: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w600,
@@ -84,7 +148,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         leading: IconButton(
           icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
           onPressed: () {
-            Navigator.pop(context);
             Navigator.pop(context);
           },
         ),
@@ -104,7 +167,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: 15.h),
-                    child: CircleAvatar(backgroundImage: AssetImage(Assets.dp)),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        getProfileImageUrl(authProvider.userData),
+                      ),
+                    ),
                   ),
                   10.widthBox,
                   Column(
@@ -113,7 +180,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     children: [
                       16.heightBox,
                       Text(
-                        "Areesha Haider",
+                        widget.post?.user?.name ?? "Admin",
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontFamily: AppFonts.inter,
@@ -122,7 +189,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                       ),
                       Text(
-                        "Admin",
+                        widget.post?.user?.roles ?? "Admin",
                         style: TextStyle(
                           fontSize: 10.sp,
                           fontFamily: AppFonts.inter,
@@ -290,9 +357,135 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   35.heightBox,
 
                   CustomButton(
-                    text: "Post",
-                    onTap: () {
-                      Navigator.pop(context, true);
+                    text: _isEditing ? "Update Post" : "Post",
+                    onTap: () async {
+                      if (titleController.text.isEmpty ||
+                          _controller.document.isEmpty() ||
+                          selectedCategory.isEmpty ||
+                          selectedPrivacy.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Please fill all required fields: Title, Description, Category, and Privacy.",
+                            ),
+                          ),
+                        );
+                        return;
+                      }
+
+                      // Map category to its respective ID
+                      Map<String, String> categoryIds = {
+                        "Business": "1",
+                        "Fitness": "2",
+                        "Crypto": "3",
+                        "Mindset": "5",
+                      };
+
+                      String? categoryId = categoryIds[selectedCategory];
+
+                      if (categoryId == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Invalid category selection."),
+                          ),
+                        );
+                        return;
+                      }
+
+                      final feedsProvider = Provider.of<FeedsProvider>(
+                        context,
+                        listen: false,
+                      );
+
+                      // Convert attachment paths to File objects
+                      List<File> imageFiles =
+                          attachments.map((path) => File(path)).toList();
+
+                      // Show loading indicator
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder:
+                            (context) => Center(
+                              child: LoadingIndicator(
+                                radius: 15,
+                                activeColor: AppColors.purpleColor,
+                                inactiveColor: AppColors.greyColor,
+                                animationDuration: Duration(milliseconds: 500),
+                              ),
+                            ),
+                      );
+
+                      try {
+                        if (_isEditing) {
+                          final response = await feedsProvider.editPost(
+                            context,
+                            widget.post?.id.toString() ?? "",
+                            titleController.text,
+                            _controller.document.toPlainText(),
+                            categoryId,
+
+                            selectedPrivacy,
+                            imageFiles,
+                            [],
+                          );
+
+                          Navigator.pop(context); // Close loading dialog
+
+                          if (response != null) {
+                            // Navigate back or show success message
+                            Navigator.pop(context, true);
+                            showTopSnackbar(
+                              context,
+                              "Post created successfully!",
+                              true,
+                            );
+                          } else {
+                            print("eidt post id ${widget.post?.id}");
+                            showTopSnackbar(
+                              context,
+                              "Failed to create post",
+                              false,
+                            );
+                          }
+                        } else {
+                          final response = await feedsProvider.createPost(
+                            context,
+                            titleController.text,
+                            _controller.document.toPlainText(),
+                            categoryId, // Pass category ID instead of the name
+
+                            selectedPrivacy,
+                            imageFiles,
+                            [],
+                          );
+
+                          Navigator.pop(context); // Close loading dialog
+
+                          if (response != null) {
+                            // Navigate back or show success message
+                            Navigator.pop(context, true);
+                            showTopSnackbar(
+                              context,
+                              "Post created successfully!",
+                              true,
+                            );
+                          } else {
+                            showTopSnackbar(
+                              context,
+                              "Failed to create post",
+                              false,
+                            );
+                          }
+                        }
+                      } catch (e) {
+                        Navigator.pop(context);
+                        showTopSnackbar(
+                          context,
+                          "Error: ${e.toString()}",
+                          false,
+                        );
+                      }
                     },
                   ),
                   24.heightBox,
@@ -322,6 +515,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return GestureDetector(
       onTap: () {
         if (type == "video") {
+          _pickAttachment(isVideo: true);
         } else if (type == "photo") {
           _pickAttachment();
         }
@@ -361,9 +555,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           decoration: BoxDecoration(
             color: AppColors.babyPink,
             borderRadius: BorderRadius.circular(8.r),
-            image: DecorationImage(
-              image: FileImage(File(path)),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: Image.file(
+              File(path),
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(Icons.broken_image, color: Colors.red);
+              },
             ),
           ),
         ),
@@ -427,7 +627,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       onTap: () {
         setState(() => selectedPrivacy = label);
       },
-
       child: Padding(
         padding: EdgeInsets.only(right: 10.w),
         child: Container(
@@ -436,35 +635,33 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.r),
             border:
-                selectedPrivacy == label
+                selectedPrivacy.toLowerCase() == label.toLowerCase()
                     ? null
                     : Border.all(color: AppColors.lightGreyColor),
             color:
-                selectedPrivacy == label
+                selectedPrivacy.toLowerCase() == label.toLowerCase()
                     ? AppColors.purpleColor
                     : AppColors.offWhite,
           ),
-
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset(
                 icon,
                 color:
-                    selectedPrivacy == label
+                    selectedPrivacy.toLowerCase() == label.toLowerCase()
                         ? AppColors.white
                         : AppColors.black,
               ),
               5.widthBox,
               Text(
                 label,
-
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w400,
                   color:
-                      selectedPrivacy == label
+                      selectedPrivacy.toLowerCase() == label.toLowerCase()
                           ? AppColors.white
                           : AppColors.black,
                 ),

@@ -1,6 +1,11 @@
+import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
+import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:html/parser.dart' as htmlParser;
 
 class EducationCard extends StatelessWidget {
@@ -12,75 +17,89 @@ class EducationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        elevation: 4, // Add shadow effect
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min, // Makes sure Card wraps content
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(15),
-              ),
-              child: AspectRatio(
-                aspectRatio: 16 / 9, // Responsive height based on width
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.r),
+          color: AppColors.white,
+          border: Border.all(color: AppColors.lightGreyColor, width: 0.28),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.h),
                 child:
                     baseUrl != null
-                        ? Image.network(
-                          '$baseUrl/data/images/education/${education['image_path']}',
-                          fit:
-                              BoxFit.cover, // Makes image fit the card properly
-                          width: double.infinity, // Ensure full width
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.broken_image,
-                              size: 100,
-                            ); // Fallback if image fails
-                          },
+                        ? Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(6.r),
+                              child: Image.network(
+                                '$baseUrl/data/images/education/${education['image_path']}',
+                                fit:
+                                    BoxFit
+                                        .cover, // Makes image fit the card properly
+                                width: double.infinity,
+                                height: 170.h,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.broken_image,
+                                    size: 100,
+                                  ); // Fallback if image fails
+                                },
+                              ),
+                            ),
+
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius: 20.r,
+                                  backgroundColor: AppColors.white.withOpacity(
+                                    0.8,
+                                  ),
+                                  child: SvgPicture.asset(Assets.playIcon),
+                                ),
+                              ),
+                            ),
+                          ],
                         )
-                        : const Icon(
-                          Icons.error,
-                          size: 100,
-                        ), // Error icon if baseUrl is null
+                        : const Icon(Icons.error, size: 20),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    education['title'],
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  10.heightBox,
-                  Text(
-                    htmlParser
-                            .parse(education['short_description'] ?? '')
-                            .documentElement
-                            ?.text ??
-                        '',
-                  ),
-                  20.heightBox,
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Watch Video',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ],
+              10.heightBox,
+              Text(
+                education['title'],
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFonts.inter,
+                  color: AppColors.black,
+                ),
               ),
-            ),
-          ],
+              10.heightBox,
+              Text(
+                htmlParser
+                        .parse(education['short_description'] ?? '')
+                        .documentElement
+                        ?.text ??
+                    '',
+                style: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFonts.inter,
+                  color: AppColors.darkGrey,
+                ),
+              ),
+              12.heightBox,
+            ],
+          ),
         ),
       ),
     );

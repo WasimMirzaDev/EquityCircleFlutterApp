@@ -3,7 +3,7 @@ import 'package:equitycircle/core/constants/appFonts.dart';
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/models/feeds_model.dart';
-import 'package:equitycircle/features/add_post/presentation/edit_post_screen.dart';
+import 'package:equitycircle/features/add_post/presentation/create_post_screen.dart';
 import 'package:equitycircle/features/feeds/widgets/comment_InputBar.dart'
     show CommentInputBar;
 import 'package:equitycircle/features/feeds/widgets/media_grid.dart';
@@ -13,6 +13,7 @@ import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:html/parser.dart' as htmlParser;
 
 Widget customPostContainer(
+  DataByFeed post,
   int feedId,
   int categoryId,
   String profileUrl,
@@ -85,7 +86,9 @@ Widget customPostContainer(
                   if (value == 'edit') {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => EditPostScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => CreatePostScreen(post: post),
+                      ),
                     );
                   } else if (value == 'delete') {
                     // Perform delete operation

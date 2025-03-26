@@ -6,12 +6,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomQuillEditor extends StatefulWidget {
   final quill.QuillController controller;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   const CustomQuillEditor({
     super.key,
     required this.controller,
-    required this.backgroundColor,
+    this.backgroundColor,
   });
 
   @override

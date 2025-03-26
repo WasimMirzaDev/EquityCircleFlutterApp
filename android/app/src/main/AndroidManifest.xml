@@ -8,6 +8,9 @@
 <uses-feature android:name="android.hardware.fingerprint" android:required="false"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <!-- ✅ Enable ClearText Traffic (For HTTP API Calls) -->
     <application
         android:enableOnBackInvokedCallback="true"
