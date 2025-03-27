@@ -55,8 +55,8 @@ class Assets {
 
   static final jobImgIcon = "assets/icon/jobImgIcon.svg";
   static final equityIcon = "assets/icon/equityIcon.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";
+  static final moreVert = "assets/icon/more_vert.svg";
+  static final eventCalenderIcon = "assets/icon/event_calender.svg";
   // static final smileIcon = "assets/icon/smileIcon.svg";
   // static final smileIcon = "assets/icon/smileIcon.svg";
 }

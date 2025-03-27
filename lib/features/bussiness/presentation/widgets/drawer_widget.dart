@@ -63,12 +63,12 @@ class DrawerContent extends StatelessWidget {
               30.heightBox,
 
               drawerRow("Job Application", Assets.jobApplication, () {
-                // context.go('/feedback');
+                context.go('/JobApplication');
               }),
               30.heightBox,
 
               drawerRow("Events Calendar", Assets.eventCalender, () {
-                // context.go('/calendar');
+                // context.go('/EventCalender');
               }),
               30.heightBox,
 

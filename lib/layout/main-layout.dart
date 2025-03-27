@@ -33,14 +33,20 @@ class _MainLayoutState extends State<MainLayout> {
   final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>(); // ✅ Add a GlobalKey
   int _currentIndex = 0;
-
+  bool _isAdmin = false;
   @override
   void initState() {
     super.initState();
     _currentIndex = _calculateSelectedIndex(widget.state.uri.toString());
 
     // ✅ Delay execution until first frame is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      bool isAdmin = await authProvider.checkAdmin(context);
+      setState(() {
+        _isAdmin = isAdmin;
+      });
+
       if (_pageController.hasClients) {
         _pageController.jumpToPage(_currentIndex);
       }
@@ -133,21 +139,19 @@ class _MainLayoutState extends State<MainLayout> {
           controller: _pageController,
           physics: const BouncingScrollPhysics(),
           onPageChanged: (index) {
-            if (index != 2) {
+            if (_isAdmin || index != 2) {
               setState(() {
                 _currentIndex = index;
               });
             } else {
-              _pageController.jumpToPage(
-                _currentIndex,
-              ); // Stay on previous index
+              _pageController.jumpToPage(_currentIndex);
             }
           },
           children: [
             BusinessScreen(categoryId: 1),
 
             FitnessScreen(categoryId: 2),
-            Container(),
+            if (_isAdmin) Container(),
             CryptoScreen(categoryId: 3),
             MindsetScreen(categoryId: 5),
           ],
@@ -182,7 +186,7 @@ class _MainLayoutState extends State<MainLayout> {
 
           currentIndex: _currentIndex,
           onTap: (index) {
-            if (index == 2) {
+            if (_isAdmin && index == 2) {
               showPostOptions(context);
             } else {
               setState(() {
@@ -234,22 +238,19 @@ class _MainLayoutState extends State<MainLayout> {
               ),
               label: 'Fitness',
             ),
-            BottomNavigationBarItem(
-              icon: GestureDetector(
-                onTap: () {
-                  showPostOptions(context);
-                },
-                child: Column(
-                  children: [
-                    _currentIndex == 2
-                        ? SvgPicture.asset(Assets.addPostPurpleIcon)
-                        : SvgPicture.asset(Assets.addPostIcon),
-                    3.heightBox,
-                  ],
+            if (_isAdmin)
+              BottomNavigationBarItem(
+                icon: GestureDetector(
+                  onTap: () {
+                    showPostOptions(context);
+                  },
+                  child:
+                      _currentIndex == 2
+                          ? SvgPicture.asset(Assets.addPostPurpleIcon)
+                          : SvgPicture.asset(Assets.addPostIcon),
                 ),
+                label: 'Add post',
               ),
-              label: 'Add post',
-            ),
             BottomNavigationBarItem(
               icon: Column(
                 children: [
