@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../api/feeds_api.dart';
 import '../models/create_post_model.dart';
+import '../widgets/custom_snackbar.dart';
 
 class FeedsProvider with ChangeNotifier {
   final Map<int, List<DataByFeed>> _feedsPerCategory = {};
@@ -24,6 +25,30 @@ class FeedsProvider with ChangeNotifier {
       _feedsPerCategory[categoryId] ?? [];
 
   bool hasMore(int categoryId) => _hasMorePerCategory[categoryId] ?? true;
+
+  Future<void> deletePost(int feedId, BuildContext context) async {
+    try {
+      Response response = await FeedsApi.deletePost(feedId, context);
+      print("Response ${response.data}");
+      if (response.data['message'] ==
+          "Post and associated media deleted successfully") {
+        // Remove post from the list
+        _feedsPerCategory.forEach((key, feeds) {
+          feeds.removeWhere((feed) => feed.id == feedId);
+        });
+        notifyListeners();
+        showTopSnackbar(context, "Post deleted successfully!", true);
+      }
+    } catch (e) {
+      print("Error deleting post: $e");
+      showTopSnackbar(
+        context,
+        "Failed to delete post. Please try again.",
+        false,
+      );
+    }
+  }
+
   Future<CreatePostResponse?> editPost(
     BuildContext context,
     String id,

@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:html/parser.dart' as htmlParser;
+import 'package:provider/provider.dart';
+
+import '../../../../core/providers/feeds_provider.dart';
 
 Widget customPostContainer(
   DataByFeed post,
@@ -79,10 +82,10 @@ Widget customPostContainer(
               ),
 
               PopupMenuButton<String>(
-                icon: SvgPicture.asset(
-                  Assets.moreHorizontal,
-                ), // The three-dot icon
+                icon: SvgPicture.asset(Assets.moreHorizontal),
                 onSelected: (value) {
+                  print("PopupMenu selected: $value"); // Debugging print
+
                   if (value == 'edit') {
                     Navigator.push(
                       context,
@@ -91,8 +94,15 @@ Widget customPostContainer(
                       ),
                     );
                   } else if (value == 'delete') {
-                    // Perform delete operation
-                    print("Delete Post");
+                    print(
+                      "Delete button clicked for feedId: $feedId",
+                    ); // Debugging print
+
+                    final feedsProvider = Provider.of<FeedsProvider>(
+                      context,
+                      listen: false,
+                    );
+                    feedsProvider.deletePost(feedId, context);
                   }
                 },
                 itemBuilder:

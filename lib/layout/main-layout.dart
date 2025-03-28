@@ -4,8 +4,6 @@ import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart';
-import 'package:equitycircle/features/bussiness/presentation/bussiness_screen.dart'
-    show BusinessScreen;
 import 'package:equitycircle/features/bussiness/presentation/widgets/drawer_widget.dart';
 import 'package:equitycircle/features/crypto/presentation/crypto_screen.dart';
 import 'package:equitycircle/features/feeds/helpers/picture_helpers.dart';
@@ -17,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../features/add_post/presentation/addpost_bottomsheet.dart';
+import '../features/bussiness/presentation/bussiness_screen.dart';
 import '../features/fitness/presentation/fitness_screen.dart';
 
 class MainLayout extends StatefulWidget {

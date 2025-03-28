@@ -49,4 +49,21 @@ class ApiService {
       throw Exception("Failed to post data $e");
     }
   }
+
+  static Future<Response> deleteRequest(
+    String endpoint, [
+    String? token,
+  ]) async {
+    try {
+      Response response = await _dio.delete(
+        endpoint,
+        options: Options(
+          headers: token == null ? null : {'Authorization': 'Bearer $token'},
+        ),
+      );
+      return response;
+    } catch (e) {
+      throw Exception("Failed to delete data");
+    }
+  }
 }

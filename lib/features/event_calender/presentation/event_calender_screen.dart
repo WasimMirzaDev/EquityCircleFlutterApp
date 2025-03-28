@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../widget/calender_card.dart';
+
 class EventCalenderScreen extends StatefulWidget {
   const EventCalenderScreen({super.key});
 
@@ -49,35 +51,25 @@ class _EventCalenderScreenState extends State<EventCalenderScreen> {
         ),
       ),
 
-      body: Column(
-        children: [
-          Divider(color: AppColors.lightGreyColor, height: 0.5.h),
-          20.heightBox,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Divider(color: AppColors.lightGreyColor, height: 0.5.h),
+            20.heightBox,
 
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(Assets.eventCalenderIcon),
-                  20.heightBox,
-                  Text(
-                    textAlign: TextAlign.center,
-                    "No events found. Click 'Add New Event' to create one!",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: AppFonts.inter,
-                      color: AppColors.blackGrey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+            ...List.generate(5, (index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
+                child: CalenderCardWidget(
+                  discription: "Exploring the Future of AI and Blockchain",
+                  status: "Public",
+                  title: "Tech Innovation Meetup",
+                  image: Assets.cryptoImg,
+                ),
+              );
+            }),
+          ],
+        ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -108,6 +100,30 @@ class _EventCalenderScreenState extends State<EventCalenderScreen> {
                   ],
                 ),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding noEventFound() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 50.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(Assets.eventCalenderIcon),
+          20.heightBox,
+          Text(
+            textAlign: TextAlign.center,
+            "No events found. Click 'Add New Event' to create one!",
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+              fontFamily: AppFonts.inter,
+              color: AppColors.blackGrey,
             ),
           ),
         ],

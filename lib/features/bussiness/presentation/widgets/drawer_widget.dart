@@ -68,7 +68,7 @@ class DrawerContent extends StatelessWidget {
               30.heightBox,
 
               drawerRow("Events Calendar", Assets.eventCalender, () {
-                // context.go('/EventCalender');
+                context.go('/EventCalender');
               }),
               30.heightBox,
 

@@ -15,8 +15,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
+import '../../../core/providers/auth_provider.dart';
 import '../../../core/widgets/custom_textfield.dart';
+import '../../feeds/helpers/picture_helpers.dart';
 
 class AddNewEventScreen extends StatefulWidget {
   const AddNewEventScreen({super.key});
@@ -31,6 +34,8 @@ class _AddNewEventScreenState extends State<AddNewEventScreen> {
   final TextEditingController shortdiscriptionController =
       TextEditingController();
   final TextEditingController eventDateController = TextEditingController();
+  final TextEditingController organizorController = TextEditingController();
+
   final TextEditingController eventTypeController = TextEditingController();
   final TextEditingController eventVisibilityController =
       TextEditingController();
@@ -75,9 +80,12 @@ class _AddNewEventScreenState extends State<AddNewEventScreen> {
     "Meetup",
     "Webinar",
   ];
+  final List<String> organizor = ["Admin", "User"];
   final List<String> eventVisibility = ["Private", "Public", "Password"];
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.offWhite,
       appBar: AppBar(
@@ -166,6 +174,110 @@ class _AddNewEventScreenState extends State<AddNewEventScreen> {
                       ),
                     ),
                   ),
+                  16.heightBox,
+                  Text(
+                    "Select Organizer (optional)",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontFamily: AppFonts.inter,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.black,
+                    ),
+                  ),
+                  8.heightBox,
+                  DropdownButtonFormField<String>(
+                    style: TextStyle(
+                      fontFamily: AppFonts.inter,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.darkGrey,
+                    ),
+                    icon: SizedBox.shrink(),
+                    value:
+                        eventTypes.contains(organizorController.text)
+                            ? organizorController.text
+                            : null,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      filled: true,
+                      fillColor: AppColors.white,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 12.h,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: AppColors.lightGreyColor,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColors.lightGreyColor,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      hintText: " Admin",
+                      hintStyle: TextStyle(
+                        fontFamily: AppFonts.inter,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGrey,
+                      ),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              Assets.arrowDown,
+                              height: 16.h,
+                              width: 16.w,
+                            ),
+                          ],
+                        ),
+                      ),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.only(left: 12.w),
+                        child: CircleAvatar(
+                          backgroundColor: AppColors.lightGreyColor,
+                          radius: 15.r,
+                          backgroundImage: NetworkImage(
+                            getProfileImageUrl(authProvider.userData),
+                          ),
+                        ),
+                      ),
+                      suffixIconConstraints: const BoxConstraints(
+                        maxHeight: 43,
+                      ),
+                      prefixIconConstraints: const BoxConstraints(
+                        maxHeight: 35,
+                      ),
+                    ),
+                    items:
+                        organizor.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                fontFamily: AppFonts.inter,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.darkGrey,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        organizorController.text = newValue!;
+                      });
+                    },
+                  ),
+
                   16.heightBox,
                   Text(
                     "Title*",
