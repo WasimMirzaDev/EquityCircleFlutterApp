@@ -28,11 +28,12 @@ class AuthProvider with ChangeNotifier {
     String? token = await messaging.getToken();
 
     if (token != null) {
-      String firebaseUid =
-          FirebaseAuth.instance.currentUser!.uid; // Firebase UID
+      String userToken = _token!;
+      // String firebaseUid =
+      //     FirebaseAuth.instance.currentUser!.uid; // Firebase UID
 
       // Call Laravel API to save token
-      final response = await AuthApi.saveToken(firebaseUid, token);
+      final response = await AuthApi.saveToken(token, userToken);
 
       if (response['success']) {
         print("FCM Token saved successfully: $token");
@@ -95,9 +96,9 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> login(String firebaseUid, String email, String password) async {
+  Future<bool> login(String email, String password) async {
     try {
-      final data = await AuthApi.login(firebaseUid, email, password);
+      final data = await AuthApi.login(email, password);
       _token = data['access_token'];
 
       final prefs = await SharedPreferences.getInstance();
@@ -121,7 +122,6 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> register(
-    String firebaseUid,
     String name,
     String email,
     String password,
@@ -129,7 +129,6 @@ class AuthProvider with ChangeNotifier {
   ) async {
     try {
       final data = await AuthApi.register(
-        firebaseUid,
         name,
         email,
         password,

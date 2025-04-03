@@ -3,13 +3,11 @@ import 'api_service.dart'; // your centralized API service
 class AuthApi {
   // Function to handle user login
   static Future<Map<String, dynamic>> login(
-    String firebaseUid,
     String email,
     String password,
   ) async {
     try {
       final response = await ApiService.postRequest('/login', {
-        'firebase_uid': firebaseUid,
         'email': email,
         'password': password,
       });
@@ -22,14 +20,13 @@ class AuthApi {
   }
 
   static Future<Map<String, dynamic>> saveToken(
-    String firebaseUid,
+    String firebasetoken,
     String token,
   ) async {
     try {
       final response = await ApiService.postRequest('/save-token', {
-        'firebase_uid': firebaseUid,
-        'fcm_token': token,
-      });
+        'fcm_token': firebasetoken,
+      }, token);
       return response
           .data; // assuming it returns a JSON map containing user data and token
     } catch (error) {
@@ -39,7 +36,6 @@ class AuthApi {
   }
 
   static Future<Map<String, dynamic>> register(
-    String firebaseUid,
     String name,
     String email,
     String password,
@@ -47,7 +43,6 @@ class AuthApi {
   ) async {
     try {
       final response = await ApiService.postRequest('/register', {
-        'firebase_uid': firebaseUid,
         'name': name,
         'email': email,
         'password': password,

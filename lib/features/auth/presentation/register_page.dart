@@ -61,15 +61,14 @@ class _RegisterPageState extends State<RegisterPage> {
       context,
       listen: false,
     );
-    UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-          email: emailController!.text.trim(),
-          password: passwordController!.text,
-        );
-    String firebaseUid = userCredential.user!.uid;
+    // UserCredential userCredential = await FirebaseAuth.instance
+    //     .createUserWithEmailAndPassword(
+    //       email: emailController!.text.trim(),
+    //       password: passwordController!.text,
+    //     );
+    // String firebaseUid = userCredential.user!.uid;
 
     bool success = await authProvider.register(
-      firebaseUid,
       nameController!.text.trim(),
       emailController!.text.trim(),
       passwordController!.text,
