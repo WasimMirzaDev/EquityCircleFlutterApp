@@ -9,6 +9,51 @@ import 'package:provider/provider.dart';
 import '../models/create_post_model.dart';
 
 class FeedsApi {
+  static Future<Response> deletePost(int feedId, BuildContext context) async {
+    print("deletePost called with feedId: $feedId"); // Debugging
+
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      String? token = authProvider.token;
+
+      if (token == null || token.isEmpty) {
+        print("Token is null or empty"); // Debugging
+        throw Exception("User not authenticated");
+      }
+
+      print("Deleting Post with Token: $token"); // Debugging
+
+      Response response = await ApiService.deleteRequest(
+        "/posts/$feedId",
+        token,
+      );
+
+      print("Delete Response: ${response.data}"); // Debugging
+      return response;
+    } catch (e) {
+      print("Failed to delete post: $e"); // Debugging
+      throw Exception("Failed to delete post: $e");
+    }
+  }
+
+  static Future<Response> likeFeed(BuildContext context, int feedId) async {
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      String? token = authProvider.token;
+
+      if (token == null) throw Exception("User not authenticated");
+
+      Response response = await ApiService.postRequest(
+        '/posts/$feedId/like',
+        {},
+        token,
+      );
+      return response;
+    } catch (e) {
+      throw Exception("Failed to fetch data: $e");
+    }
+  }
+
   static Future<CreatePostResponse?> editPost(
     BuildContext context,
     String id,
@@ -176,24 +221,6 @@ class FeedsApi {
 
       Response response = await ApiService.getRequest(
         '/posts?page=$page&category=$category_id',
-        token,
-      );
-      return response;
-    } catch (e) {
-      throw Exception("Failed to fetch data: $e");
-    }
-  }
-
-  static Future<Response> likeFeed(BuildContext context, int feedId) async {
-    try {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      String? token = authProvider.token;
-
-      if (token == null) throw Exception("User not authenticated");
-
-      Response response = await ApiService.postRequest(
-        '/posts/$feedId/like',
-        {},
         token,
       );
       return response;

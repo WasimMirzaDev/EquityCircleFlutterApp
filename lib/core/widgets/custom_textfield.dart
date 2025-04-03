@@ -26,7 +26,8 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator; // Input validator function
   final FocusNode? focusNode;
 
-  const CustomTextField({
+  Color? fillColor = AppColors.white;
+  CustomTextField({
     super.key,
     required this.controller,
     required this.hint,
@@ -39,6 +40,7 @@ class CustomTextField extends StatelessWidget {
     this.fieldHorizontalPadding,
     this.textAlign,
     this.inputFormat,
+    this.fillColor,
     this.maxLines = 1,
     this.onChanged,
     this.onSubmitted,
@@ -83,7 +85,7 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           isDense: true,
           filled: true,
-          fillColor: AppColors.white,
+          fillColor: fillColor ?? AppColors.white,
           contentPadding: EdgeInsets.symmetric(
             horizontal: 12.w,
             vertical: 12.h,
@@ -99,6 +101,14 @@ class CustomTextField extends StatelessWidget {
             borderSide: BorderSide(color: AppColors.lightGreyColor, width: 0.5),
             borderRadius: BorderRadius.circular(8.r),
           ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.red, width: 0.5),
+            borderRadius: BorderRadius.circular(8.r),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.red, width: 0.5),
+            borderRadius: BorderRadius.circular(8.r),
+          ),
           hintText: hint,
           hintStyle: TextStyle(
             fontFamily: AppFonts.inter,
@@ -106,8 +116,8 @@ class CustomTextField extends StatelessWidget {
             fontWeight: FontWeight.w400,
             color: AppColors.darkGrey,
           ),
-          suffixIconConstraints: const BoxConstraints(maxHeight: 43),
-          prefixIconConstraints: const BoxConstraints(maxHeight: 35),
+          suffixIconConstraints: BoxConstraints(maxHeight: 43.h),
+          prefixIconConstraints: BoxConstraints(maxHeight: 35.h),
           errorStyle: TextStyle(),
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,

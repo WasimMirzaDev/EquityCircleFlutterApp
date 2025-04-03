@@ -2,7 +2,9 @@ import 'package:equitycircle/features/auth/presentation/login_page.dart';
 import 'package:equitycircle/features/auth/presentation/register_page.dart';
 import 'package:equitycircle/features/bussiness/presentation/bussiness_screen.dart';
 import 'package:equitycircle/features/education/education_page.dart';
+import 'package:equitycircle/features/event_calender/presentation/event_calender_screen.dart';
 import 'package:equitycircle/features/feeds/feedScreen.dart';
+import 'package:equitycircle/features/job_application/presentation/job_application_screen.dart';
 import 'package:equitycircle/features/job_list/joblist_page.dart';
 import 'package:equitycircle/layout/main-layout.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'core/providers/auth_provider.dart';
+import 'features/event_calender/presentation/add_new_event_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -34,7 +37,10 @@ GoRouter createRouter(AuthProvider authProvider) {
       /// 📚 **Standalone Pages (Separate from Bottom Navigation)**
       _protectedStandaloneRoute('/education', EducationPage()),
       _protectedStandaloneRoute('/Joblist', JoblistPage()),
+      _protectedStandaloneRoute('/JobApplication', JobApplicationScreen()),
+      _protectedStandaloneRoute('/EventCalender', EventCalenderScreen()),
       _protectedStandaloneRoute('/feedback', FeedbackPage()),
+      _protectedStandaloneRoute('/addNewEvent', AddNewEventScreen()),
 
       /// 🔑 **Authentication Routes**
       GoRoute(

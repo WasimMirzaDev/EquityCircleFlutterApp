@@ -48,7 +48,7 @@ class CustomButton extends StatelessWidget {
           child:
               loading == true
                   ? LoadingIndicator(
-                    radius: 15.r,
+                    radius: 10.r,
                     activeColor: AppColors.purpleColor,
                     inactiveColor: AppColors.greyColor,
 

@@ -96,6 +96,18 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<bool> checkAdmin(BuildContext context) async {
+    try {
+      final response = await AuthApi.admin(context);
+      debugPrint("Response Create Post: ${response['is_admin']}");
+      notifyListeners();
+      return response['is_admin'] ?? false;
+    } catch (error) {
+      print("Error during admin check: $error");
+      return false;
+    }
+  }
+
   Future<bool> login(String email, String password) async {
     try {
       final data = await AuthApi.login(email, password);

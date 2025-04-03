@@ -1,6 +1,24 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth_provider.dart';
 import 'api_service.dart'; // your centralized API service
 
 class AuthApi {
+  static Future<Map<String, dynamic>> admin(BuildContext context) async {
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      String? token = authProvider.token;
+
+      if (token == null) throw Exception("User not authenticated");
+
+      final response = await ApiService.getRequest('/users/is_admin');
+      return response.data;
+    } catch (error) {
+      throw Exception("Admin API failed: $error");
+    }
+  }
+
   // Function to handle user login
   static Future<Map<String, dynamic>> login(
     String email,

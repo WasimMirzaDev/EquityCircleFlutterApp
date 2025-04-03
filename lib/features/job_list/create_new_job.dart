@@ -7,7 +7,6 @@ import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/widgets/custom_button.dart';
-import 'package:equitycircle/features/add_post/presentation/widget/custom_quill_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -162,31 +161,36 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                     ),
                   ),
                   8.heightBox,
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      border: Border.all(
-                        color: AppColors.lightGreyColor,
-                        width: 0.5,
-                      ),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Column(
-                      children: [
-                        CustomQuillEditor(
-                          controller: _controller,
-                          backgroundColor: AppColors.white,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 12.w, bottom: 12.h),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: SvgPicture.asset(Assets.smileIcon),
-                          ),
-                        ),
-                      ],
-                    ),
+                  CustomTextField(
+                    controller: discriptionController,
+                    hint: "Enter Description*",
+                    maxLines: 4,
                   ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: AppColors.white,
+                  //     border: Border.all(
+                  //       color: AppColors.lightGreyColor,
+                  //       width: 0.5,
+                  //     ),
+                  //     borderRadius: BorderRadius.circular(8.r),
+                  //   ),
+                  //   child: Column(
+                  //     children: [
+                  //       CustomQuillEditor(
+                  //         controller: _controller,
+                  //         backgroundColor: AppColors.white,
+                  //       ),
+                  //       Padding(
+                  //         padding: EdgeInsets.only(right: 12.w, bottom: 12.h),
+                  //         child: Align(
+                  //           alignment: Alignment.centerRight,
+                  //           child: SvgPicture.asset(Assets.smileIcon),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   30.heightBox,
 
                   CustomButton(
