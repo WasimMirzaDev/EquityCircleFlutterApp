@@ -8,8 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:html/parser.dart' as htmlParser;
 
+import '../../../core/models/education_model.dart';
+
 class EducationCard extends StatelessWidget {
-  final Map<String, dynamic> education;
+  final EducationModel education;
   EducationCard({super.key, required this.education});
 
   final String? baseUrl = dotenv.env['API_URL'];
@@ -39,7 +41,7 @@ class EducationCard extends StatelessWidget {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(6.r),
                               child: Image.network(
-                                '$baseUrl/data/images/education/${education['image_path']}',
+                                '$baseUrl/data/images/education/${education.imagePath}',
                                 fit:
                                     BoxFit
                                         .cover, // Makes image fit the card properly
@@ -75,7 +77,7 @@ class EducationCard extends StatelessWidget {
               ),
               10.heightBox,
               Text(
-                education['title'],
+                education.title ?? '',
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
@@ -86,7 +88,7 @@ class EducationCard extends StatelessWidget {
               10.heightBox,
               Text(
                 htmlParser
-                        .parse(education['short_description'] ?? '')
+                        .parse(education.shortDescription ?? '')
                         .documentElement
                         ?.text ??
                     '',

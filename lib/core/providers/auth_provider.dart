@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart'; // 🔥 Import Biometric Authentication
@@ -21,6 +20,17 @@ class AuthProvider with ChangeNotifier {
 
   AuthProvider() {
     _loadUserData(); // Load token & check biometric
+  }
+  Future<bool> checkAdmin(BuildContext context) async {
+    try {
+      final response = await AuthApi.admin(context);
+      debugPrint("Response Create Post: ${response['is_admin']}");
+      notifyListeners();
+      return response['is_admin'] ?? false;
+    } catch (error) {
+      print("Error during admin check: $error");
+      return false;
+    }
   }
 
   Future<void> getTokenAndSaveToDatabase() async {
@@ -93,18 +103,6 @@ class AuthProvider with ChangeNotifier {
         _token = null; // ❌ Reset token if biometric fails
       }
       notifyListeners();
-    }
-  }
-
-  Future<bool> checkAdmin(BuildContext context) async {
-    try {
-      final response = await AuthApi.admin(context);
-      debugPrint("Response Create Post: ${response['is_admin']}");
-      notifyListeners();
-      return response['is_admin'] ?? false;
-    } catch (error) {
-      print("Error during admin check: $error");
-      return false;
     }
   }
 
@@ -209,7 +207,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> fetchUser() async {
     try {
       if (_token == null) return;
-      await getTokenAndSaveToDatabase();
+      // await getTokenAndSaveToDatabase();
 
       final data = await AuthApi.getUserData(
         _token!,
