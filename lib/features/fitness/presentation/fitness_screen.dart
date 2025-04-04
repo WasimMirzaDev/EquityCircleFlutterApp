@@ -10,9 +10,11 @@ import 'package:equitycircle/core/widgets/loading_indicator.dart'
 import 'package:equitycircle/features/bussiness/presentation/widgets/custom_search_field.dart';
 import 'package:equitycircle/features/feeds/widgets/feed_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../bussiness/presentation/widgets/custom_carousal_widget.dart';
+import '../../bussiness/presentation/widgets/not_found_widget.dart';
 
 class FitnessScreen extends StatefulWidget {
   final int categoryId;
@@ -85,6 +87,17 @@ class _FitnessScreenState extends State<FitnessScreen> {
                   activeColor: AppColors.purpleColor,
                   inactiveColor: AppColors.greyColor,
                   animationDuration: const Duration(milliseconds: 500),
+                ),
+              )
+              : feeds.isEmpty
+              ? Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 26.w),
+                  child: NoBusinessInsights(
+                    icon: Assets.fitnessIcon,
+                    text:
+                        "No fitness content found. Stay tuned for workouts, tips, and motivation!",
+                  ),
                 ),
               )
               : RefreshIndicator(

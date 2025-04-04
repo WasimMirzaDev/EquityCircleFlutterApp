@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/widgets/loading_indicator.dart';
 import 'job_detail_screen.dart';
 
 class JoblistPage extends StatefulWidget {
@@ -65,53 +66,63 @@ class _JoblistPageState extends State<JoblistPage> {
         ),
       ),
 
-      body: Column(
-        children: [
-          Divider(color: AppColors.lightGreyColor, height: 0.5.h),
-          20.heightBox,
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              // physics: NeverScrollableScrollPhysics(),
-              itemCount: jobProvider.jobLists.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(top: 10.h),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => JobDetailScreen(
-                                title: jobProvider.jobLists[index].title,
-
-                                image: jobProvider.jobLists[index].mainImage,
-                                discription:
-                                    jobProvider.jobLists[index].description,
+      body:
+          jobProvider.isLoading
+              ? Center(
+                child: LoadingIndicator(
+                  radius: 15,
+                  activeColor: AppColors.purpleColor,
+                  inactiveColor: AppColors.greyColor,
+                  animationDuration: const Duration(milliseconds: 500),
+                ),
+              )
+              : jobProvider.jobLists.isEmpty
+              ? const Center(child: Text('No jobs available'))
+              : Column(
+                children: [
+                  Divider(color: AppColors.lightGreyColor, height: 0.5.h),
+                  20.heightBox,
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      // physics: NeverScrollableScrollPhysics(),
+                      itemCount: jobProvider.jobLists.length,
+                      itemBuilder: (context, index) {
+                        final job = jobProvider.jobLists[index];
+                        return Padding(
+                          padding: EdgeInsets.only(top: 10.h),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => JobDetailScreen(
+                                        title: job.title ?? "",
+                                        image: job.mainImage ?? "",
+                                        discription: job.description ?? "",
+                                      ),
+                                ),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              child: JobCardWidget(
+                                // job: jobProvider.jobLists[index],
+                                title: job.title ?? "",
+                                image: job.mainImage ?? "",
+                                discription: job.description ?? "",
+                                readMore: true,
                               ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: JobCardWidget(
-                        // job: jobProvider.jobLists[index],
-                        title: jobProvider.jobLists[index].title,
-
-                        image: jobProvider.jobLists[index].mainImage,
-                        discription: jobProvider.jobLists[index].description,
-                        readMore: true,
-                      ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-          20.heightBox,
-        ],
-      ),
+                  20.heightBox,
+                ],
+              ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

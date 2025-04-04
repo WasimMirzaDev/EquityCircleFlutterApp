@@ -6,9 +6,11 @@ import 'package:equitycircle/core/providers/auth_provider.dart'
     show AuthProvider;
 import 'package:equitycircle/core/widgets/loading_indicator.dart';
 import 'package:equitycircle/features/bussiness/presentation/widgets/custom_search_field.dart';
+import 'package:equitycircle/features/bussiness/presentation/widgets/not_found_widget.dart';
 import 'package:equitycircle/features/feeds/widgets/feed_card.dart'
     show FeedCard;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/providers/feeds_provider.dart' show FeedsProvider;
@@ -85,6 +87,17 @@ class _CryptoScreenState extends State<CryptoScreen> {
                   activeColor: AppColors.purpleColor,
                   inactiveColor: AppColors.greyColor,
                   animationDuration: const Duration(milliseconds: 500),
+                ),
+              )
+              : feeds.isEmpty
+              ? Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 26.w),
+                  child: NoBusinessInsights(
+                    icon: Assets.cryptoIcon,
+                    text:
+                        "No crypto updates available. Keep an eye out for market trends and insights.",
+                  ),
                 ),
               )
               : RefreshIndicator(

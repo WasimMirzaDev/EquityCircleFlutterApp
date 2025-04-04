@@ -6,12 +6,16 @@ import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/providers/job_provider.dart';
 import 'package:equitycircle/core/widgets/custom_button.dart';
+import 'package:equitycircle/core/widgets/custom_snackbar.dart'
+    show showTopSnackbar;
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/widgets/custom_textfield.dart';
 
@@ -27,7 +31,7 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
   final TextEditingController discriptionController = TextEditingController();
   final TextEditingController shortdiscriptionController =
       TextEditingController();
-
+  bool _isLoading = false;
   final quill.QuillController _controller = quill.QuillController.basic();
   final ImagePicker _picker = ImagePicker();
   XFile? _selectedImage;
@@ -194,11 +198,65 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                   30.heightBox,
 
                   CustomButton(
-                    text: "Create job",
-                    onTap: () {
-                      Navigator.pop(context, true);
+                    loading: _isLoading,
+                    text: "Create Job",
+                    onTap: () async {
+                      if (titleController.text.isEmpty ||
+                          shortdiscriptionController.text.isEmpty ||
+                          discriptionController.text.isEmpty ||
+                          _selectedImage == null) {
+                        showTopSnackbar(
+                          context,
+                          "Please fill all required fields",
+                          false,
+                        );
+
+                        return;
+                      }
+
+                      setState(() {
+                        _isLoading =
+                            true; // Set loading to true before starting the save process
+                      });
+
+                      String imagePath = _selectedImage!.path;
+
+                      final provider = Provider.of<JobProvider>(
+                        context,
+                        listen: false,
+                      );
+
+                      try {
+                        await provider.createJob(
+                          context,
+                          titleController.text,
+                          shortdiscriptionController.text,
+                          discriptionController.text,
+                          imagePath,
+                        );
+                        showTopSnackbar(
+                          context,
+                          "Job content created successfully!",
+                          true,
+                        );
+
+                        Navigator.pop(context, true);
+                      } catch (e) {
+                        showTopSnackbar(
+                          context,
+                          "Failed to create job content",
+                          false,
+                        );
+                        print("Failed to create job content$e");
+                      } finally {
+                        setState(() {
+                          _isLoading =
+                              false; // Set loading to false after the save operation is done
+                        });
+                      }
                     },
                   ),
+
                   24.heightBox,
                 ],
               ),

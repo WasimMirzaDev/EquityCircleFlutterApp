@@ -8,9 +8,11 @@ import 'package:equitycircle/core/widgets/loading_indicator.dart';
 import 'package:equitycircle/features/bussiness/presentation/widgets/custom_search_field.dart';
 import 'package:equitycircle/features/feeds/widgets/feed_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../bussiness/presentation/widgets/custom_carousal_widget.dart';
+import '../../bussiness/presentation/widgets/not_found_widget.dart';
 
 class MindsetScreen extends StatefulWidget {
   final int categoryId;
@@ -83,6 +85,17 @@ class _MindsetScreenState extends State<MindsetScreen> {
                   activeColor: AppColors.purpleColor,
                   inactiveColor: AppColors.greyColor,
                   animationDuration: const Duration(milliseconds: 500),
+                ),
+              )
+              : feeds.isEmpty
+              ? Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 26.w),
+                  child: NoBusinessInsights(
+                    icon: Assets.mindsetIcon,
+                    text:
+                        "No mindset posts yet. Refresh your feed for inspiration and self-growth.",
+                  ),
                 ),
               )
               : RefreshIndicator(

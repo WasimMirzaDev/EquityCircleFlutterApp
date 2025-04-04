@@ -6,11 +6,13 @@ import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
 import 'package:equitycircle/core/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../feeds/widgets/feed_card.dart';
 import 'widgets/custom_carousal_widget.dart';
 import 'widgets/custom_search_field.dart';
+import 'widgets/not_found_widget.dart';
 
 class BusinessScreen extends StatefulWidget {
   final int categoryId;
@@ -66,7 +68,6 @@ class _BusinessScreenState extends State<BusinessScreen> {
     Assets.fitnessImg,
     Assets.mindsetImg,
   ];
-
   @override
   Widget build(BuildContext context) {
     final feedsProvider = Provider.of<FeedsProvider>(context);
@@ -83,6 +84,17 @@ class _BusinessScreenState extends State<BusinessScreen> {
                   activeColor: AppColors.purpleColor,
                   inactiveColor: AppColors.greyColor,
                   animationDuration: const Duration(milliseconds: 500),
+                ),
+              )
+              : feeds.isEmpty
+              ? Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 26.w),
+                  child: NoBusinessInsights(
+                    icon: Assets.bussinesIcon,
+                    text:
+                        "No business insights available at the moment. Check back later for the latest updates.",
+                  ),
                 ),
               )
               : RefreshIndicator(
@@ -108,7 +120,6 @@ class _BusinessScreenState extends State<BusinessScreen> {
                               searchController,
                             ),
                             12.heightBox,
-
                             CustomCarouselSlider(images: images),
                             20.heightBox,
                             ...feeds.map(
