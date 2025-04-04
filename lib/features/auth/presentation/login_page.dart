@@ -72,13 +72,6 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => isLoading = true);
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text,
-          );
-      String firebaseUid = userCredential.user!.uid;
-
       final authProvider = Provider.of<auth_provider.AuthProvider>(
         context,
         listen: false,

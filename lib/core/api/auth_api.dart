@@ -12,7 +12,7 @@ class AuthApi {
 
       if (token == null) throw Exception("User not authenticated");
 
-      final response = await ApiService.getRequest('/users/is_admin');
+      final response = await ApiService.getRequest('/users/is_admin', token);
       return response.data;
     } catch (error) {
       throw Exception("Admin API failed: $error");
