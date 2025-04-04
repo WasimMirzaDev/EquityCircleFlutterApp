@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (success) {
-        context.go('/feeds');
+        context.go('/');
       } else {
         showTopSnackbar(context, "Login failed!", false);
       }
