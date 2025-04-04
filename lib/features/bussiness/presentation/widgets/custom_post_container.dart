@@ -33,6 +33,7 @@ Widget customPostContainer(
   List<dynamic> likes,
   bool isLiked,
   List<dynamic> comments,
+  bool isAdmin,
 ) {
   return Container(
     decoration: BoxDecoration(
@@ -81,60 +82,65 @@ Widget customPostContainer(
                 ],
               ),
 
-              PopupMenuButton<String>(
-                icon: SvgPicture.asset(Assets.moreHorizontal),
-                onSelected: (value) {
-                  print("PopupMenu selected: $value"); // Debugging print
+              if (isAdmin)
+                PopupMenuButton<String>(
+                  icon: SvgPicture.asset(Assets.moreHorizontal),
+                  onSelected: (value) {
+                    print("PopupMenu selected: $value"); // Debugging print
 
-                  if (value == 'edit') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreatePostScreen(post: post),
-                      ),
-                    );
-                  } else if (value == 'delete') {
-                    print(
-                      "Delete button clicked for feedId: $feedId",
-                    ); // Debugging print
-
-                    final feedsProvider = Provider.of<FeedsProvider>(
-                      context,
-                      listen: false,
-                    );
-                    feedsProvider.deletePost(feedId, context);
-                  }
-                },
-                itemBuilder:
-                    (BuildContext context) => [
-                      PopupMenuItem<String>(
-                        value: 'edit',
-                        child: Row(
-                          children: [
-                            Icon(Icons.edit, color: AppColors.black, size: 18),
-                            10.widthBox,
-                            Text("Edit", style: TextStyle(fontSize: 14.sp)),
-                          ],
+                    if (value == 'edit') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreatePostScreen(post: post),
                         ),
-                      ),
-                      PopupMenuItem<String>(
-                        value: 'delete',
-                        child: Row(
-                          children: [
-                            Icon(Icons.delete, color: Colors.red, size: 18),
-                            10.widthBox,
-                            Text(
-                              "Delete",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Colors.red,
+                      );
+                    } else if (value == 'delete') {
+                      print(
+                        "Delete button clicked for feedId: $feedId",
+                      ); // Debugging print
+
+                      final feedsProvider = Provider.of<FeedsProvider>(
+                        context,
+                        listen: false,
+                      );
+                      feedsProvider.deletePost(feedId, context);
+                    }
+                  },
+                  itemBuilder:
+                      (BuildContext context) => [
+                        PopupMenuItem<String>(
+                          value: 'edit',
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.edit,
+                                color: AppColors.black,
+                                size: 18,
                               ),
-                            ),
-                          ],
+                              10.widthBox,
+                              Text("Edit", style: TextStyle(fontSize: 14.sp)),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-              ),
+                        PopupMenuItem<String>(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, color: Colors.red, size: 18),
+                              10.widthBox,
+                              Text(
+                                "Delete",
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                ),
             ],
           ),
           20.heightBox,

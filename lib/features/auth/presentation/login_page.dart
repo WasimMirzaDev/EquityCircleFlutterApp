@@ -10,6 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart'
+    show SharedPreferences;
 
 import '../../../core/constants/appColors.dart' show AppColors;
 import '../../../core/constants/appFonts.dart';
@@ -33,6 +35,27 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
+    _loadSavedCredentials();
+  }
+
+  Future<void> _loadSavedCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedEmail = prefs.getString('email');
+    String? savedPassword = prefs.getString('password');
+
+    if (savedEmail != null && savedPassword != null) {
+      setState(() {
+        emailController.text = savedEmail;
+        passwordController.text = savedPassword;
+      });
+    }
+  }
+
+  // Function to save credentials
+  Future<void> _saveCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', emailController.text.trim());
+    prefs.setString('password', passwordController.text);
   }
 
   @override
@@ -68,11 +91,12 @@ class _LoginPageState extends State<LoginPage> {
       // String firebaseUid = userCredential.user!.uid;
       bool success = await authProvider.login(
         // firebaseUid,
-        emailController!.text.trim(),
-        passwordController!.text,
+        emailController.text.trim(),
+        passwordController.text,
       );
 
       if (success) {
+        await _saveCredentials();
         showTopSnackbar(context, "Login Successfully!", true);
         context.go('/');
       } else {

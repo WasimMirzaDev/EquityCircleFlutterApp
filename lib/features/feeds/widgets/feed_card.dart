@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants/appFonts.dart';
 import '../../../core/constants/assets.dart';
+import '../../../core/providers/auth_provider.dart';
 
 class FeedCard extends StatefulWidget {
   final DataByFeed feed;
@@ -23,6 +24,23 @@ class FeedCard extends StatefulWidget {
 }
 
 class _FeedCardState extends State<FeedCard> {
+  bool _isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAdminStatus();
+  }
+
+  // Call to check if the user is an admin
+  Future<void> _checkAdminStatus() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    bool isAdmin = await authProvider.checkAdmin(context);
+    setState(() {
+      _isAdmin = isAdmin;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<MediaByFeeds> media = widget.feed.media ?? [];
@@ -62,6 +80,7 @@ class _FeedCardState extends State<FeedCard> {
         likes,
         isLiked,
         comments,
+        _isAdmin,
       ),
     );
   }
