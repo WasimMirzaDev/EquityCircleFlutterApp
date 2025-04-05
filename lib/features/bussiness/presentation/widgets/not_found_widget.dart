@@ -1,9 +1,10 @@
-import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../../../core/constants/theme_colors.dart';
 
 class NoBusinessInsights extends StatelessWidget {
   String icon;
@@ -13,7 +14,7 @@ class NoBusinessInsights extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ThemeColors.background(context),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +23,7 @@ class NoBusinessInsights extends StatelessWidget {
               icon,
               height: 36.h,
               width: 36.w,
-              color: AppColors.black,
+              color: ThemeColors.iconColor(context),
             ),
             10.heightBox,
             Text(
@@ -30,7 +31,7 @@ class NoBusinessInsights extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 12.sp,
-                color: AppColors.black,
+                color: ThemeColors.textColor(context),
                 fontWeight: FontWeight.w400,
                 fontFamily: AppFonts.inter,
               ),

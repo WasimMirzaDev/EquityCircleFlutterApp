@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:html/parser.dart' as htmlParser;
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/models/education_model.dart';
 
 class EducationCard extends StatelessWidget {
@@ -23,8 +24,11 @@ class EducationCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.r),
-          color: AppColors.white,
-          border: Border.all(color: AppColors.lightGreyColor, width: 0.28),
+          color: ThemeColors.cardColor(context),
+          border: Border.all(
+            color: ThemeColors.borderColor(context),
+            width: 0.28,
+          ),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -82,7 +86,7 @@ class EducationCard extends StatelessWidget {
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.inter,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               10.heightBox,
@@ -96,7 +100,7 @@ class EducationCard extends StatelessWidget {
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.inter,
-                  color: AppColors.darkGrey,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               12.heightBox,

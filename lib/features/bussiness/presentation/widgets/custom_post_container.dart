@@ -13,6 +13,7 @@ import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:html/parser.dart' as htmlParser;
 import 'package:provider/provider.dart';
 
+import '../../../../core/constants/theme_colors.dart';
 import '../../../../core/providers/feeds_provider.dart';
 
 Widget customPostContainer(
@@ -38,8 +39,9 @@ Widget customPostContainer(
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10.r),
-      color: AppColors.white,
-      border: Border.all(color: AppColors.lightGreyColor),
+      // color: AppColors.white,
+      color: ThemeColors.cardColor(context),
+      border: Border.all(color: ThemeColors.borderColor(context)),
     ),
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -65,7 +67,7 @@ Widget customPostContainer(
                           fontSize: 14.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       Text(
@@ -74,7 +76,7 @@ Widget customPostContainer(
                           fontSize: 10.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.darkGrey,
+                          color: ThemeColors.subTextColor(context),
                         ),
                       ),
                     ],
@@ -154,7 +156,7 @@ Widget customPostContainer(
                   borderRadius: BorderRadius.circular(50.r),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
                   child: Center(
                     child: Text(
                       tab,
@@ -177,7 +179,7 @@ Widget customPostContainer(
               fontSize: 12.sp,
               fontFamily: AppFonts.inter,
               fontWeight: FontWeight.w400,
-              color: AppColors.black,
+              color: ThemeColors.textColor(context),
             ),
           ),
 
@@ -198,20 +200,30 @@ Widget customPostContainer(
                     isLiked ? Assets.heartFilled : Assets.heartunFilled,
                     height: 20.h,
                     width: 20.w,
+                    color:
+                        isLiked
+                            ? AppColors.red
+                            : ThemeColors.commentfielIconsColor(context),
                   ),
                 ),
                 commentsFavRow(
                   context,
                   commentTap,
                   comments.length.toString(),
-                  SvgPicture.asset(Assets.commentIcon),
+                  SvgPicture.asset(
+                    Assets.commentIcon,
+                    color: ThemeColors.commentfielIconsColor(context),
+                  ),
                 ),
                 commentsFavRow(
                   context,
 
                   () {},
                   "0",
-                  SvgPicture.asset(Assets.reposticon),
+                  SvgPicture.asset(
+                    Assets.reposticon,
+                    color: ThemeColors.commentfielIconsColor(context),
+                  ),
                 ),
               ],
             ),
@@ -245,7 +257,7 @@ Widget commentsFavRow(
             fontSize: 12.sp,
             fontFamily: AppFonts.inter,
             fontWeight: FontWeight.w500,
-            color: AppColors.black,
+            color: ThemeColors.textColor(context),
           ),
         ),
       ],

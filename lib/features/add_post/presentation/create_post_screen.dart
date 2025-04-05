@@ -20,6 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart' show Provider;
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/providers/auth_provider.dart';
 import '../../../core/widgets/custom_textfield.dart';
 
@@ -68,7 +69,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
   }
 
-  Color _selectedBackground = Colors.white;
+  late Color _selectedBackground;
   final List<Color> _backgrounds = [
     Colors.white,
     Color(0xFFFFF0D6),
@@ -205,27 +206,32 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     // final feedsProvider = Provider.of<FeedsProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
+    _selectedBackground = ThemeColors.search(context);
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
 
       appBar: AppBar(
         centerTitle: true,
         scrolledUnderElevation: 0,
         elevation: 0,
-        backgroundColor: AppColors.offWhite,
-        shadowColor: Colors.black,
-        surfaceTintColor: Colors.black,
+        backgroundColor: ThemeColors.background(context),
+        shadowColor: ThemeColors.textColor(context),
+        surfaceTintColor: ThemeColors.textColor(context),
         title: Text(
           _isEditing ? "Edit Post" : "Create post",
           style: TextStyle(
-            color: AppColors.black,
+            color: ThemeColors.textColor(context),
             fontWeight: FontWeight.w600,
             fontFamily: AppFonts.inter,
             fontSize: 14.sp,
           ),
         ),
         leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
+          icon: SvgPicture.asset(
+            Assets.backArrow,
+            height: 20.h,
+            color: ThemeColors.iconColor(context),
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -264,7 +270,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           fontSize: 14.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       Text(
@@ -339,7 +345,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   16.heightBox,
@@ -351,13 +357,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
                   CustomTextField(
                     controller: titleController,
                     hint: "Enter title*",
+                    fillColor: ThemeColors.search(context),
                   ),
                   16.heightBox,
                   Text(
@@ -366,7 +373,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
@@ -398,7 +405,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
@@ -411,7 +418,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
@@ -585,12 +592,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         radius: Radius.circular(8.r),
         strokeWidth: 0.5,
         dashPattern: [6, 4],
-        color: AppColors.purpleColor,
+        color: ThemeColors.dottedColor(context),
         child: Container(
           width: 66.w,
           height: 66.h,
           decoration: BoxDecoration(
-            color: AppColors.babyPink,
+            color: ThemeColors.attachmentContainerColor(context),
+
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: Center(
@@ -598,7 +606,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               icon,
               height: 18.h,
               width: 18.w,
-              color: AppColors.purpleColor,
+              color: ThemeColors.dottedColor(context),
             ),
           ),
         ),
@@ -613,7 +621,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           width: 66.w,
           height: 66.h,
           decoration: BoxDecoration(
-            color: AppColors.babyPink,
+            color: ThemeColors.attachmentContainerColor(context),
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: ClipRRect(
@@ -647,12 +655,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         radius: Radius.circular(8.r),
         strokeWidth: 0.5,
         dashPattern: [6, 4],
-        color: AppColors.purpleColor,
+        color: ThemeColors.dottedColor(context),
         child: Container(
           width: 66.w,
           height: 66.h,
           decoration: BoxDecoration(
-            color: AppColors.babyPink,
+            color: ThemeColors.attachmentContainerColor(context),
             borderRadius: BorderRadius.circular(8.r),
           ),
           child: Center(
@@ -660,7 +668,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               Assets.photoIcon,
               height: 18.h,
               width: 18.w,
-              color: AppColors.purpleColor,
+              color: ThemeColors.dottedColor(context),
             ),
           ),
         ),
@@ -697,11 +705,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             border:
                 selectedPrivacy.toLowerCase() == label.toLowerCase()
                     ? null
-                    : Border.all(color: AppColors.lightGreyColor),
+                    : Border.all(color: ThemeColors.borderColor(context)),
             color:
                 selectedPrivacy.toLowerCase() == label.toLowerCase()
                     ? AppColors.purpleColor
-                    : AppColors.offWhite,
+                    : ThemeColors.postCatagoriesBox(context),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -711,7 +719,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 color:
                     selectedPrivacy.toLowerCase() == label.toLowerCase()
                         ? AppColors.white
-                        : AppColors.black,
+                        : ThemeColors.iconColor(context),
               ),
               5.widthBox,
               Text(
@@ -723,7 +731,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   color:
                       selectedPrivacy.toLowerCase() == label.toLowerCase()
                           ? AppColors.white
-                          : AppColors.black,
+                          : ThemeColors.textColor(context),
                 ),
               ),
             ],
@@ -762,11 +770,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             border:
                 selectedCategory == category
                     ? null
-                    : Border.all(color: AppColors.lightGreyColor),
+                    : Border.all(color: ThemeColors.borderColor(context)),
             color:
                 selectedCategory == category
                     ? AppColors.purpleColor
-                    : AppColors.offWhite,
+                    : ThemeColors.postCatagoriesBox(context),
           ),
 
           child: Center(
@@ -779,7 +787,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 color:
                     selectedCategory == category
                         ? AppColors.white
-                        : AppColors.black,
+                        : ThemeColors.textColor(context),
               ),
             ),
           ),

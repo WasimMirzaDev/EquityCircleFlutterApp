@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/appColors.dart';
+import '../constants/theme_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -72,12 +73,12 @@ class CustomTextField extends StatelessWidget {
           fontFamily: AppFonts.inter,
           fontSize: 12.sp,
           fontWeight: FontWeight.w400,
-          color: AppColors.black,
+          color: ThemeColors.textColor(context),
         ),
         textAlign: textAlign ?? TextAlign.left,
         focusNode: focusNode,
         autofocus: autoFocus,
-        cursorColor: AppColors.black,
+        cursorColor: ThemeColors.textColor(context),
         maxLines: maxLines,
         onChanged: onChanged,
         onFieldSubmitted: onSubmitted,
@@ -91,14 +92,18 @@ class CustomTextField extends StatelessWidget {
             vertical: 12.h,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: AppColors.lightGreyColor,
+            borderSide: BorderSide(
+              color: ThemeColors.borderColor(context),
+
               width: 0.5,
             ),
             borderRadius: BorderRadius.circular(8.r),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.lightGreyColor, width: 0.5),
+            borderSide: BorderSide(
+              color: ThemeColors.borderColor(context),
+              width: 0.5,
+            ),
             borderRadius: BorderRadius.circular(8.r),
           ),
           errorBorder: OutlineInputBorder(

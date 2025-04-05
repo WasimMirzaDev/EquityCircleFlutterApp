@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/appColors.dart';
+import '../../core/constants/theme_colors.dart';
 
 class EducationPage extends StatefulWidget {
   const EducationPage({super.key});
@@ -36,25 +37,29 @@ class _EducationPageState extends State<EducationPage> {
   Widget build(BuildContext context) {
     final educationProvider = Provider.of<EducationProvider>(context);
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppColors.offWhite,
+        backgroundColor: ThemeColors.background(context),
         shadowColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: Text(
           "Education",
           style: TextStyle(
-            color: AppColors.black,
+            color: ThemeColors.textColor(context),
             fontWeight: FontWeight.w600,
             fontFamily: AppFonts.inter,
             fontSize: 14.sp,
           ),
         ),
         leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
+          icon: SvgPicture.asset(
+            Assets.backArrow,
+            height: 20.h,
+            color: ThemeColors.iconColor(context),
+          ),
           onPressed: () {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (context.canPop()) {

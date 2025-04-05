@@ -57,6 +57,12 @@ class Assets {
   static final equityIcon = "assets/icon/equityIcon.svg";
   static final moreVert = "assets/icon/more_vert.svg";
   static final eventCalenderIcon = "assets/icon/event_calender.svg";
+  static final profileSetting = "assets/icon/profileSetting.svg";
+  static final setting = "assets/icon/setting.svg";
+  static final privacy = "assets/icon/privacy.svg";
+  static final appsettings = "assets/icon/appsettings.svg";
+  static final chat = "assets/icon/chat.svg";
+  // static final smileIcon = "assets/icon/smileIcon.svg";// static final smileIcon = "assets/icon/smileIcon.svg";
   // static final smileIcon = "assets/icon/smileIcon.svg";
   // static final smileIcon = "assets/icon/smileIcon.svg";
 }

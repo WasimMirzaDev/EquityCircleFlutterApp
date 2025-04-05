@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/constants/appFonts.dart' show AppFonts;
 import '../../../../core/constants/assets.dart';
+import '../../../../core/constants/theme_colors.dart';
 import '../../../add_post/presentation/widget/discard_dialogbox.dart';
 
 class DrawerContent extends StatelessWidget {
@@ -43,7 +44,7 @@ class DrawerContent extends StatelessWidget {
                       fontSize: 18.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                 ],
@@ -53,33 +54,36 @@ class DrawerContent extends StatelessWidget {
               25.heightBox,
               drawerRow("Education", Assets.education, () {
                 context.push('/education');
-              }),
+              }, context),
 
               30.heightBox,
 
               drawerRow("Job List", Assets.jobList, () {
                 context.go('/Joblist');
-              }),
+              }, context),
               30.heightBox,
 
               drawerRow("Job Application", Assets.jobApplication, () {
                 context.go('/JobApplication');
-              }),
+              }, context),
               30.heightBox,
 
               drawerRow("Events Calendar", Assets.eventCalender, () {
                 context.go('/EventCalender');
-              }),
+              }, context),
               30.heightBox,
 
               drawerRow("Notifications", Assets.notificationIcon, () {
                 // context.go('/settings');
-              }),
+              }, context),
               30.heightBox,
 
               drawerRow("Mange Users", Assets.user, () {
-                // context.go('/Joblist');
-              }),
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => ManageUserScreen()),
+                // );
+              }, context),
               30.heightBox,
               drawerRow("Log out", Assets.logoutIcon, () {
                 showDiscardDialog(
@@ -98,7 +102,7 @@ class DrawerContent extends StatelessWidget {
                     context.go('/login');
                   },
                 );
-              }),
+              }, context),
 
               Spacer(),
               Center(
@@ -110,6 +114,7 @@ class DrawerContent extends StatelessWidget {
                     width: 32.w,
                     height: 32.h,
                     Assets.closeCircle,
+                    color: ThemeColors.iconColor(context),
                     // fit: BoxFit.cover,
                   ),
                 ),
@@ -122,7 +127,12 @@ class DrawerContent extends StatelessWidget {
     );
   }
 
-  Widget drawerRow(String title, String icon, VoidCallback onTap) {
+  Widget drawerRow(
+    String title,
+    String icon,
+    VoidCallback onTap,
+    BuildContext context,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -130,20 +140,34 @@ class DrawerContent extends StatelessWidget {
         children: [
           Row(
             children: [
-              SvgPicture.asset(width: 20.w, height: 20.h, icon),
+              SvgPicture.asset(
+                width: 20.w,
+                height: 20.h,
+                icon,
+                color:
+                    title == "Log out"
+                        ? Colors.red
+                        : ThemeColors.iconColor(context),
+              ),
               10.widthBox,
               Text(
                 title,
                 style: TextStyle(
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w500,
-                  color: title == "Log out" ? Colors.red : AppColors.black,
+                  color:
+                      title == "Log out"
+                          ? Colors.red
+                          : ThemeColors.textColor(context),
                   fontSize: 14.sp,
                 ),
               ),
             ],
           ),
-          SvgPicture.asset(Assets.arrowRight),
+          SvgPicture.asset(
+            Assets.arrowRight,
+            color: ThemeColors.commentfielIconsColor(context),
+          ),
         ],
       ),
     );

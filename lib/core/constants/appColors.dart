@@ -10,7 +10,7 @@ class AppColors {
   static const Color black = Color(0xff1E1E1E);
   static const Color lightBlack = Color(0xff222280);
   static const Color blackGrey = Color(0xff424242);
-
+  static const Color darkblack = Color(0xff292929);
   static const Color purpleColor = Color(0xff6709F5);
   static const Color greyColor = Color(0xffAFAFAF);
   static const Color darkGrey = Color(0xff888888);
@@ -36,4 +36,6 @@ class AppColors {
   static const Color darkRed = Color(0xffF30055);
   static const Color babyPink = Color(0xfff9f5ff);
   static const Color red = Color(0xffFC2A2A);
+
+  // Dark Theme
 }

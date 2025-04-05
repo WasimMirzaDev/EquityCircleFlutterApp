@@ -1,10 +1,11 @@
 import 'package:equitycircle/core/providers/auth_provider.dart';
-import 'package:equitycircle/core/theme.dart';
 import 'package:equitycircle/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import 'core/constants/theme_colors.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -27,7 +28,10 @@ class MyApp extends StatelessWidget {
             ],
             title: 'Equity Circle App',
             debugShowCheckedModeBanner: false,
-            theme: appTheme,
+
+            theme: ThemeColors.lightTheme,
+            darkTheme: ThemeColors.darkTheme,
+            themeMode: ThemeMode.system,
             routerConfig: createRouter(authProvider), // ✅ Safe access now
           ),
     );

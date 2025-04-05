@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../feeds/widgets/feed_card.dart';
 import 'widgets/custom_carousal_widget.dart';
 import 'widgets/custom_search_field.dart';
@@ -75,7 +76,8 @@ class _BusinessScreenState extends State<BusinessScreen> {
     final isLoading = feedsProvider.isLoading;
 
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
+
       body:
           isLoading && feeds.isEmpty
               ? Center(
@@ -89,7 +91,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
               : feeds.isEmpty
               ? Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 26.w),
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: NoBusinessInsights(
                     icon: Assets.bussinesIcon,
                     text:
@@ -118,6 +120,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
                             customSearchWidget(
                               "   Search for users",
                               searchController,
+                              context,
                             ),
                             12.heightBox,
                             CustomCarouselSlider(images: images),

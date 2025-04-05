@@ -14,6 +14,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../core/constants/theme_colors.dart';
 import '../features/add_post/presentation/addpost_bottomsheet.dart';
 import '../features/bussiness/presentation/bussiness_screen.dart';
 import '../features/fitness/presentation/fitness_screen.dart';
@@ -61,7 +62,7 @@ class _MainLayoutState extends State<MainLayout> {
 
       drawer: Drawer(
         width: double.infinity,
-        backgroundColor: AppColors.white,
+        backgroundColor: ThemeColors.background(context),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(0.r),
@@ -72,12 +73,13 @@ class _MainLayoutState extends State<MainLayout> {
       ),
 
       appBar: AppBar(
-        backgroundColor: AppColors.offWhite,
+        backgroundColor: ThemeColors.background(context),
         leading: Padding(
           padding: EdgeInsets.only(left: PAGE_MARGIN_HOR),
           child: IconButton(
             icon: SvgPicture.asset(
               Assets.drawerIcon,
+              color: ThemeColors.iconColor(context),
               // fit: BoxFit.cover,
             ),
             onPressed: () {
@@ -100,7 +102,7 @@ class _MainLayoutState extends State<MainLayout> {
                 fontSize: 18.sp,
                 fontFamily: AppFonts.inter,
                 fontWeight: FontWeight.w600,
-                color: AppColors.black,
+                color: ThemeColors.iconColor(context),
               ),
             ),
           ],
@@ -111,21 +113,31 @@ class _MainLayoutState extends State<MainLayout> {
             width: 24.w,
             height: 24.h,
             Assets.notificationIcon,
-            // fit: BoxFit.cover,
+            color: ThemeColors.iconColor(context), // fit: BoxFit.cover,
           ),
           14.widthBox,
-          Container(
-            width: 30.r,
-            height: 30.r,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.purpleColor, width: 1.w),
-            ),
-            child: CircleAvatar(
-              backgroundColor: AppColors.lightGreyColor,
-              radius: 20.r,
-              backgroundImage: NetworkImage(
-                getProfileImageUrl(authProvider.userData),
+          GestureDetector(
+            onTap: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => ProfileSettingsScreen(),
+              //   ),
+              // );
+            },
+            child: Container(
+              width: 30.r,
+              height: 30.r,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.purpleColor, width: 1.w),
+              ),
+              child: CircleAvatar(
+                backgroundColor: AppColors.lightGreyColor,
+                radius: 20.r,
+                backgroundImage: NetworkImage(
+                  getProfileImageUrl(authProvider.userData),
+                ),
               ),
             ),
           ),
@@ -159,14 +171,14 @@ class _MainLayoutState extends State<MainLayout> {
 
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ThemeColors.background(context),
           border: const Border(
             top: BorderSide(color: AppColors.lightGreyColor, width: 0.5),
           ),
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
+          backgroundColor: ThemeColors.background(context),
           selectedItemColor: AppColors.purpleColor,
           unselectedItemColor: AppColors.greyColor,
           selectedLabelStyle: TextStyle(

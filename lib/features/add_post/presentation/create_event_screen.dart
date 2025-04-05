@@ -9,6 +9,7 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/widgets/custom_textfield.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -68,25 +69,29 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppColors.offWhite,
+        backgroundColor: ThemeColors.background(context),
         shadowColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: Text(
           "Create new event",
           style: TextStyle(
-            color: AppColors.black,
+            color: ThemeColors.textColor(context),
             fontWeight: FontWeight.w600,
             fontFamily: AppFonts.inter,
             fontSize: 14.sp,
           ),
         ),
         leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
+          icon: SvgPicture.asset(
+            Assets.backArrow,
+            height: 20.h,
+            color: ThemeColors.iconColor(context),
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -96,7 +101,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(color: AppColors.lightGreyColor, height: 0.5.h),
+            Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
               child: Column(
@@ -110,7 +115,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
@@ -129,7 +134,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     decoration: InputDecoration(
                       isDense: true,
                       filled: true,
-                      fillColor: AppColors.white,
+                      fillColor: ThemeColors.search(context),
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 12.w,
                         vertical: 12.h,
@@ -203,13 +208,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
                   CustomTextField(
                     controller: titleController,
                     hint: "Enter title*",
+                    fillColor: ThemeColors.search(context),
                   ),
                   16.heightBox,
                   Text(
@@ -218,13 +224,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
                   CustomTextField(
                     controller: subtitleController,
                     hint: "Enter subtitle",
+                    fillColor: ThemeColors.search(context),
                   ),
                   16.heightBox,
                   Text(
@@ -233,13 +240,14 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
                   CustomTextField(
                     controller: discriptionController,
                     hint: "Enter Description*",
+                    fillColor: ThemeColors.search(context),
                     maxLines: 4,
                   ),
                   // Container(
@@ -263,12 +271,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
                   CustomTextField(
                     controller: eventDateController,
+                    fillColor: ThemeColors.search(context),
                     hint: "dd/mm/yyyy",
                     onTap: () => _selectDate(context),
                     suffixIcon: Padding(
@@ -283,7 +292,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
@@ -294,6 +303,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: 40.h,
                           child: CustomTextField(
                             controller: startDateController,
+                            fillColor: ThemeColors.search(context),
                             hint: "Start time",
                             onTap:
                                 () => _selectTime(context, startDateController),
@@ -311,6 +321,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: 40.h,
                           child: CustomTextField(
                             controller: endDateController,
+                            fillColor: ThemeColors.search(context),
                             onTap:
                                 () => _selectTime(context, endDateController),
                             hint: "End time",
@@ -334,7 +345,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           fontSize: 12.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w400,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       Transform.scale(

@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/widgets/custom_textfield.dart';
+import '../../core/constants/theme_colors.dart';
 import '../../core/providers/education_provider.dart';
 import '../../core/widgets/custom_snackbar.dart';
 
@@ -45,25 +46,29 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       appBar: AppBar(
         centerTitle: true,
         scrolledUnderElevation: 0,
         elevation: 0,
-        backgroundColor: AppColors.offWhite,
+        backgroundColor: ThemeColors.background(context),
         shadowColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: Text(
           "Add New Education Content",
           style: TextStyle(
-            color: AppColors.black,
+            color: ThemeColors.textColor(context),
             fontWeight: FontWeight.w600,
             fontFamily: AppFonts.inter,
             fontSize: 14.sp,
           ),
         ),
         leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
+          icon: SvgPicture.asset(
+            Assets.backArrow,
+            height: 20.h,
+            color: ThemeColors.iconColor(context),
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -75,7 +80,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Divider(color: AppColors.lightGreyColor, height: 0.5.h),
+              Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
 
               20.heightBox,
               Text(
@@ -84,7 +89,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                   fontSize: 12.sp,
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               8.heightBox,
@@ -100,7 +105,7 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                     width: double.infinity,
                     height: 150.h,
                     decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: ThemeColors.search(context),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child:
@@ -130,13 +135,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                   fontSize: 12.sp,
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               8.heightBox,
               CustomTextField(
                 controller: titleController,
                 hint: "Enter title*",
+                fillColor: ThemeColors.search(context),
                 suffixIcon: Padding(
                   padding: EdgeInsets.only(right: 12.w),
                   child: SvgPicture.asset(Assets.smileIcon),
@@ -149,13 +155,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                   fontSize: 12.sp,
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               8.heightBox,
               CustomTextField(
                 controller: shortdiscriptionController,
                 hint: "Enter Short Description*",
+                fillColor: ThemeColors.search(context),
                 maxLines: 5,
               ),
               16.heightBox,
@@ -165,13 +172,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                   fontSize: 12.sp,
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               8.heightBox,
               CustomTextField(
                 controller: discriptionController,
                 hint: "Enter Description*",
+                fillColor: ThemeColors.search(context),
                 maxLines: 4,
               ),
               16.heightBox,
@@ -181,13 +189,14 @@ class _AddEducationScreenState extends State<AddEducationScreen> {
                   fontSize: 12.sp,
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               8.heightBox,
               CustomTextField(
                 controller: videoUrlController,
                 hint: "Enter Video URL",
+                fillColor: ThemeColors.search(context),
               ),
               20.heightBox,
 

@@ -12,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/widgets/loading_indicator.dart';
 
 class CommentInputBar extends StatefulWidget {
@@ -85,7 +86,7 @@ class _CommentInputBarState extends State<CommentInputBar> {
             height: 36.h,
             padding: EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: AppColors.fieldgrey,
+              color: ThemeColors.commentBgColor(context),
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Row(
@@ -96,12 +97,12 @@ class _CommentInputBarState extends State<CommentInputBar> {
                     decoration: InputDecoration(
                       hintText: "Write a comment",
                       border: InputBorder.none,
-                      fillColor: AppColors.fieldgrey,
+                      fillColor: ThemeColors.commentBgColor(context),
                       hintStyle: TextStyle(
                         fontSize: 12.sp,
                         fontFamily: AppFonts.inter,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.darkGrey,
+                        color: ThemeColors.commenttextColor(context),
                       ),
                       isDense: true,
                     ),
@@ -111,17 +112,26 @@ class _CommentInputBarState extends State<CommentInputBar> {
                 GestureDetector(
                   onTap: _pickMedia,
 
-                  child: SvgPicture.asset(Assets.mediaIcon),
+                  child: SvgPicture.asset(
+                    Assets.mediaIcon,
+                    color: ThemeColors.commentfielIconsColor(context),
+                  ),
                 ),
                 10.widthBox,
                 GestureDetector(
                   onTap: _pickImage,
-                  child: SvgPicture.asset(Assets.imageicon),
+                  child: SvgPicture.asset(
+                    Assets.imageicon,
+                    color: ThemeColors.commentfielIconsColor(context),
+                  ),
                 ),
                 10.widthBox,
                 GestureDetector(
                   onTap: _openCamera,
-                  child: SvgPicture.asset(Assets.camera),
+                  child: SvgPicture.asset(
+                    Assets.camera,
+                    color: ThemeColors.commentfielIconsColor(context),
+                  ),
                 ),
               ],
             ),

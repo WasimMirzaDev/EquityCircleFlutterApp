@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/providers/feeds_provider.dart' show FeedsProvider;
 import '../../bussiness/presentation/widgets/custom_carousal_widget.dart';
 
@@ -78,7 +79,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
     final isLoading = feedsProvider.isLoading;
 
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       body:
           isLoading && feeds.isEmpty
               ? Center(
@@ -92,7 +93,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
               : feeds.isEmpty
               ? Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 26.w),
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: NoBusinessInsights(
                     icon: Assets.cryptoIcon,
                     text:
@@ -121,6 +122,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
                             customSearchWidget(
                               "   Search for users",
                               searchController,
+                              context,
                             ),
                             12.heightBox,
                             CustomCarouselSlider(images: images),

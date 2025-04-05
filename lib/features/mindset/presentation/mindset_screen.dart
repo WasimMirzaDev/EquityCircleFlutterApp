@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../bussiness/presentation/widgets/custom_carousal_widget.dart';
 import '../../bussiness/presentation/widgets/not_found_widget.dart';
 
@@ -76,7 +77,7 @@ class _MindsetScreenState extends State<MindsetScreen> {
     final isLoading = feedsProvider.isLoading;
 
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       body:
           isLoading && feeds.isEmpty
               ? Center(
@@ -90,7 +91,7 @@ class _MindsetScreenState extends State<MindsetScreen> {
               : feeds.isEmpty
               ? Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 26.w),
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: NoBusinessInsights(
                     icon: Assets.mindsetIcon,
                     text:
@@ -119,6 +120,7 @@ class _MindsetScreenState extends State<MindsetScreen> {
                             customSearchWidget(
                               "   Search for users",
                               searchController,
+                              context,
                             ),
                             12.heightBox,
                             CustomCarouselSlider(images: images),

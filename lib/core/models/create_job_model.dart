@@ -84,7 +84,7 @@ class User {
   String? backgroundImage;
   String? emailVerifiedAt;
   String? googleId;
-  String? permissionId;
+  int? permissionId;
   String? createdAt;
   String? updatedAt;
   String? firstName;
@@ -150,8 +150,8 @@ class User {
     profileImage = json['profile_image'];
     backgroundImage = json['background_image'];
     emailVerifiedAt = json['email_verified_at'];
-    googleId = json['google_id'];
-    permissionId = json['permission_id'];
+    permissionId = _safeParseInt(json['permission_id']);
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     firstName = json['first_name'];
@@ -174,6 +174,10 @@ class User {
     instagramId = json['instagram_id'];
     firebaseUid = json['firebase_uid'];
     fcmToken = json['fcm_token'];
+  }
+  int? _safeParseInt(dynamic value) {
+    if (value == null) return null;
+    return value is int ? value : int.tryParse(value.toString());
   }
 
   Map<String, dynamic> toJson() {

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import 'create_job_screen.dart';
 
 void showPostOptions(BuildContext context) {
@@ -42,10 +43,15 @@ void showPostOptions(BuildContext context) {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: SvgPicture.asset(
-                  Assets.close,
-                  height: 12.h,
-                  width: 12.w,
+                child: CircleAvatar(
+                  radius: 15.r,
+                  backgroundColor: ThemeColors.search(context),
+                  child: SvgPicture.asset(
+                    Assets.close,
+                    height: 12.h,
+                    width: 12.w,
+                    color: ThemeColors.iconColor(context),
+                  ),
                 ),
               ),
             ),
@@ -56,7 +62,7 @@ void showPostOptions(BuildContext context) {
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 fontFamily: AppFonts.inter,
-                color: AppColors.black,
+                color: ThemeColors.textColor(context),
               ),
             ),
             16.heightBox,
