@@ -73,6 +73,7 @@ class _MainLayoutState extends State<MainLayout> {
       ),
 
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: ThemeColors.background(context),
         leading: Padding(
           padding: EdgeInsets.only(left: PAGE_MARGIN_HOR),
@@ -87,25 +88,11 @@ class _MainLayoutState extends State<MainLayout> {
             },
           ),
         ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/icon/Equity_Circle_icon.png",
-              height: 30.h,
-              width: 30.w,
-            ),
-            8.widthBox,
-            Text(
-              'Equity Circle',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontFamily: AppFonts.inter,
-                fontWeight: FontWeight.w600,
-                color: ThemeColors.iconColor(context),
-              ),
-            ),
-          ],
+        title: SvgPicture.asset(
+          Assets.logo,
+          height: 16.h,
+
+          color: ThemeColors.logoColor(context),
         ),
         actions: [
           16.widthBox,
@@ -150,56 +137,106 @@ class _MainLayoutState extends State<MainLayout> {
           controller: _pageController,
           physics: const BouncingScrollPhysics(),
           onPageChanged: (index) {
-            if (_isAdmin || index != 2) {
-              setState(() {
-                _currentIndex = index;
-              });
-            } else {
-              _pageController.jumpToPage(_currentIndex);
-            }
+            _pageController.jumpToPage(_currentIndex);
           },
+
           children: [
             BusinessScreen(categoryId: 1),
 
-            FitnessScreen(categoryId: 2),
-            if (_isAdmin) Container(),
             CryptoScreen(categoryId: 3),
+
+            FitnessScreen(categoryId: 2),
+
             MindsetScreen(categoryId: 5),
           ],
         ),
       ),
+      floatingActionButton:
+          _isAdmin
+              ? Padding(
+                padding: EdgeInsets.only(top: 20.h),
+                child: GestureDetector(
+                  onTap: () {
+                    showPostOptions(context);
+                  },
+                  child: Container(
+                    width: 55.w,
+                    height: 55.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? null
+                              : AppColors.purpleColor,
+                      gradient:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? LinearGradient(
+                                begin: Alignment.topLeft,
 
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: ThemeColors.background(context),
-          border: const Border(
-            top: BorderSide(color: AppColors.lightGreyColor, width: 0.5),
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFFFFFFFF), // white
+                                  Color(0xFF686868), // gray
+                                ],
+                              )
+                              : null,
+                      border: Border.all(
+                        color: Color(0x33000000), // black with 20% opacity
+                        width: 2.w,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: ThemeColors.fabAddIcon(context),
+                    ),
+                  ),
+                ),
+              )
+              : SizedBox.shrink(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: kBottomNavigationBarHeight + 32.h,
+            decoration: BoxDecoration(
+              color:
+                  Theme.of(context).brightness == Brightness.light
+                      ? AppColors.white
+                      : null, // remove color if dark mode
+              gradient:
+                  Theme.of(context).brightness == Brightness.dark
+                      ? const LinearGradient(
+                        colors: [Color(0xFF1A1A1A), Color(0xFF0E0E0E)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      )
+                      : null,
+            ),
           ),
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: ThemeColors.background(context),
-          selectedItemColor: AppColors.purpleColor,
-          unselectedItemColor: AppColors.greyColor,
-          selectedLabelStyle: TextStyle(
-            fontSize: 12.sp,
-            fontFamily: AppFonts.inter,
-            fontWeight: FontWeight.w400,
-          ),
-          selectedIconTheme: IconThemeData(color: AppColors.purpleColor),
-          unselectedIconTheme: IconThemeData(color: AppColors.greyColor),
-          unselectedLabelStyle: TextStyle(
-            height: 0,
-            fontSize: 12.sp,
-            fontFamily: AppFonts.inter,
-            fontWeight: FontWeight.w400,
-          ),
-
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            if (_isAdmin && index == 2) {
-              showPostOptions(context);
-            } else {
+          BottomNavigationBar(
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.transparent,
+            selectedItemColor: AppColors.purpleColor,
+            unselectedItemColor: ThemeColors.bottomNavText(context),
+            selectedLabelStyle: TextStyle(
+              fontSize: 10.sp,
+              fontFamily: AppFonts.inter,
+              fontWeight: FontWeight.w400,
+            ),
+            selectedIconTheme: IconThemeData(color: AppColors.purpleColor),
+            unselectedIconTheme: IconThemeData(
+              color: ThemeColors.bottomNavText(context),
+            ),
+            unselectedLabelStyle: TextStyle(
+              height: 0,
+              fontSize: 10.sp,
+              fontFamily: AppFonts.inter,
+              fontWeight: FontWeight.w400,
+            ),
+            currentIndex: _currentIndex,
+            onTap: (index) {
               setState(() {
                 _currentIndex = index;
                 _pageController.animateToPage(
@@ -208,96 +245,86 @@ class _MainLayoutState extends State<MainLayout> {
                   curve: Curves.easeInOut,
                 );
               });
-            }
-          },
-
-          items: [
-            BottomNavigationBarItem(
-              icon: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(
-                    width: 24.w,
-                    height: 24.h,
-                    Assets.bussinesIcon,
-                    color:
-                        _currentIndex == 0
-                            ? AppColors.purpleColor
-                            : AppColors.greyColor,
-                  ),
-
-                  3.heightBox,
-                ],
-              ),
-              label: 'Business',
-            ),
-
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  SvgPicture.asset(
-                    width: 24.w,
-                    height: 24.h,
-                    Assets.fitnessIcon,
-                    color:
-                        _currentIndex == 1
-                            ? AppColors.purpleColor
-                            : AppColors.greyColor,
-                  ),
-                  3.heightBox,
-                ],
-              ),
-              label: 'Fitness',
-            ),
-            if (_isAdmin)
+            },
+            items: [
               BottomNavigationBarItem(
-                icon: GestureDetector(
-                  onTap: () {
-                    showPostOptions(context);
-                  },
-                  child:
-                      _currentIndex == 2
-                          ? SvgPicture.asset(Assets.addPostPurpleIcon)
-                          : SvgPicture.asset(Assets.addPostIcon),
+                icon: Column(
+                  children: [
+                    SvgPicture.asset(
+                      Assets.bussinesIcon,
+                      width: 22.w,
+                      height: 22.h,
+                      color:
+                          _currentIndex == 0
+                              ? AppColors.purpleColor
+                              : ThemeColors.bottomNavText(context),
+                    ),
+                    5.heightBox,
+                  ],
                 ),
-                label: 'Add post',
+                label: 'Business',
               ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  SvgPicture.asset(
-                    width: 24.w,
-                    height: 24.h,
-                    Assets.cryptoIcon,
-                    color:
-                        _currentIndex == 3
-                            ? AppColors.purpleColor
-                            : AppColors.greyColor,
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(right: 30.w),
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(
+                        Assets.cryptoIcon,
+                        width: 22.w,
+                        height: 22.h,
+                        color:
+                            _currentIndex == 1
+                                ? AppColors.purpleColor
+                                : ThemeColors.bottomNavText(context),
+                      ),
+                      5.heightBox,
+                    ],
                   ),
-                  3.heightBox,
-                ],
+                ),
+                label: 'Crypto          ',
               ),
-              label: 'Crypto',
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  3.heightBox,
-                  SvgPicture.asset(
-                    Assets.mindsetIcon,
-                    color:
-                        _currentIndex == 4
-                            ? AppColors.purpleColor
-                            : AppColors.greyColor,
-                    width: 24.w,
-                    height: 24.h,
+
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(left: 30.w),
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(
+                        Assets.fitnessIcon,
+                        width: 22.w,
+                        height: 22.h,
+                        color:
+                            _currentIndex == 2
+                                ? AppColors.purpleColor
+                                : ThemeColors.bottomNavText(context),
+                      ),
+                      5.heightBox,
+                    ],
                   ),
-                ],
+                ),
+                label: '            Fitness',
               ),
-              label: 'Mindset',
-            ),
-          ],
-        ),
+              BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    SvgPicture.asset(
+                      Assets.mindsetIcon,
+                      width: 22.w,
+                      height: 22.h,
+                      color:
+                          _currentIndex == 3
+                              ? AppColors.purpleColor
+                              : ThemeColors.bottomNavText(context),
+                    ),
+                    5.heightBox,
+                  ],
+                ),
+                label: 'Mindset',
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -314,3 +341,19 @@ int _calculateSelectedIndex(String location) {
   if (location.startsWith('/mindset')) return 3;
   return 0;
 }
+
+
+
+                // if (_isAdmin)
+                //   BottomNavigationBarItem(
+                //     icon: GestureDetector(
+                //       onTap: () {
+                //         showPostOptions(context);
+                //       },
+                //       child:
+                //           _currentIndex == 2
+                //               ? SvgPicture.asset(Assets.addPostPurpleIcon)
+                //               : SvgPicture.asset(Assets.addPostIcon),
+                //     ),
+                //     label: 'Add post',
+                //   ),

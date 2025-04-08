@@ -15,10 +15,13 @@ import 'create_job_screen.dart';
 void showPostOptions(BuildContext context) {
   showModalBottomSheet(
     context: context,
+    backgroundColor: ThemeColors.background(context),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
     ),
     builder: (context) {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
         child: Column(
@@ -78,8 +81,9 @@ void showPostOptions(BuildContext context) {
                 _buildOption(
                   imgUrl: Assets.photoIcon,
                   label: "Post a photo",
-                  color: AppColors.skyBlue,
-                  textColor: AppColors.blue,
+                  color: isDark ? AppColors.white : AppColors.skyBlue,
+                  textColor: isDark ? AppColors.white : AppColors.blue,
+                  iconColor: isDark ? AppColors.white : AppColors.blue,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -89,12 +93,14 @@ void showPostOptions(BuildContext context) {
                       ),
                     );
                   },
+                  context: context,
                 ),
                 _buildOption(
                   imgUrl: Assets.videoIcon,
                   label: "Post a video",
-                  color: AppColors.seeGreen,
-                  textColor: AppColors.green,
+                  color: isDark ? AppColors.white : AppColors.seeGreen,
+                  textColor: isDark ? AppColors.white : AppColors.green,
+                  iconColor: isDark ? AppColors.white : AppColors.blue,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -104,12 +110,14 @@ void showPostOptions(BuildContext context) {
                       ),
                     );
                   },
+                  context: context,
                 ),
                 _buildOption(
                   imgUrl: Assets.createJobIcon,
                   label: "Create job",
-                  color: AppColors.lightorange,
-                  textColor: AppColors.orange,
+                  color: isDark ? AppColors.white : AppColors.lightorange,
+                  textColor: isDark ? AppColors.white : AppColors.orange,
+                  iconColor: isDark ? AppColors.white : AppColors.blue,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -119,12 +127,14 @@ void showPostOptions(BuildContext context) {
                       ),
                     );
                   },
+                  context: context,
                 ),
                 _buildOption(
                   imgUrl: Assets.createEvent,
                   label: "Create event",
-                  color: AppColors.lightRed,
-                  textColor: AppColors.darkRed,
+                  color: isDark ? AppColors.white : AppColors.lightRed,
+                  textColor: isDark ? AppColors.white : AppColors.darkRed,
+                  iconColor: isDark ? AppColors.white : AppColors.blue,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -133,6 +143,7 @@ void showPostOptions(BuildContext context) {
                       ),
                     );
                   },
+                  context: context,
                 ),
               ],
             ),
@@ -149,13 +160,26 @@ Widget _buildOption({
   required String label,
   required Color color,
   required Color textColor,
+  required Color iconColor,
   required VoidCallback onTap,
+  required BuildContext context,
 }) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
       decoration: BoxDecoration(
-        color: color,
+        color: Theme.of(context).brightness == Brightness.dark ? null : color,
+        gradient:
+            Theme.of(context).brightness == Brightness.dark
+                ? const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF1D1D1D), // Fully opaque
+                    Color(0x33282828), // 20% opacity
+                  ],
+                )
+                : null,
         borderRadius: BorderRadius.circular(6.r),
       ),
 
@@ -164,7 +188,7 @@ Widget _buildOption({
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SvgPicture.asset(imgUrl),
+          SvgPicture.asset(imgUrl, color: iconColor),
           8.heightBox,
           Text(
             label,

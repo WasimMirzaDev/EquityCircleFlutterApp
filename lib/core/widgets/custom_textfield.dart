@@ -119,7 +119,7 @@ class CustomTextField extends StatelessWidget {
             fontFamily: AppFonts.inter,
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.darkGrey,
+            color: ThemeColors.hintTextColor(context),
           ),
           suffixIconConstraints: BoxConstraints(maxHeight: 43.h),
           prefixIconConstraints: BoxConstraints(maxHeight: 35.h),

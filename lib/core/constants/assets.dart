@@ -1,4 +1,7 @@
 class Assets {
+  static final logo = "assets/images/equityCircleLogo.svg";
+
+  static final drawerBg = "assets/images/drawerBg.svg";
   static final bussinesIcon = "assets/icon/bussiness.svg";
 
   static final fitnessIcon = "assets/icon/fitnessIcon.svg";

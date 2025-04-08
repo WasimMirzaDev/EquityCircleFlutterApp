@@ -22,32 +22,26 @@ class DrawerContent extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context);
     return Stack(
       children: [
-        Positioned.fill(child: Image.asset(Assets.drawerbg, fit: BoxFit.cover)),
+        Positioned.fill(
+          top: 400.h,
+          child: SvgPicture.asset(
+            Assets.drawerBg,
+            fit: BoxFit.cover,
+            height: 640.h,
+          ),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               70.heightBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/icon/Equity_Circle_icon.png",
-                    height: 30.h,
-                    width: 30.w,
-                  ),
-                  8.widthBox,
-                  Text(
-                    'Equity Circle',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w600,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                ],
+              Center(
+                child: SvgPicture.asset(
+                  Assets.logo,
+                  height: 20.h,
+                  color: ThemeColors.logoColor(context),
+                ),
               ),
               24.heightBox,
               Divider(color: AppColors.lightGreyColor, height: 0.5),
@@ -56,27 +50,27 @@ class DrawerContent extends StatelessWidget {
                 context.push('/education');
               }, context),
 
-              30.heightBox,
+              20.heightBox,
 
               drawerRow("Job List", Assets.jobList, () {
                 context.go('/Joblist');
               }, context),
-              30.heightBox,
+              20.heightBox,
 
               drawerRow("Job Application", Assets.jobApplication, () {
                 context.go('/JobApplication');
               }, context),
-              30.heightBox,
+              20.heightBox,
 
               drawerRow("Events Calendar", Assets.eventCalender, () {
                 context.go('/EventCalender');
               }, context),
-              30.heightBox,
+              20.heightBox,
 
               drawerRow("Notifications", Assets.notificationIcon, () {
                 // context.go('/settings');
               }, context),
-              30.heightBox,
+              20.heightBox,
 
               drawerRow("Mange Users", Assets.user, () {
                 // Navigator.push(
@@ -84,7 +78,7 @@ class DrawerContent extends StatelessWidget {
                 //   MaterialPageRoute(builder: (context) => ManageUserScreen()),
                 // );
               }, context),
-              30.heightBox,
+              20.heightBox,
               drawerRow("Log out", Assets.logoutIcon, () {
                 showDiscardDialog(
                   context,
@@ -140,21 +134,55 @@ class DrawerContent extends StatelessWidget {
         children: [
           Row(
             children: [
-              SvgPicture.asset(
-                width: 20.w,
-                height: 20.h,
-                icon,
-                color:
-                    title == "Log out"
-                        ? Colors.red
-                        : ThemeColors.iconColor(context),
+              Container(
+                // width: 40.w,
+                // height: 200,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromRGBO(255, 255, 255, 0.10), // 10% white
+                      Color.fromRGBO(255, 255, 255, 0.01), // 1% white
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(
+                        255,
+                        255,
+                        255,
+                        0.05,
+                      ), // 5% white shadow
+                      offset: Offset(0, 2),
+                      blurRadius: 5,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(
+                    4.r,
+                  ), // Optional, for rounded corners
+                ),
+
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: SvgPicture.asset(
+                    width: 20.w,
+                    height: 20.h,
+                    icon,
+                    color:
+                        title == "Log out"
+                            ? Colors.red
+                            : ThemeColors.iconColor(context),
+                  ),
+                ),
               ),
               10.widthBox,
               Text(
                 title,
                 style: TextStyle(
                   fontFamily: AppFonts.inter,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   color:
                       title == "Log out"
                           ? Colors.red

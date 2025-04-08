@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/constants/theme_colors.dart';
 import '../../core/widgets/loading_indicator.dart';
 import 'job_detail_screen.dart';
 
@@ -35,25 +36,29 @@ class _JoblistPageState extends State<JoblistPage> {
   Widget build(BuildContext context) {
     final jobProvider = Provider.of<JobProvider>(context);
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppColors.offWhite,
+        backgroundColor: ThemeColors.background(context),
         shadowColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: Text(
           "Job listing",
           style: TextStyle(
-            color: AppColors.black,
+            color: ThemeColors.textColor(context),
             fontWeight: FontWeight.w600,
             fontFamily: AppFonts.inter,
             fontSize: 14.sp,
           ),
         ),
         leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
+          icon: SvgPicture.asset(
+            Assets.backArrow,
+            height: 20.h,
+            color: ThemeColors.iconColor(context),
+          ),
           onPressed: () {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (context.canPop()) {

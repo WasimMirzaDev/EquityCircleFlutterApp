@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart'
 
 import '../../../core/constants/appColors.dart' show AppColors;
 import '../../../core/constants/appFonts.dart';
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/widgets/custom_snackbar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -181,6 +182,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeColors.background(context),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Center(
@@ -205,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 18.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                     ],
@@ -220,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 14.sp,
                         fontFamily: AppFonts.inter,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.black,
+                        color: ThemeColors.textColor(context),
                       ),
                     ),
                   ),
@@ -229,6 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                     controller: emailController,
                     validator: _validateEmail,
                     hint: "Email Address",
+                    fillColor: ThemeColors.search(context),
                   ),
 
                   10.heightBox,
@@ -237,6 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                     controller: passwordController,
                     validator: _validatePassword,
                     hint: "Password",
+                    fillColor: ThemeColors.search(context),
                     suffixIcon: Padding(
                       padding: EdgeInsets.only(right: 12.w),
                       child: GestureDetector(

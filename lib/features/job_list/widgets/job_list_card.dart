@@ -6,6 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:html/parser.dart' as htmlParser;
 
+import '../../../core/constants/theme_colors.dart';
+
 class JobCardWidget extends StatelessWidget {
   // final Job job;
 
@@ -30,8 +32,11 @@ class JobCardWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        color: AppColors.white,
-        border: Border.all(color: AppColors.lightGreyColor, width: 0.28),
+        color: ThemeColors.cardColor(context),
+        border: Border.all(
+          color: ThemeColors.borderColor(context),
+          width: 0.28,
+        ),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -103,7 +108,7 @@ class JobCardWidget extends StatelessWidget {
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
                 fontFamily: AppFonts.inter,
-                color: AppColors.black,
+                color: ThemeColors.textColor(context),
               ),
             ),
             10.heightBox,
@@ -113,7 +118,7 @@ class JobCardWidget extends StatelessWidget {
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w600,
                 fontFamily: AppFonts.inter,
-                color: AppColors.darkGrey,
+                color: ThemeColors.subTextColor(context),
               ),
             ),
 

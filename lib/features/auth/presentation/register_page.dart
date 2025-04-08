@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/widgets/custom_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -68,10 +69,10 @@ class _RegisterPageState extends State<RegisterPage> {
       //     );
 
       bool success = await authProvider.register(
-        nameController!.text.trim(),
-        emailController!.text.trim(),
-        passwordController!.text,
-        passwordController!.text,
+        nameController.text.trim(),
+        emailController.text.trim(),
+        passwordController.text,
+        passwordController.text,
       );
 
       if (success) {
@@ -145,6 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeColors.background(context),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Center(
@@ -169,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           fontSize: 18.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                     ],
@@ -184,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         fontSize: 14.sp,
                         fontFamily: AppFonts.inter,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.black,
+                        color: ThemeColors.textColor(context),
                       ),
                     ),
                   ),
@@ -193,12 +195,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: nameController,
                     validator: _validateName,
                     hint: 'Full Name',
+                    fillColor: ThemeColors.search(context),
                   ),
                   10.heightBox,
                   CustomTextField(
                     controller: emailController,
                     validator: _validateEmail,
                     hint: 'Email Address',
+                    fillColor: ThemeColors.search(context),
                   ),
                   10.heightBox,
                   CustomTextField(
@@ -206,6 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: passwordController,
                     validator: _validatePassword,
                     hint: 'Password',
+                    fillColor: ThemeColors.search(context),
                     suffixIcon: Padding(
                       padding: EdgeInsets.only(right: 12.w),
                       child: GestureDetector(

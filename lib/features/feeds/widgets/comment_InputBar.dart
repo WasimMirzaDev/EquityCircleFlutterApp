@@ -156,10 +156,15 @@ class _CommentInputBarState extends State<CommentInputBar> {
                     height: 36.h,
                     width: 36.w,
                     decoration: BoxDecoration(
-                      color: AppColors.purpleColor,
+                      color: ThemeColors.sendBgColor(context),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
-                    child: Center(child: SvgPicture.asset(Assets.sendicon)),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        Assets.sendicon,
+                        color: ThemeColors.sendIconColor(context),
+                      ),
+                    ),
                   ),
         ),
       ],

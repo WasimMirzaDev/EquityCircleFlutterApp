@@ -357,8 +357,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               isActive = value;
                             });
                           },
-                          activeColor: AppColors.white,
-                          activeTrackColor: AppColors.purpleColor,
+                          activeColor: ThemeColors.swtichDotColor(context),
+                          activeTrackColor: ThemeColors.swtichBgColor(context),
                         ),
                       ),
                     ],

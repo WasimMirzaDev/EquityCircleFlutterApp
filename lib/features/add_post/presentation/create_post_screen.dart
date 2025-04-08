@@ -23,6 +23,7 @@ import 'package:provider/provider.dart' show Provider;
 import '../../../core/constants/theme_colors.dart';
 import '../../../core/providers/auth_provider.dart';
 import '../../../core/widgets/custom_textfield.dart';
+import 'widget/discard_dialogbox.dart';
 
 class CreatePostScreen extends StatefulWidget {
   final DataByFeed? post;
@@ -233,7 +234,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             color: ThemeColors.iconColor(context),
           ),
           onPressed: () {
-            Navigator.pop(context);
+            showDiscardDialog(
+              context,
+
+              "Discard Changes?",
+              "Are you sure you want to discard your changes? All unsaved modifications will be lost.",
+              "Cancel",
+              "Discard",
+
+              () {
+                Navigator.pop(context, true);
+              },
+              () {
+                Navigator.pop(context, true);
+                Navigator.pop(context, true);
+              },
+            );
           },
         ),
       ),
@@ -379,7 +395,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   8.heightBox,
                   CustomTextField(
                     controller: discriptionController,
-                    hint: "Enter Description*",
+                    hint: "Write here...",
                     maxLines: 4,
                     fillColor: _selectedBackground,
                   ),
@@ -706,9 +722,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 selectedPrivacy.toLowerCase() == label.toLowerCase()
                     ? null
                     : Border.all(color: ThemeColors.borderColor(context)),
+
+            gradient:
+                Theme.of(context).brightness == Brightness.dark &&
+                        selectedPrivacy.toLowerCase() == label.toLowerCase()
+                    ? const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0x80FFFFFF), // 50% opacity
+                        Color(0x1AFFFFFF),
+                      ],
+                    )
+                    : null,
+
             color:
                 selectedPrivacy.toLowerCase() == label.toLowerCase()
-                    ? AppColors.purpleColor
+                    ? Theme.of(context).brightness == Brightness.dark
+                        ? null
+                        : AppColors.purpleColor
                     : ThemeColors.postCatagoriesBox(context),
           ),
           child: Row(
@@ -771,9 +803,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 selectedCategory == category
                     ? null
                     : Border.all(color: ThemeColors.borderColor(context)),
+
+            gradient:
+                Theme.of(context).brightness == Brightness.dark &&
+                        selectedCategory == category
+                    ? const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0x80FFFFFF), // 50% opacity
+                        Color(0x1AFFFFFF),
+                      ],
+                    )
+                    : null,
+
             color:
                 selectedCategory == category
-                    ? AppColors.purpleColor
+                    ? Theme.of(context).brightness == Brightness.dark
+                        ? null
+                        : AppColors.purpleColor
                     : ThemeColors.postCatagoriesBox(context),
           ),
 

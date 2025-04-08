@@ -11,7 +11,9 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants/appFonts.dart';
 import '../../../core/constants/assets.dart';
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/providers/auth_provider.dart';
+import 'comment_InputBar.dart';
 
 class FeedCard extends StatefulWidget {
   final DataByFeed feed;
@@ -139,7 +141,7 @@ class _FeedCardState extends State<FeedCard> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       builder:
           (context) => DraggableScrollableSheet(
             initialChildSize: 0.5,
@@ -147,64 +149,91 @@ class _FeedCardState extends State<FeedCard> {
             maxChildSize: 0.9,
             builder:
                 (_, scrollController) => Container(
-                  padding: EdgeInsets.all(10.r),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: ThemeColors.background(context),
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
+                      top: Radius.circular(20.r),
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      10.heightBox,
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 10.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: SvgPicture.asset(Assets.close, height: 12.h),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      children: [
+                        20.heightBox,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 10.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: SvgPicture.asset(
+                                Assets.close,
+                                height: 12.h,
+                                color: ThemeColors.iconColor(context),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        "Comments",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontFamily: AppFonts.inter,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                        Text(
+                          "Comments",
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontFamily: AppFonts.inter,
+                            fontWeight: FontWeight.w600,
+                            color: ThemeColors.textColor(context),
+                          ),
                         ),
-                      ),
-                      20.heightBox,
-                      Divider(color: AppColors.lightGreyColor, height: 0.5.h),
-                      20.heightBox,
+                        20.heightBox,
+                        Divider(
+                          color: ThemeColors.borderColor(context),
+                          height: 0.5.h,
+                        ),
+                        20.heightBox,
 
-                      // CommentInputBar(
-                      //   feedId: widget.feed.id ?? 0,
-                      //   categoryId: widget.feed.categoryId ?? 0,
-                      // ),
-                      Expanded(
-                        child: ListView.builder(
-                          controller: scrollController,
-                          itemCount: comments.length,
-                          itemBuilder: (context, index) {
-                            final comment = comments.reversed.toList()[index];
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  comment.user?.profileImage ?? '',
+                        Expanded(
+                          child: ListView.builder(
+                            controller: scrollController,
+                            itemCount: comments.length,
+                            itemBuilder: (context, index) {
+                              final comment = comments.reversed.toList()[index];
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    comment.user?.profileImage ?? '',
+                                  ),
                                 ),
-                              ),
-                              title: Text(comment.user?.name ?? 'Anonymous'),
-                              subtitle: Text(comment.content ?? ''),
-                            );
-                          },
+                                title: Text(
+                                  comment.user?.name ?? 'Anonymous',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontFamily: AppFonts.inter,
+                                    fontWeight: FontWeight.w600,
+                                    color: ThemeColors.textColor(context),
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  comment.content ?? '',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontFamily: AppFonts.inter,
+                                    fontWeight: FontWeight.w600,
+                                    color: ThemeColors.textColor(context),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                        20.heightBox,
+                        CommentInputBar(
+                          feedId: widget.feed.id ?? 0,
+                          categoryId: widget.feed.categoryId ?? 0,
+                        ),
+                        30.heightBox,
+                      ],
+                    ),
                   ),
                 ),
           ),
