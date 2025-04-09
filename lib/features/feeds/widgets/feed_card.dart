@@ -48,7 +48,7 @@ class _FeedCardState extends State<FeedCard> {
     final List<MediaByFeeds> media = widget.feed.media ?? [];
     final List<LikesByFeeds> likes = widget.feed.likes ?? [];
     final List<CommentsByFeeds> comments = widget.feed.comments ?? [];
-
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final bool isLiked = likes.any(
       (like) => like.userId == widget.loggedInUserId,
     );
@@ -74,8 +74,8 @@ class _FeedCardState extends State<FeedCard> {
               .then((response) => response);
         },
         _getCategoryName(widget.feed.categoryId ?? 0),
-        _getColor(widget.feed.categoryId ?? 0, true),
-        _getColor(widget.feed.categoryId ?? 0, false),
+        _getColor(widget.feed.categoryId ?? 0, true, isDarkMode),
+        _getColor(widget.feed.categoryId ?? 0, false, isDarkMode),
         media.where((e) => e.url != null && e.url!.isNotEmpty).toList(),
 
         context,
@@ -87,16 +87,40 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
-  Color _getColor(int categoryId, bool isLight) {
+  Color _getColor(int categoryId, bool isLight, bool isDarkMode) {
     switch (categoryId) {
       case 1:
-        return isLight ? AppColors.lightpurple : AppColors.purpleColor;
+        return isLight
+            ? isDarkMode
+                ? AppColors.blackGreyDark
+                : AppColors.lightpurple
+            : isDarkMode
+            ? AppColors.lightpurple
+            : AppColors.purpleColor;
       case 2:
-        return isLight ? AppColors.lightGreen : AppColors.green;
+        return isLight
+            ? isDarkMode
+                ? AppColors.blackGreyDark
+                : AppColors.lightGreen
+            : isDarkMode
+            ? AppColors.lightGreen
+            : AppColors.green;
       case 3:
-        return isLight ? AppColors.lightYellow : AppColors.yellow;
+        return isLight
+            ? isDarkMode
+                ? AppColors.blackGreyDark
+                : AppColors.lightYellow
+            : isDarkMode
+            ? AppColors.lightYellow
+            : AppColors.yellow;
       case 5:
-        return isLight ? AppColors.lightPink : AppColors.darkPink;
+        return isLight
+            ? isDarkMode
+                ? AppColors.blackGreyDark
+                : AppColors.lightPink
+            : isDarkMode
+            ? AppColors.lightPink
+            : AppColors.darkPink;
       default:
         return Colors.transparent;
     }

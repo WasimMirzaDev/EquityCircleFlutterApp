@@ -137,7 +137,7 @@ fonts:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icon/Equity_Circle_icon.png" # Path to your icon
+  image_path: "assets/images/equityCircleLogo.svg" # Path to your icon
 
 
 

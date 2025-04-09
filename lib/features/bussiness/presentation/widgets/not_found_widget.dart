@@ -13,31 +13,28 @@ class NoBusinessInsights extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ThemeColors.background(context),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              icon,
-              height: 36.h,
-              width: 36.w,
-              color: ThemeColors.iconColor(context),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            icon,
+            height: 36.h,
+            width: 36.w,
+            color: ThemeColors.iconColor(context),
+          ),
+          10.heightBox,
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: ThemeColors.textColor(context),
+              fontWeight: FontWeight.w400,
+              fontFamily: AppFonts.inter,
             ),
-            10.heightBox,
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: ThemeColors.textColor(context),
-                fontWeight: FontWeight.w400,
-                fontFamily: AppFonts.inter,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

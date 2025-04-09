@@ -100,7 +100,7 @@ void showPostOptions(BuildContext context) {
                   label: "Post a video",
                   color: isDark ? AppColors.white : AppColors.seeGreen,
                   textColor: isDark ? AppColors.white : AppColors.green,
-                  iconColor: isDark ? AppColors.white : AppColors.blue,
+                  iconColor: isDark ? AppColors.white : AppColors.green,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -117,7 +117,7 @@ void showPostOptions(BuildContext context) {
                   label: "Create job",
                   color: isDark ? AppColors.white : AppColors.lightorange,
                   textColor: isDark ? AppColors.white : AppColors.orange,
-                  iconColor: isDark ? AppColors.white : AppColors.blue,
+                  iconColor: isDark ? AppColors.white : AppColors.orange,
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -134,7 +134,7 @@ void showPostOptions(BuildContext context) {
                   label: "Create event",
                   color: isDark ? AppColors.white : AppColors.lightRed,
                   textColor: isDark ? AppColors.white : AppColors.darkRed,
-                  iconColor: isDark ? AppColors.white : AppColors.blue,
+                  iconColor: isDark ? AppColors.white : AppColors.darkRed,
                   onTap: () {
                     Navigator.push(
                       context,

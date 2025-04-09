@@ -65,7 +65,8 @@ class Assets {
   static final privacy = "assets/icon/privacy.svg";
   static final appsettings = "assets/icon/appsettings.svg";
   static final chat = "assets/icon/chat.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";// static final smileIcon = "assets/icon/smileIcon.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";
+  static final editIcon = "assets/icon/editIcon.svg";
+  static final homeBg = "assets/images/homeBg.png";
+  static final splashBg = "assets/images/splashBg.png";
+  static final postFormBg = "assets/images/postFormBg.png";
 }

@@ -2,6 +2,7 @@ import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/features/profile/widgets/custom_two_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -266,63 +267,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     hint: "www.youtube.com",
                   ),
                   16.heightBox,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          child: Container(
-                            height: 32.h,
-
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6.r),
-                              border: Border.all(
-                                color: AppColors.darkGrey,
-                                width: 1.w,
-                              ),
-                              color: AppColors.white,
-                            ),
-
-                            child: Center(
-                              child: Text(
-                                "Cancel",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontFamily: AppFonts.inter,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      10.widthBox,
-                      Expanded(
-                        child: GestureDetector(
-                          child: Container(
-                            height: 32.h,
-
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6.r),
-
-                              color: AppColors.purpleColor,
-                            ),
-
-                            child: Center(
-                              child: Text(
-                                "Save change",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontFamily: AppFonts.inter,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  CustomTwoButtonsRow(
+                    cancelText: "Cancel",
+                    confirmText: "Save change",
                   ),
                 ],
               ),

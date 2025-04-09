@@ -10,7 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/constants/theme_colors.dart';
+import '../../../core/widgets/custom_appbar.dart';
 import '../../../core/widgets/custom_textfield.dart';
+import 'widget/custom_dropdown.dart';
 
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({super.key});
@@ -68,313 +70,237 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ThemeColors.background(context),
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: ThemeColors.background(context),
-        shadowColor: Colors.black,
-        surfaceTintColor: Colors.black,
-        title: Text(
-          "Create new event",
-          style: TextStyle(
-            color: ThemeColors.textColor(context),
-            fontWeight: FontWeight.w600,
-            fontFamily: AppFonts.inter,
-            fontSize: 14.sp,
-          ),
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            Assets.backArrow,
-            height: 20.h,
-            color: ThemeColors.iconColor(context),
-          ),
-          onPressed: () {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      decoration:
+          isDarkMode
+              ? BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Assets.postFormBg),
+                  fit: BoxFit.fill,
+                ),
+              )
+              : BoxDecoration(color: AppColors.white),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: CustomAppBar(
+          title: "Create new event",
+          onLeadingPressed: () {
             Navigator.pop(context);
           },
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  20.heightBox,
-                  Text(
-                    "Event type*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  DropdownButtonFormField<String>(
-                    style: TextStyle(
-                      fontFamily: AppFonts.inter,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.darkGrey,
-                    ),
-                    icon: SizedBox.shrink(),
-                    value:
-                        eventTypes.contains(eventTypeController.text)
-                            ? eventTypeController.text
-                            : null,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      filled: true,
-                      fillColor: ThemeColors.search(context),
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12.w,
-                        vertical: 12.h,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: AppColors.lightGreyColor,
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.lightGreyColor,
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      hintText: "Select Event Type",
-                      hintStyle: TextStyle(
-                        fontFamily: AppFonts.inter,
+
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    20.heightBox,
+                    Text(
+                      "Event type*",
+                      style: TextStyle(
                         fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.darkGrey,
+                        color: ThemeColors.textColor(context),
                       ),
+                    ),
+                    8.heightBox,
+                    CustomDropdown(
+                      controller: eventTypeController,
+                      selectedValue: eventTypeController.text,
+                      items: eventTypes,
+                      onChanged: (newValue) {
+                        setState(() {
+                          eventTypeController.text = newValue!;
+                        });
+                      },
+                      hintText: "Select Event Type",
+                    ),
+                    16.heightBox,
+                    Text(
+                      "Title*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: titleController,
+                      hint: "Enter title*",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    16.heightBox,
+                    Text(
+                      "Subtitle*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: subtitleController,
+                      hint: "Enter subtitle",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    16.heightBox,
+                    Text(
+                      "Description*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: discriptionController,
+                      hint: "Enter Description*",
+                      fillColor: ThemeColors.search(context),
+                      maxLines: 4,
+                    ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     color: AppColors.white,
+                    //     border: Border.all(
+                    //       color: AppColors.lightGreyColor,
+                    //       width: 0.5,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(8.r),
+                    //   ),
+                    //   child: CustomQuillEditor(
+                    //     controller: _controller,
+                    //     backgroundColor: AppColors.white,
+                    //   ),
+                    // ),
+                    16.heightBox,
+                    Text(
+                      "Event date*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: eventDateController,
+                      fillColor: ThemeColors.search(context),
+                      hint: "dd/mm/yyyy",
+                      onTap: () => _selectDate(context),
                       suffixIcon: Padding(
                         padding: EdgeInsets.only(right: 12.w),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              Assets.arrowDown,
-                              height: 16.h,
-                              width: 16.w,
-                            ),
-                          ],
-                        ),
-                      ),
-                      suffixIconConstraints: const BoxConstraints(
-                        maxHeight: 43,
-                      ),
-                      prefixIconConstraints: const BoxConstraints(
-                        maxHeight: 35,
+                        child: SvgPicture.asset(Assets.calendar),
                       ),
                     ),
-                    items:
-                        eventTypes.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                fontFamily: AppFonts.inter,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.darkGrey,
+                    16.heightBox,
+                    Text(
+                      "Start & End time*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 40.h,
+                            child: CustomTextField(
+                              controller: startDateController,
+                              fillColor: ThemeColors.search(context),
+                              hint: "Start time",
+                              onTap:
+                                  () =>
+                                      _selectTime(context, startDateController),
+                              maxLines: 5,
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.only(right: 12.w),
+                                child: SvgPicture.asset(Assets.clock),
                               ),
                             ),
-                          );
-                        }).toList(),
-                    onChanged: (newValue) {
-                      setState(() {
-                        eventTypeController.text = newValue!;
-                      });
-                    },
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Title*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: titleController,
-                    hint: "Enter title*",
-                    fillColor: ThemeColors.search(context),
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Subtitle*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: subtitleController,
-                    hint: "Enter subtitle",
-                    fillColor: ThemeColors.search(context),
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Description*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: discriptionController,
-                    hint: "Enter Description*",
-                    fillColor: ThemeColors.search(context),
-                    maxLines: 4,
-                  ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     color: AppColors.white,
-                  //     border: Border.all(
-                  //       color: AppColors.lightGreyColor,
-                  //       width: 0.5,
-                  //     ),
-                  //     borderRadius: BorderRadius.circular(8.r),
-                  //   ),
-                  //   child: CustomQuillEditor(
-                  //     controller: _controller,
-                  //     backgroundColor: AppColors.white,
-                  //   ),
-                  // ),
-                  16.heightBox,
-                  Text(
-                    "Event date*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: eventDateController,
-                    fillColor: ThemeColors.search(context),
-                    hint: "dd/mm/yyyy",
-                    onTap: () => _selectDate(context),
-                    suffixIcon: Padding(
-                      padding: EdgeInsets.only(right: 12.w),
-                      child: SvgPicture.asset(Assets.calendar),
-                    ),
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Start & End time*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 40.h,
-                          child: CustomTextField(
-                            controller: startDateController,
-                            fillColor: ThemeColors.search(context),
-                            hint: "Start time",
-                            onTap:
-                                () => _selectTime(context, startDateController),
-                            maxLines: 5,
-                            suffixIcon: Padding(
-                              padding: EdgeInsets.only(right: 12.w),
-                              child: SvgPicture.asset(Assets.clock),
+                          ),
+                        ),
+                        10.widthBox,
+                        Expanded(
+                          child: SizedBox(
+                            height: 40.h,
+                            child: CustomTextField(
+                              controller: endDateController,
+                              fillColor: ThemeColors.search(context),
+                              onTap:
+                                  () => _selectTime(context, endDateController),
+                              hint: "End time",
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.only(right: 12.w),
+                                child: SvgPicture.asset(Assets.clock),
+                              ),
+                              maxLines: 5,
                             ),
                           ),
                         ),
-                      ),
-                      10.widthBox,
-                      Expanded(
-                        child: SizedBox(
-                          height: 40.h,
-                          child: CustomTextField(
-                            controller: endDateController,
-                            fillColor: ThemeColors.search(context),
-                            onTap:
-                                () => _selectTime(context, endDateController),
-                            hint: "End time",
-                            suffixIcon: Padding(
-                              padding: EdgeInsets.only(right: 12.w),
-                              child: SvgPicture.asset(Assets.clock),
-                            ),
-                            maxLines: 5,
+                      ],
+                    ),
+                    4.heightBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Event active",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontFamily: AppFonts.inter,
+                            fontWeight: FontWeight.w400,
+                            color: ThemeColors.textColor(context),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  4.heightBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Event active",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontFamily: AppFonts.inter,
-                          fontWeight: FontWeight.w400,
-                          color: ThemeColors.textColor(context),
+                        Transform.scale(
+                          scale: 0.7, // Adjusts the size of the switch
+                          child: Switch(
+                            value: isActive,
+                            onChanged: (value) {
+                              setState(() {
+                                isActive = value;
+                              });
+                            },
+                            activeColor: ThemeColors.swtichDotColor(context),
+                            activeTrackColor: ThemeColors.swtichBgColor(
+                              context,
+                            ),
+                          ),
                         ),
-                      ),
-                      Transform.scale(
-                        scale: 0.7, // Adjusts the size of the switch
-                        child: Switch(
-                          value: isActive,
-                          onChanged: (value) {
-                            setState(() {
-                              isActive = value;
-                            });
-                          },
-                          activeColor: ThemeColors.swtichDotColor(context),
-                          activeTrackColor: ThemeColors.swtichBgColor(context),
-                        ),
-                      ),
-                    ],
-                  ),
-                  30.heightBox,
-                  CustomButton(
-                    text: "Create event",
-                    onTap: () {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                  24.heightBox,
-                ],
+                      ],
+                    ),
+                    30.heightBox,
+                    CustomButton(
+                      text: "Create event",
+                      onTap: () {
+                        Navigator.pop(context, true);
+                      },
+                    ),
+                    24.heightBox,
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
