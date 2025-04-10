@@ -56,7 +56,7 @@ class _MainLayoutState extends State<MainLayout> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     return Container(
       decoration:
           isDarkMode
@@ -68,6 +68,7 @@ class _MainLayoutState extends State<MainLayout> {
               )
               : BoxDecoration(color: AppColors.white),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
         // extendBodyBehindAppBar: true,
         key: _scaffoldKey, // ✅ Assign the GlobalKey here
@@ -105,41 +106,44 @@ class _MainLayoutState extends State<MainLayout> {
 
         floatingActionButton:
             _isAdmin
-                ? Padding(
-                  padding: EdgeInsets.only(top: 20.h),
-                  child: GestureDetector(
-                    onTap: () {
-                      showPostOptions(context);
-                    },
-                    child: Container(
-                      width: 55.w,
-                      height: 55.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color:
-                            Theme.of(context).brightness == Brightness.dark
-                                ? null
-                                : AppColors.purpleColor,
-                        gradient:
-                            Theme.of(context).brightness == Brightness.dark
-                                ? LinearGradient(
-                                  begin: Alignment.topLeft,
+                ? Visibility(
+                  visible: !isKeyboardOpen,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        showPostOptions(context);
+                      },
+                      child: Container(
+                        width: 55.w,
+                        height: 55.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? null
+                                  : AppColors.purpleColor,
+                          gradient:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? LinearGradient(
+                                    begin: Alignment.topLeft,
 
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color(0xFFFFFFFF), // white
-                                    Color(0xFF686868), // gray
-                                  ],
-                                )
-                                : null,
-                        border: Border.all(
-                          color: Color(0x33000000), // black with 20% opacity
-                          width: 2.w,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFFFFFFFF), // white
+                                      Color(0xFF686868), // gray
+                                    ],
+                                  )
+                                  : null,
+                          border: Border.all(
+                            color: Color(0x33000000), // black with 20% opacity
+                            width: 2.w,
+                          ),
                         ),
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        color: ThemeColors.fabAddIcon(context),
+                        child: Icon(
+                          Icons.add,
+                          color: ThemeColors.fabAddIcon(context),
+                        ),
                       ),
                     ),
                   ),
@@ -170,17 +174,17 @@ class _MainLayoutState extends State<MainLayout> {
               elevation: 0,
               type: BottomNavigationBarType.fixed,
               backgroundColor: Colors.transparent,
-              selectedItemColor: AppColors.purpleColor,
-              unselectedItemColor: ThemeColors.bottomNavText(context),
+              selectedItemColor: ThemeColors.bottomNavText(context),
+              unselectedItemColor: AppColors.darkGrey,
               selectedLabelStyle: TextStyle(
                 fontSize: 10.sp,
                 fontFamily: AppFonts.inter,
                 fontWeight: FontWeight.w400,
               ),
-              selectedIconTheme: IconThemeData(color: AppColors.purpleColor),
-              unselectedIconTheme: IconThemeData(
+              selectedIconTheme: IconThemeData(
                 color: ThemeColors.bottomNavText(context),
               ),
+              unselectedIconTheme: IconThemeData(color: AppColors.darkGrey),
               unselectedLabelStyle: TextStyle(
                 height: 0,
                 fontSize: 10.sp,
@@ -208,8 +212,8 @@ class _MainLayoutState extends State<MainLayout> {
                         height: 22.h,
                         color:
                             _currentIndex == 0
-                                ? AppColors.purpleColor
-                                : ThemeColors.bottomNavText(context),
+                                ? ThemeColors.bottomNavText(context)
+                                : AppColors.darkGrey,
                       ),
                       5.heightBox,
                     ],
@@ -227,8 +231,8 @@ class _MainLayoutState extends State<MainLayout> {
                           height: 22.h,
                           color:
                               _currentIndex == 1
-                                  ? AppColors.purpleColor
-                                  : ThemeColors.bottomNavText(context),
+                                  ? ThemeColors.bottomNavText(context)
+                                  : AppColors.darkGrey,
                         ),
                         5.heightBox,
                       ],
@@ -248,8 +252,8 @@ class _MainLayoutState extends State<MainLayout> {
                           height: 22.h,
                           color:
                               _currentIndex == 2
-                                  ? AppColors.purpleColor
-                                  : ThemeColors.bottomNavText(context),
+                                  ? ThemeColors.bottomNavText(context)
+                                  : AppColors.darkGrey,
                         ),
                         5.heightBox,
                       ],
@@ -266,8 +270,8 @@ class _MainLayoutState extends State<MainLayout> {
                         height: 22.h,
                         color:
                             _currentIndex == 3
-                                ? AppColors.purpleColor
-                                : ThemeColors.bottomNavText(context),
+                                ? ThemeColors.bottomNavText(context)
+                                : AppColors.darkGrey,
                       ),
                       5.heightBox,
                     ],

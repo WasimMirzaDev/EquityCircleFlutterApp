@@ -42,15 +42,15 @@ class CustomDropdown extends StatelessWidget {
         fillColor: ThemeColors.search(context),
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
         enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: AppColors.lightGreyColor,
+          borderSide: BorderSide(
+            color: ThemeColors.borderColor(context),
             width: 0.5,
           ),
           borderRadius: BorderRadius.circular(8.r),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: AppColors.lightGreyColor,
+          borderSide: BorderSide(
+            color: ThemeColors.borderColor(context),
             width: 0.5,
           ),
           borderRadius: BorderRadius.circular(8.r),

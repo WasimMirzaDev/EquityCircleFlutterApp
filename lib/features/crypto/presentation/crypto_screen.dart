@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/providers/feeds_provider.dart' show FeedsProvider;
 import '../../bussiness/presentation/widgets/custom_carousal_widget.dart';
 
@@ -80,7 +81,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
       return Center(
         child: LoadingIndicator(
           radius: 15,
-          activeColor: AppColors.purpleColor,
+          activeColor: ThemeColors.indicatorColor(context),
           inactiveColor: AppColors.greyColor,
           animationDuration: const Duration(milliseconds: 500),
         ),
@@ -134,10 +135,10 @@ class _CryptoScreenState extends State<CryptoScreen> {
                     ),
                   ),
                   if (feedsProvider.hasMore(widget.categoryId))
-                    const Center(
+                    Center(
                       child: LoadingIndicator(
                         radius: 15,
-                        activeColor: AppColors.purpleColor,
+                        activeColor: ThemeColors.indicatorColor(context),
                         inactiveColor: AppColors.greyColor,
                         animationDuration: Duration(milliseconds: 500),
                       ),

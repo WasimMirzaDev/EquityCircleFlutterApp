@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../bussiness/presentation/widgets/custom_carousal_widget.dart';
 import '../../bussiness/presentation/widgets/not_found_widget.dart';
 
@@ -78,7 +79,7 @@ class _MindsetScreenState extends State<MindsetScreen> {
         ? Center(
           child: LoadingIndicator(
             radius: 15,
-            activeColor: AppColors.purpleColor,
+            activeColor: ThemeColors.indicatorColor(context),
             inactiveColor: AppColors.greyColor,
             animationDuration: const Duration(milliseconds: 500),
           ),
@@ -130,10 +131,10 @@ class _MindsetScreenState extends State<MindsetScreen> {
                         ),
                       ),
                       if (feedsProvider.hasMore(widget.categoryId))
-                        const Center(
+                        Center(
                           child: LoadingIndicator(
                             radius: 15,
-                            activeColor: AppColors.purpleColor,
+                            activeColor: ThemeColors.indicatorColor(context),
                             inactiveColor: AppColors.greyColor,
                             animationDuration: Duration(milliseconds: 500),
                           ),

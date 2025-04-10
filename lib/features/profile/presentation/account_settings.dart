@@ -2,11 +2,12 @@ import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/widgets/custom_appbar.dart' show CustomAppBar;
 import 'package:equitycircle/features/profile/widgets/custom_two_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/widgets/custom_textfield.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
@@ -37,245 +38,270 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.offWhite,
-      appBar: AppBar(
-        centerTitle: true,
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        backgroundColor: AppColors.offWhite,
-        shadowColor: Colors.black,
-        surfaceTintColor: Colors.black,
-        title: Text(
-          "Account Setting",
-          style: TextStyle(
-            color: AppColors.black,
-            fontWeight: FontWeight.w600,
-            fontFamily: AppFonts.inter,
-            fontSize: 14.sp,
-          ),
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
-          onPressed: () {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      decoration:
+          isDarkMode
+              ? BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Assets.postFormBg),
+                  fit: BoxFit.fill,
+                ),
+              )
+              : BoxDecoration(color: AppColors.white),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+
+        appBar: CustomAppBar(
+          title: "Account Setting",
+          onLeadingPressed: () {
             Navigator.pop(context);
           },
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Divider(color: AppColors.lightGreyColor, height: 0.5.h),
-            20.heightBox,
 
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  16.heightBox,
-                  Text(
-                    "User Name:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
+              20.heightBox,
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    16.heightBox,
+                    Text(
+                      "User Name:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: usernameController,
-                    hint: "Bni@01",
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Email Id:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    8.heightBox,
+                    CustomTextField(
+                      controller: usernameController,
+                      hint: "Bni@01",
+                      fillColor: ThemeColors.search(context),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: emailController,
-                    hint: "Bnijohn@gmail.com",
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Alternate Email:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    16.heightBox,
+                    Text(
+                      "Email Id:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: alternateEmailController,
-                    hint: "designtheme@gmail.com",
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Language Known:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    8.heightBox,
+                    CustomTextField(
+                      controller: emailController,
+                      fillColor: ThemeColors.search(context),
+                      hint: "Bnijohn@gmail.com",
                     ),
-                  ),
-                  16.heightBox,
-                  Wrap(
-                    spacing: 8.w,
-                    runSpacing: 8.h,
-                    children:
-                        allLanguages.map((lang) {
-                          final isSelected = selectedLanguages.contains(lang);
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (isSelected) {
-                                  selectedLanguages.remove(lang);
-                                } else {
-                                  selectedLanguages.add(lang);
-                                }
-                              });
-                            },
-                            child: Container(
-                              height: 26.h,
-                              width: 83.w,
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4.r),
-                                color:
-                                    isSelected
-                                        ? AppColors.purpleColor
-                                        : AppColors.babyPink,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  lang,
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontFamily: AppFonts.inter,
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                        isSelected
-                                            ? AppColors.white
-                                            : AppColors.babyPink,
+                    16.heightBox,
+                    Text(
+                      "Alternate Email:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: alternateEmailController,
+                      hint: "designtheme@gmail.com",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    16.heightBox,
+                    Text(
+                      "Language Known:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    16.heightBox,
+                    Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children:
+                          allLanguages.map((lang) {
+                            final isSelected = selectedLanguages.contains(lang);
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (isSelected) {
+                                    selectedLanguages.remove(lang);
+                                  } else {
+                                    selectedLanguages.add(lang);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                height: 26.h,
+                                width: 83.w,
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.r),
+
+                                  gradient:
+                                      Theme.of(context).brightness ==
+                                                  Brightness.dark &&
+                                              isSelected
+                                          ? const LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Color(0x80FFFFFF), // 50% opacity
+                                              Color(0x1AFFFFFF),
+                                            ],
+                                          )
+                                          : null,
+
+                                  color:
+                                      isSelected
+                                          ? Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? null
+                                              : AppColors.purpleColor
+                                          : ThemeColors.postCatagoriesBox(
+                                            context,
+                                          ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    lang,
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontFamily: AppFonts.inter,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          isSelected
+                                              ? AppColors.white
+                                              : AppColors.babyPink,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
-                  ),
+                            );
+                          }).toList(),
+                    ),
 
-                  30.heightBox,
-                  Text(
-                    "Social Media",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    30.heightBox,
+                    Text(
+                      "Social Media",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Facebook:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    16.heightBox,
+                    Text(
+                      "Facebook:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: facebookController,
-                    hint: "www.facebook.com",
-                  ),
-                  16.heightBox,
+                    8.heightBox,
+                    CustomTextField(
+                      controller: facebookController,
+                      hint: "www.facebook.com",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    16.heightBox,
 
-                  Text(
-                    "Twitter:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    Text(
+                      "Twitter:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: twitterController,
-                    hint: "www.twitter.com",
-                  ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: twitterController,
+                      hint: "www.twitter.com",
+                      fillColor: ThemeColors.search(context),
+                    ),
 
-                  16.heightBox,
-                  Text(
-                    "Google +:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    16.heightBox,
+                    Text(
+                      "Google +:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: googleController,
-                    hint: "www.google.com",
-                  ),
-                  16.heightBox,
+                    8.heightBox,
+                    CustomTextField(
+                      controller: googleController,
+                      hint: "www.google.com",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    16.heightBox,
 
-                  Text(
-                    "Instagram:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    Text(
+                      "Instagram:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: instagramController,
-                    hint: "www.instagram.com",
-                  ),
-                  16.heightBox,
+                    8.heightBox,
+                    CustomTextField(
+                      controller: instagramController,
+                      hint: "www.instagram.com",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    16.heightBox,
 
-                  Text(
-                    "You Tube:",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black,
+                    Text(
+                      "You Tube:",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w500,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: youtubeController,
-                    hint: "www.youtube.com",
-                  ),
-                  16.heightBox,
-                  CustomTwoButtonsRow(
-                    cancelText: "Cancel",
-                    confirmText: "Save change",
-                  ),
-                ],
+                    8.heightBox,
+                    CustomTextField(
+                      controller: youtubeController,
+                      hint: "www.youtube.com",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    20.heightBox,
+                    CustomTwoButtonsRow(
+                      cancelText: "Cancel",
+                      confirmText: "Save change",
+                    ),
+                  ],
+                ),
               ),
-            ),
-            20.heightBox,
-          ],
+              20.heightBox,
+            ],
+          ),
         ),
       ),
     );

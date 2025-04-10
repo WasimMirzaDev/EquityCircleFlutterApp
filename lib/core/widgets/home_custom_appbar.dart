@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../features/feeds/helpers/picture_helpers.dart';
+import '../../features/profile/presentation/profile_screen.dart';
 import '../constants/appColors.dart';
 import '../constants/constants.dart';
 import '../constants/theme_colors.dart';
@@ -55,10 +56,10 @@ class HomePageCustomAppBar extends StatelessWidget
         14.widthBox,
         GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
           },
           child: Container(
             width: 30.r,

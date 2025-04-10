@@ -76,7 +76,7 @@ class _JoblistPageState extends State<JoblistPage> {
               ? Center(
                 child: LoadingIndicator(
                   radius: 15,
-                  activeColor: AppColors.purpleColor,
+                  activeColor: ThemeColors.indicatorColor(context),
                   inactiveColor: AppColors.greyColor,
                   animationDuration: const Duration(milliseconds: 500),
                 ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/appFonts.dart';
+import '../constants/theme_colors.dart';
 
 void showTopSnackbar(BuildContext context, String message, bool isSuccess) {
   final overlay = Overlay.of(context);
@@ -14,18 +15,18 @@ void showTopSnackbar(BuildContext context, String message, bool isSuccess) {
           left: 16,
           right: 16,
           child: Material(
-            color: Colors.transparent,
+            color: AppColors.transparent,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
                 color:
                     isSuccess
-                        ? Colors.green
-                        : Colors.red, // Green for success, Red for failure
-                borderRadius: BorderRadius.circular(8),
+                        ? ThemeColors.successSnack(context)
+                        : AppColors.red,
+                borderRadius: BorderRadius.circular(8.r),
                 boxShadow: const [
                   BoxShadow(
-                    color: Colors.black26,
+                    color: AppColors.black,
                     blurRadius: 6,
                     offset: Offset(0, 3),
                   ),
@@ -35,7 +36,7 @@ void showTopSnackbar(BuildContext context, String message, bool isSuccess) {
                 children: [
                   Icon(
                     isSuccess ? Icons.check_circle : Icons.error,
-                    color: Colors.white,
+                    color: AppColors.white,
                     size: 20,
                   ),
                   10.widthBox,
@@ -60,7 +61,7 @@ void showTopSnackbar(BuildContext context, String message, bool isSuccess) {
 
   overlay.insert(overlayEntry);
 
-  Future.delayed(const Duration(seconds: 3), () {
+  Future.delayed(const Duration(seconds: 1), () {
     overlayEntry.remove();
   });
 }

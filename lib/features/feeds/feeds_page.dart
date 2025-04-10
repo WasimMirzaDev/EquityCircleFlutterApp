@@ -7,6 +7,8 @@ import 'package:equitycircle/features/feeds/widgets/feed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/constants/theme_colors.dart';
+
 class FeedsPage extends StatefulWidget {
   final int categoryId;
   const FeedsPage({super.key, required this.categoryId});
@@ -64,7 +66,7 @@ class _FeedsPageState extends State<FeedsPage> {
               ? Center(
                 child: LoadingIndicator(
                   radius: 15,
-                  activeColor: AppColors.purpleColor,
+                  activeColor: ThemeColors.indicatorColor(context),
                   inactiveColor: AppColors.greyColor,
 
                   animationDuration: Duration(milliseconds: 500),
@@ -95,7 +97,7 @@ class _FeedsPageState extends State<FeedsPage> {
                           padding: EdgeInsets.all(10),
                           child: LoadingIndicator(
                             radius: 15,
-                            activeColor: AppColors.purpleColor,
+                            activeColor: ThemeColors.indicatorColor(context),
                             inactiveColor: AppColors.greyColor,
 
                             animationDuration: Duration(milliseconds: 500),

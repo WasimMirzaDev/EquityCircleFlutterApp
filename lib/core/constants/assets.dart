@@ -69,4 +69,10 @@ class Assets {
   static final homeBg = "assets/images/homeBg.png";
   static final splashBg = "assets/images/splashBg.png";
   static final postFormBg = "assets/images/postFormBg.png";
+  static final facebook = "assets/icon/facebook.svg";
+  static final googleIcon = "assets/icon/googleIcon.svg";
+  // static final postFormBg = "assets/images/postFormBg.png";
+  // static final homeBg = "assets/images/homeBg.png";
+  // static final splashBg = "assets/images/splashBg.png";
+  // static final postFormBg = "assets/images/postFormBg.png";
 }

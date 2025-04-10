@@ -16,6 +16,10 @@ class ThemeColors {
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.black
           : AppColors.purpleColor;
+  static Color carousalIndicatorColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.white
+          : AppColors.purpleColor;
   static Color appbar(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.black
@@ -23,7 +27,7 @@ class ThemeColors {
   static Color bottomNavText(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.white
-          : AppColors.greyColor;
+          : AppColors.purpleColor;
   static Color search(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.darkblack
@@ -52,7 +56,10 @@ class ThemeColors {
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.white
           : AppColors.black;
-
+  static Color radiobtn(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
   static Color subTextColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.darkGrey
@@ -125,6 +132,18 @@ class ThemeColors {
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.pureBlack
           : AppColors.white;
+  static Color loginColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
+  static Color successSnack(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
+  static Color bottomNavColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
   // Light Theme
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,

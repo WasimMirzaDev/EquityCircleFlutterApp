@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/theme_colors.dart';
 import '../../feeds/widgets/feed_card.dart';
 import 'widgets/custom_carousal_widget.dart';
 import 'widgets/custom_search_field.dart';
@@ -25,7 +26,6 @@ class BusinessScreen extends StatefulWidget {
 class _BusinessScreenState extends State<BusinessScreen> {
   late ScrollController _scrollController;
   final TextEditingController searchController = TextEditingController();
-  final PageController _pageController = PageController();
   int currentIndex = 0;
 
   List<String> images = [
@@ -79,7 +79,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
       return Center(
         child: LoadingIndicator(
           radius: 15,
-          activeColor: AppColors.purpleColor,
+          activeColor: ThemeColors.indicatorColor(context),
           inactiveColor: AppColors.greyColor,
           animationDuration: const Duration(milliseconds: 500),
         ),
@@ -133,10 +133,10 @@ class _BusinessScreenState extends State<BusinessScreen> {
                     ),
                   ),
                   if (feedsProvider.hasMore(widget.categoryId))
-                    const Center(
+                    Center(
                       child: LoadingIndicator(
                         radius: 15,
-                        activeColor: AppColors.purpleColor,
+                        activeColor: ThemeColors.indicatorColor(context),
                         inactiveColor: AppColors.greyColor,
                         animationDuration: Duration(milliseconds: 500),
                       ),

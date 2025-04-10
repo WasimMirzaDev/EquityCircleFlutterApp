@@ -1,5 +1,6 @@
 import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
 import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
+import 'package:equitycircle/core/constants/theme_colors.dart';
 import 'package:equitycircle/core/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,6 +38,7 @@ class CustomButton extends StatelessWidget {
       },
       child: Container(
         height: height.h,
+
         width: width.w,
 
         decoration: BoxDecoration(
@@ -68,7 +70,7 @@ class CustomButton extends StatelessWidget {
               loading == true
                   ? LoadingIndicator(
                     radius: 10.r,
-                    activeColor: AppColors.purpleColor,
+                    activeColor: ThemeColors.indicatorColor(context),
                     inactiveColor: AppColors.greyColor,
 
                     animationDuration: Duration(milliseconds: 500),

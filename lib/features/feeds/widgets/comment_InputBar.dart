@@ -148,7 +148,7 @@ class _CommentInputBarState extends State<CommentInputBar> {
                   ).isLoadingComment(widget.feedId)
                   ? LoadingIndicator(
                     radius: 10.r,
-                    activeColor: AppColors.purpleColor,
+                    activeColor: ThemeColors.indicatorColor(context),
                     inactiveColor: AppColors.greyColor,
                     animationDuration: Duration(milliseconds: 500),
                   )

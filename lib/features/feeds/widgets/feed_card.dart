@@ -168,26 +168,28 @@ class _FeedCardState extends State<FeedCard> {
       backgroundColor: AppColors.transparent,
       builder:
           (context) => DraggableScrollableSheet(
-            initialChildSize: 0.5,
+            initialChildSize: 0.6,
             minChildSize: 0.3,
             maxChildSize: 0.9,
             builder:
-                (_, scrollController) => Container(
-                  decoration: BoxDecoration(
-                    color: ThemeColors.background(context),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20.r),
-                    ),
+                (_, scrollController) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ThemeColors.background(context),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20.r),
+                      ),
+                    ),
                     child: Column(
                       children: [
                         20.heightBox,
                         Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
-                            padding: EdgeInsets.only(right: 10.w),
+                            padding: EdgeInsets.only(right: 20.w),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.pop(context);
@@ -216,46 +218,71 @@ class _FeedCardState extends State<FeedCard> {
                         ),
                         20.heightBox,
 
+                        // Comments ListView
                         Expanded(
-                          child: ListView.builder(
-                            controller: scrollController,
-                            itemCount: comments.length,
-                            itemBuilder: (context, index) {
-                              final comment = comments.reversed.toList()[index];
-                              return ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    comment.user?.profileImage ?? '',
+                          child:
+                              comments.isEmpty
+                                  ? Center(
+                                    child: Text(
+                                      'No comments found',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontFamily: AppFonts.inter,
+                                        fontWeight: FontWeight.w400,
+                                        color: ThemeColors.textColor(context),
+                                      ),
+                                    ),
+                                  )
+                                  : ListView.builder(
+                                    controller: scrollController,
+                                    itemCount: comments.length,
+                                    itemBuilder: (context, index) {
+                                      final comment =
+                                          comments.reversed.toList()[index];
+                                      return ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            comment.user?.profileImage ?? '',
+                                          ),
+                                        ),
+                                        title: Text(
+                                          comment.user?.name ?? 'Anonymous',
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontFamily: AppFonts.inter,
+                                            fontWeight: FontWeight.w600,
+                                            color: ThemeColors.textColor(
+                                              context,
+                                            ),
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          comment.content ?? '',
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontFamily: AppFonts.inter,
+                                            fontWeight: FontWeight.w600,
+                                            color: ThemeColors.textColor(
+                                              context,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                ),
-                                title: Text(
-                                  comment.user?.name ?? 'Anonymous',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontFamily: AppFonts.inter,
-                                    fontWeight: FontWeight.w600,
-                                    color: ThemeColors.textColor(context),
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  comment.content ?? '',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontFamily: AppFonts.inter,
-                                    fontWeight: FontWeight.w600,
-                                    color: ThemeColors.textColor(context),
-                                  ),
-                                ),
-                              );
-                            },
+                        ),
+
+                        20.heightBox,
+
+                        // Ensure the input bar stays at the bottom
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: CommentInputBar(
+                            feedId: widget.feed.id ?? 0,
+                            categoryId: widget.feed.categoryId ?? 0,
                           ),
                         ),
                         20.heightBox,
-                        CommentInputBar(
-                          feedId: widget.feed.id ?? 0,
-                          categoryId: widget.feed.categoryId ?? 0,
-                        ),
-                        30.heightBox,
                       ],
                     ),
                   ),
