@@ -102,6 +102,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
     }
 
     return RefreshIndicator(
+      color: ThemeColors.bottomNavColor(context),
       onRefresh: () async {
         await feedsProvider.fetchFeeds(
           context,
@@ -109,12 +110,13 @@ class _CryptoScreenState extends State<CryptoScreen> {
           refresh: true,
         );
       },
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-        child: Column(
-          children: [
-            20.heightBox,
-            Expanded(
+      child: Column(
+        children: [
+          Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
+          20.heightBox,
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
               child: ListView(
                 controller: _scrollController,
                 padding: EdgeInsets.zero,
@@ -146,8 +148,8 @@ class _CryptoScreenState extends State<CryptoScreen> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

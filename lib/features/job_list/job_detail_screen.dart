@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../core/constants/theme_colors.dart';
+import '../add_post/presentation/widget/custom_dropdown.dart';
 
 class JobDetailScreen extends StatefulWidget {
   String image;
@@ -201,87 +202,17 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         ),
                       ),
                       8.heightBox,
-                      DropdownButtonFormField<String>(
-                        style: TextStyle(
-                          fontFamily: AppFonts.inter,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.darkGrey,
-                        ),
-                        icon: SizedBox.shrink(),
-                        value:
-                            eventTypes.contains(countryController.text)
-                                ? countryController.text
-                                : null,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          filled: true,
-                          fillColor: ThemeColors.search(context),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 12.w,
-                            vertical: 12.h,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: AppColors.lightGreyColor,
-                              width: 0.5,
-                            ),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.lightGreyColor,
-                              width: 0.5,
-                            ),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          hintText: "Select Event Type",
-                          hintStyle: TextStyle(
-                            fontFamily: AppFonts.inter,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: ThemeColors.hintTextColor(context),
-                          ),
-                          suffixIcon: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SvgPicture.asset(
-                                  Assets.arrowDown,
-                                  height: 16.h,
-                                  width: 16.w,
-                                ),
-                              ],
-                            ),
-                          ),
-                          suffixIconConstraints: const BoxConstraints(
-                            maxHeight: 43,
-                          ),
-                          prefixIconConstraints: const BoxConstraints(
-                            maxHeight: 35,
-                          ),
-                        ),
-                        items:
-                            eventTypes.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.inter,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: ThemeColors.hintTextColor(context),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+
+                      CustomDropdown(
+                        controller: countryController,
+                        selectedValue: countryController.text,
+                        items: eventTypes,
                         onChanged: (newValue) {
                           setState(() {
                             countryController.text = newValue!;
                           });
                         },
+                        hintText: "Select Country",
                       ),
 
                       16.heightBox,
@@ -312,7 +243,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                               child: Container(
                                 height: 40.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.extralightgrey,
+                                  color: ThemeColors.search(context),
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(8.r),
                                     bottomLeft: Radius.circular(8.r),
@@ -330,7 +261,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                         fontSize: 12.sp,
                                         fontFamily: AppFonts.inter,
                                         fontWeight: FontWeight.w500,
-                                        color: AppColors.darkGrey,
+                                        color: ThemeColors.textColor(context),
                                       ),
                                     ),
                                   ),

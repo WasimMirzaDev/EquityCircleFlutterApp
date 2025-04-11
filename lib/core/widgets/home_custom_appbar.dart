@@ -66,7 +66,10 @@ class HomePageCustomAppBar extends StatelessWidget
             height: 30.r,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.purpleColor, width: 1.w),
+              border: Border.all(
+                color: ThemeColors.bottomNavColor(context),
+                width: 1.w,
+              ),
             ),
             child: CircleAvatar(
               backgroundColor: AppColors.lightGreyColor,

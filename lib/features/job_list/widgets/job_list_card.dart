@@ -1,14 +1,18 @@
 import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
 import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/constants/assets.dart' show Assets;
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:html/parser.dart' as htmlParser;
+import 'package:provider/provider.dart';
 
 import '../../../core/constants/theme_colors.dart';
 
-class JobCardWidget extends StatelessWidget {
+class JobCardWidget extends StatefulWidget {
   // final Job job;
 
   String image;
@@ -25,7 +29,27 @@ class JobCardWidget extends StatelessWidget {
     this.readMore,
   });
 
+  @override
+  State<JobCardWidget> createState() => _JobCardWidgetState();
+}
+
+class _JobCardWidgetState extends State<JobCardWidget> {
   final String? baseUrl = dotenv.env['API_URL'];
+  bool _isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAdminStatus();
+  }
+
+  Future<void> _checkAdminStatus() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    bool isAdmin = await authProvider.checkAdmin(context);
+    setState(() {
+      _isAdmin = isAdmin;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +77,7 @@ class JobCardWidget extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(6.r),
                             child: Image.network(
-                              '$baseUrl/images/$image',
+                              '$baseUrl/images/${widget.image}',
                               fit:
                                   BoxFit
                                       .cover, // Makes image fit the card properly
@@ -69,32 +93,88 @@ class JobCardWidget extends StatelessWidget {
                           ),
 
                           Positioned(
-                            top: 8,
+                            top: 2,
                             left: 8,
-                            // right: 0,
+                            right: 8,
                             // bottom: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(56.r),
-                                color: AppColors.white,
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w,
-                                    vertical: 5.h,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(56.r),
+                                    color: AppColors.white,
                                   ),
-                                  child: Text(
-                                    "Active 20 days ago",
-                                    style: TextStyle(
-                                      fontSize: 8.sp,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: AppFonts.inter,
-                                      color: AppColors.black,
+                                  child: Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w,
+                                        vertical: 5.h,
+                                      ),
+                                      child: Text(
+                                        "Active 20 days ago",
+                                        style: TextStyle(
+                                          fontSize: 8.sp,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: AppFonts.inter,
+                                          color: AppColors.black,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                if (_isAdmin)
+                                  PopupMenuButton<String>(
+                                    icon: SvgPicture.asset(
+                                      Assets.moreHorizontal,
+                                    ),
+                                    onSelected: (value) {},
+                                    itemBuilder:
+                                        (BuildContext context) => [
+                                          PopupMenuItem<String>(
+                                            value: 'edit',
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.edit,
+                                                  color: ThemeColors.iconColor(
+                                                    context,
+                                                  ),
+                                                  size: 18,
+                                                ),
+                                                10.widthBox,
+                                                Text(
+                                                  "Edit",
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          PopupMenuItem<String>(
+                                            value: 'delete',
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                  size: 18,
+                                                ),
+                                                10.widthBox,
+                                                Text(
+                                                  "Delete",
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                  ),
+                              ],
                             ),
                           ),
                         ],
@@ -103,7 +183,7 @@ class JobCardWidget extends StatelessWidget {
             ),
             10.heightBox,
             Text(
-              title,
+              widget.title,
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
@@ -113,7 +193,7 @@ class JobCardWidget extends StatelessWidget {
             ),
             10.heightBox,
             Text(
-              htmlParser.parse(discription).documentElement?.text ?? '',
+              htmlParser.parse(widget.discription).documentElement?.text ?? '',
               style: TextStyle(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w600,
@@ -123,7 +203,7 @@ class JobCardWidget extends StatelessWidget {
             ),
 
             12.heightBox,
-            readMore == false
+            widget.readMore == false
                 ? SizedBox.fromSize()
                 : Row(
                   children: [

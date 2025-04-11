@@ -2,8 +2,6 @@ import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/widgets/custom_appbar.dart' show CustomAppBar;
-import 'package:equitycircle/features/profile/presentation/change_password_screen.dart';
-import 'package:equitycircle/features/profile/presentation/manage_contact_screen.dart';
 import 'package:equitycircle/features/profile/presentation/personal_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/constants/appColors.dart';
 import '../../../core/constants/theme_colors.dart';
-import 'email_and_sms_screen.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -38,7 +35,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
         backgroundColor: Colors.transparent,
 
         appBar: CustomAppBar(
-          title: "Profile Setting",
+          title: "Profile Settings",
           onLeadingPressed: () {
             Navigator.pop(context);
           },
@@ -84,24 +81,24 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         thickness: 0.5.h,
                       ),
                       _buildSettingItem(Assets.setting, 'Change Password', () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChangePasswordScreen(),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => ChangePasswordScreen(),
+                        //   ),
+                        // );
                       }),
                       Divider(
                         color: ThemeColors.borderColor(context),
                         thickness: 0.5.h,
                       ),
                       _buildSettingItem(Assets.privacy, 'Email and SMS', () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EmailAndSmsScreen(),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => EmailAndSmsScreen(),
+                        //   ),
+                        // );
                       }),
                       Divider(
                         color: ThemeColors.borderColor(context),
@@ -111,12 +108,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         Assets.appsettings,
                         'Manage Contact',
                         () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ManageContactScreen(),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => ManageContactScreen(),
+                          //   ),
+                          // );
                         },
                       ),
 

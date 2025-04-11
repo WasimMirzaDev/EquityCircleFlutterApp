@@ -226,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                             color:
                                 _isPasswordVisible
-                                    ? AppColors.purpleColor
+                                    ? ThemeColors.bottomNavColor(context)
                                     : AppColors.greyColor,
                           ),
                         ),

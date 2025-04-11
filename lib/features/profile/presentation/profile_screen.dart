@@ -15,6 +15,7 @@ import '../../../core/widgets/custom_appbar.dart';
 import '../../add_post/presentation/widget/discard_dialogbox.dart';
 import '../../feeds/helpers/picture_helpers.dart';
 import 'account_settings.dart';
+import 'profile_settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -42,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.transparent,
 
         appBar: CustomAppBar(
-          title: "Profile Setting",
+          title: "Profile Settings",
           onLeadingPressed: () {
             Navigator.pop(context);
           },
@@ -78,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: AppColors.purpleColor,
+                                color: ThemeColors.bottomNavColor(context),
                                 width: 1.w,
                               ),
                             ),
@@ -176,12 +177,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Assets.profileSetting,
                       'Profile Setting',
                       () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ProfileSettingsScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileSettingsScreen(),
+                          ),
+                        );
                       },
                     ),
                     _buildSettingItem(Assets.setting, 'Account Setting', () {

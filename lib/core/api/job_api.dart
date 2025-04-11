@@ -15,11 +15,10 @@ class JobApi {
     try {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       String? token = authProvider.token;
-
       if (token == null) throw Exception("User not authenticated");
 
       final response = await ApiService.getRequest('/jobs', token);
-      print("Raw API Response: ${response.data}"); // Log the raw response
+      print("Raw API Response: ${response.data}");
 
       if (response.statusCode == 200) {
         final jobListModel = JobListModel.fromJson(response.data);
@@ -28,7 +27,7 @@ class JobApi {
         throw Exception('Failed to load jobs');
       }
     } catch (e) {
-      print("Error: $e"); // Log the specific error
+      print("Error: $e");
       throw Exception('Failed to connect to API: $e');
     }
   }

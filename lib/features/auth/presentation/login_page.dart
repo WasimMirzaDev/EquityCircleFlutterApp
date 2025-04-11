@@ -255,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
 
                             color:
                                 _isPasswordVisible
-                                    ? AppColors.purpleColor
+                                    ? ThemeColors.bottomNavColor(context)
                                     : AppColors.greyColor,
                           ),
                         ),

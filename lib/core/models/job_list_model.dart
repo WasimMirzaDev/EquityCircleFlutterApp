@@ -8,7 +8,7 @@ class JobListModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = {};
     if (jobs != null) {
       data['jobs'] = jobs!.toJson();
     }
@@ -49,27 +49,13 @@ class Jobs {
 
   Jobs.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
-    if (json['data'] != null) {
-      data = <DataByJobList>[];
-      json['data'].forEach((v) {
-        data!.add(DataByJobList.fromJson(v));
-      });
-    }
     data =
-        (json['data'] as List?)?.map((v) {
-          print('Parsing job data');
-          return DataByJobList.fromJson(v);
-        }).toList();
+        (json['data'] as List?)?.map((v) => DataByJobList.fromJson(v)).toList();
     firstPageUrl = json['first_page_url'];
     from = json['from'];
     lastPage = json['last_page'];
     lastPageUrl = json['last_page_url'];
-    if (json['links'] != null) {
-      links = <Links>[];
-      json['links'].forEach((v) {
-        links!.add(Links.fromJson(v));
-      });
-    }
+    links = (json['links'] as List?)?.map((v) => Links.fromJson(v)).toList();
     nextPageUrl = json['next_page_url'];
     path = json['path'];
     perPage = json['per_page'];
@@ -79,34 +65,25 @@ class Jobs {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['current_page'] = currentPage;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    data['first_page_url'] = firstPageUrl;
-    data['from'] = from;
-    data['last_page'] = lastPage;
-    data['last_page_url'] = lastPageUrl;
-    if (links != null) {
-      data['links'] = links!.map((v) => v.toJson()).toList();
-    }
-    data['next_page_url'] = nextPageUrl;
-    data['path'] = path;
-    data['per_page'] = perPage;
-    data['prev_page_url'] = prevPageUrl;
-    data['to'] = to;
-    data['total'] = total;
-    return data;
+    final Map<String, dynamic> dataMap = {};
+    dataMap['current_page'] = currentPage;
+    dataMap['data'] = data?.map((v) => v.toJson()).toList();
+    dataMap['first_page_url'] = firstPageUrl;
+    dataMap['from'] = from;
+    dataMap['last_page'] = lastPage;
+    dataMap['last_page_url'] = lastPageUrl;
+    dataMap['links'] = links?.map((v) => v.toJson()).toList();
+    dataMap['next_page_url'] = nextPageUrl;
+    dataMap['path'] = path;
+    dataMap['per_page'] = perPage;
+    dataMap['prev_page_url'] = prevPageUrl;
+    dataMap['to'] = to;
+    dataMap['total'] = total;
+    return dataMap;
   }
 }
 
 class DataByJobList {
-  String? safeParseString(dynamic value) {
-    if (value == null) return null;
-    return value is String ? value : value.toString();
-  }
-
   int? id;
   int? userId;
   String? title;
@@ -136,8 +113,8 @@ class DataByJobList {
   });
 
   DataByJobList.fromJson(Map<String, dynamic> json) {
-    id = _safeParseInt(json['id']);
-    userId = _safeParseInt(json['user_id']);
+    id = json['id'];
+    userId = json['user_id'];
     title = json['title'];
     shortDescription = json['short_description'];
     description = json['description'];
@@ -146,67 +123,65 @@ class DataByJobList {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
-    application = json['application'];
+
+    // Safely handle application being a String or null
+    application = json['application'] is String ? json['application'] : null;
 
     user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
-  int? _safeParseInt(dynamic value) {
-    if (value == null) return null;
-    return value is int ? value : int.tryParse(value.toString());
-  }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['user_id'] = userId;
-    data['title'] = title;
-    data['short_description'] = shortDescription;
-    data['description'] = description;
-    data['main_image'] = mainImage;
-    data['is_active'] = isActive;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['deleted_at'] = deletedAt;
-    data['application'] = application;
+    final Map<String, dynamic> dataMap = {};
+    dataMap['id'] = id;
+    dataMap['user_id'] = userId;
+    dataMap['title'] = title;
+    dataMap['short_description'] = shortDescription;
+    dataMap['description'] = description;
+    dataMap['main_image'] = mainImage;
+    dataMap['is_active'] = isActive;
+    dataMap['created_at'] = createdAt;
+    dataMap['updated_at'] = updatedAt;
+    dataMap['deleted_at'] = deletedAt;
+    dataMap['application'] = application;
     if (user != null) {
-      data['user'] = user!.toJson();
+      dataMap['user'] = user!.toJson();
     }
-    return data;
+    return dataMap;
   }
 }
 
 class User {
-  int? id;
-  String? name;
-  String? email;
-  String? roles;
-  String? profileImage;
-  String? backgroundImage;
-  String? emailVerifiedAt;
-  String? googleId;
-  int? permissionId;
-  String? createdAt;
-  String? updatedAt;
-  String? firstName;
-  String? lastName;
-  String? username;
-  String? city;
-  String? gender;
-  String? dateOfBirth;
-  String? maritalStatus;
-  String? ageGroup;
-  String? country;
-  String? state;
-  String? address;
-  String? phone;
-  String? websiteUrl;
-  int? emailNotification;
-  int? smsNotification;
-  int? awardPoints;
-  String? facebookId;
-  String? instagramId;
-  String? firebaseUid;
-  String? fcmToken;
+  final int? id;
+  final String? name;
+  final String? email;
+  final String? roles;
+  final String? profileImage;
+  final String? backgroundImage;
+  final String? emailVerifiedAt;
+  final String? googleId;
+  final int? permissionId;
+  final String? createdAt;
+  final String? updatedAt;
+  final String? firstName;
+  final String? lastName;
+  final String? username;
+  final String? city;
+  final String? gender;
+  final String? dateOfBirth;
+  final String? maritalStatus;
+  final String? ageGroup;
+  final String? country;
+  final String? state;
+  final String? address;
+  final String? phone;
+  final String? websiteUrl;
+  final int? emailNotification;
+  final int? smsNotification;
+  final int? awardPoints;
+  final String? facebookId;
+  final String? instagramId;
+  final String? firebaseUid;
+  final String? fcmToken;
 
   User({
     this.id,
@@ -242,103 +217,107 @@ class User {
     this.fcmToken,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    roles = json['roles'];
-    profileImage = json['profile_image'];
-    backgroundImage = json['background_image'];
-    emailVerifiedAt = json['email_verified_at'];
-    googleId = json['google_id'];
-
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    username = json['username'];
-    city = json['city'];
-    gender = json['gender'];
-    dateOfBirth = json['date_of_birth'];
-    maritalStatus = json['marital_status'];
-    ageGroup = json['age_group'];
-    country = json['country'];
-    state = json['state'];
-    address = json['address'];
-
-    emailNotification = _safeParseInt(json['email_notification']);
-    smsNotification = _safeParseInt(json['sms_notification']);
-    permissionId = _safeParseInt(json['permission_id']);
-    awardPoints = json['award_points'];
-
-    phone = json['phone']?.toString();
-    websiteUrl = json['website_url']?.toString();
-    facebookId = json['facebook_id']?.toString();
-    instagramId = json['instagram_id']?.toString();
-    firebaseUid = json['firebase_uid']?.toString();
-    fcmToken = json['fcm_token']?.toString();
-  }
-  int? _safeParseInt(dynamic value) {
-    if (value == null) return null;
-    return value is int ? value : int.tryParse(value.toString());
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: safeParseInt(json['id']),
+      name: json['name'],
+      email: json['email'],
+      roles: json['roles'],
+      profileImage: json['profile_image'],
+      backgroundImage: json['background_image'],
+      emailVerifiedAt: json['email_verified_at'],
+      googleId: json['google_id'],
+      permissionId: safeParseInt(json['permission_id']),
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      username: json['username'],
+      city: json['city'],
+      gender: json['gender'],
+      dateOfBirth: json['date_of_birth'],
+      maritalStatus: json['marital_status'],
+      ageGroup: json['age_group'],
+      country: json['country'],
+      state: json['state'],
+      address: json['address'],
+      phone: json['phone']?.toString(),
+      websiteUrl: json['website_url']?.toString(),
+      emailNotification: safeParseInt(json['email_notification']),
+      smsNotification: safeParseInt(json['sms_notification']),
+      awardPoints: safeParseInt(json['award_points']),
+      facebookId: json['facebook_id'],
+      instagramId: json['instagram_id'],
+      firebaseUid: json['firebase_uid'],
+      fcmToken: json['fcm_token'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['email'] = email;
-    data['roles'] = roles;
-    data['profile_image'] = profileImage;
-    data['background_image'] = backgroundImage;
-    data['email_verified_at'] = emailVerifiedAt;
-    data['google_id'] = googleId;
-    data['permission_id'] = permissionId;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['first_name'] = firstName;
-    data['last_name'] = lastName;
-    data['username'] = username;
-    data['city'] = city;
-    data['gender'] = gender;
-    data['date_of_birth'] = dateOfBirth;
-    data['marital_status'] = maritalStatus;
-    data['age_group'] = ageGroup;
-    data['country'] = country;
-    data['state'] = state;
-    data['address'] = address;
-    data['phone'] = phone;
-    data['website_url'] = websiteUrl;
-    data['email_notification'] = emailNotification;
-    data['sms_notification'] = smsNotification;
-    data['award_points'] = awardPoints;
-    data['facebook_id'] = facebookId;
-    data['instagram_id'] = instagramId;
-    data['firebase_uid'] = firebaseUid;
-
-    data['fcm_token'] = fcmToken;
-    return data;
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'roles': roles,
+      'profile_image': profileImage,
+      'background_image': backgroundImage,
+      'email_verified_at': emailVerifiedAt,
+      'google_id': googleId,
+      'permission_id': permissionId,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'first_name': firstName,
+      'last_name': lastName,
+      'username': username,
+      'city': city,
+      'gender': gender,
+      'date_of_birth': dateOfBirth,
+      'marital_status': maritalStatus,
+      'age_group': ageGroup,
+      'country': country,
+      'state': state,
+      'address': address,
+      'phone': phone,
+      'website_url': websiteUrl,
+      'email_notification': emailNotification,
+      'sms_notification': smsNotification,
+      'award_points': awardPoints,
+      'facebook_id': facebookId,
+      'instagram_id': instagramId,
+      'firebase_uid': firebaseUid,
+      'fcm_token': fcmToken,
+    };
   }
+
+  @override
+  String toString() => 'User(id: $id, email: $email)';
 }
 
 class Links {
-  String? url;
-  String? label;
-  bool? active;
+  final String? url;
+  final String? label;
+  final bool? active;
 
   Links({this.url, this.label, this.active});
 
-  Links.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    label = json['label'];
-    active = json['active'];
+  factory Links.fromJson(Map<String, dynamic> json) {
+    return Links(
+      url: json['url'],
+      label: json['label'],
+      active: json['active'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['url'] = url;
-    data['label'] = label;
-    data['active'] = active;
-    return data;
+    return {'url': url, 'label': label, 'active': active};
   }
+
+  @override
+  String toString() => 'Links(label: $label)';
+}
+
+/// Shared helper function
+int? safeParseInt(dynamic value) {
+  if (value == null) return null;
+  return value is int ? value : int.tryParse(value.toString());
 }
