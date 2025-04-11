@@ -42,7 +42,7 @@ class AuthApi {
     String token,
   ) async {
     try {
-      final response = await ApiService.postRequest('/save-token', {
+      final response = await ApiService.postRequest('/save-token-new', {
         'fcm_token': firebasetoken,
       }, token);
       return response

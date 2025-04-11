@@ -5,8 +5,8 @@ class ApiService {
   static final Dio _dio = Dio(
     BaseOptions(
       baseUrl: "${dotenv.env['API_URL']!}/api",
-      connectTimeout: Duration(seconds: 10),
-      receiveTimeout: Duration(seconds: 10),
+      connectTimeout: Duration(seconds: 60),
+      receiveTimeout: Duration(seconds: 60),
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
