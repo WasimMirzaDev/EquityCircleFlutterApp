@@ -18,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/widgets/custom_textfield.dart';
+import '../../core/constants/theme_colors.dart';
 
 class CreatNewJobScreen extends StatefulWidget {
   const CreatNewJobScreen({super.key});
@@ -38,12 +39,12 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       appBar: AppBar(
         centerTitle: true,
         scrolledUnderElevation: 0,
         elevation: 0,
-        backgroundColor: AppColors.offWhite,
+        backgroundColor: ThemeColors.background(context),
         shadowColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: Text(
@@ -56,7 +57,11 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
           ),
         ),
         leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
+          icon: SvgPicture.asset(
+            Assets.backArrow,
+            height: 20.h,
+            color: ThemeColors.iconColor(context),
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -66,7 +71,7 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(color: AppColors.lightGreyColor, height: 0.5.h),
+            Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
               child: Column(
@@ -80,7 +85,7 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
@@ -91,12 +96,12 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                       radius: Radius.circular(8.r),
                       strokeWidth: 0.5,
                       dashPattern: [6, 4],
-                      color: AppColors.lightGreyColor,
+                      color: ThemeColors.commentfielIconsColor(context),
                       child: Container(
                         width: double.infinity,
                         height: 150.h,
                         decoration: BoxDecoration(
-                          color: AppColors.white,
+                          color: ThemeColors.search(context),
                           // border: Border.all(color: AppColors.purpleColor),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
@@ -105,6 +110,10 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                                 ? Center(
                                   child: SvgPicture.asset(
                                     Assets.jobImgIcon,
+                                    color: ThemeColors.commentfielIconsColor(
+                                      context,
+                                    ),
+
                                     height: 24.h,
                                     width: 24.w,
                                   ),
@@ -126,16 +135,20 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
                   CustomTextField(
                     controller: titleController,
                     hint: "Enter title*",
+                    fillColor: ThemeColors.search(context),
                     suffixIcon: Padding(
                       padding: EdgeInsets.only(right: 12.w),
-                      child: SvgPicture.asset(Assets.smileIcon),
+                      child: SvgPicture.asset(
+                        Assets.smileIcon,
+                        color: ThemeColors.iconColor(context),
+                      ),
                     ),
                   ),
                   16.heightBox,
@@ -145,7 +158,7 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
@@ -153,6 +166,7 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                     controller: shortdiscriptionController,
                     hint: "Enter Short Description*",
                     maxLines: 5,
+                    fillColor: ThemeColors.search(context),
                   ),
                   16.heightBox,
                   Text(
@@ -161,13 +175,14 @@ class _CreatNewJobScreenState extends State<CreatNewJobScreen> {
                       fontSize: 12.sp,
                       fontFamily: AppFonts.inter,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.black,
+                      color: ThemeColors.textColor(context),
                     ),
                   ),
                   8.heightBox,
                   CustomTextField(
                     controller: discriptionController,
                     hint: "Enter Description*",
+                    fillColor: ThemeColors.search(context),
                     maxLines: 4,
                   ),
                   // Container(

@@ -1,15 +1,17 @@
-import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
 import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
+import 'package:equitycircle/core/widgets/custom_appbar.dart' show CustomAppBar;
+import 'package:equitycircle/features/profile/presentation/change_password_screen.dart';
+import 'package:equitycircle/features/profile/presentation/manage_contact_screen.dart';
+import 'package:equitycircle/features/profile/presentation/personal_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 
-import '../../../core/providers/auth_provider.dart';
-import '../../feeds/helpers/picture_helpers.dart';
-import 'account_settings.dart';
+import '../../../core/constants/appColors.dart';
+import '../../../core/constants/theme_colors.dart';
+import 'email_and_sms_screen.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -21,182 +23,110 @@ class ProfileSettingsScreen extends StatefulWidget {
 class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    return Scaffold(
-      backgroundColor: AppColors.offWhite,
-      appBar: AppBar(
-        centerTitle: true,
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        backgroundColor: AppColors.offWhite,
-        shadowColor: Colors.black,
-        surfaceTintColor: Colors.black,
-        title: Text(
-          "Profile Setting",
-          style: TextStyle(
-            color: AppColors.black,
-            fontWeight: FontWeight.w600,
-            fontFamily: AppFonts.inter,
-            fontSize: 14.sp,
-          ),
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
-          onPressed: () {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      decoration:
+          isDarkMode
+              ? BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Assets.postFormBg),
+                  fit: BoxFit.fill,
+                ),
+              )
+              : BoxDecoration(color: AppColors.white),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+
+        appBar: CustomAppBar(
+          title: "Profile Setting",
+          onLeadingPressed: () {
             Navigator.pop(context);
           },
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Divider(color: AppColors.lightGreyColor, height: 0.5.h),
-            20.heightBox,
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
 
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.lightGreyColor, width: 0.5),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.r),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Divider(
+                color: ThemeColors.borderColor(context),
+                thickness: 0.5.h,
               ),
-              child: Column(
-                children: [
-                  16.heightBox,
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40.r,
-                          height: 40.r,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.purpleColor,
-                              width: 1.w,
+              20.heightBox,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ThemeColors.borderColor(context),
+                      width: 0.5,
+                    ),
+                    color: ThemeColors.background(context),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Column(
+                    children: [
+                      8.heightBox,
+                      _buildSettingItem(
+                        Assets.profileSetting,
+                        'Personal Info',
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PersonalInfoScreen(),
                             ),
+                          );
+                        },
+                      ),
+                      Divider(
+                        color: ThemeColors.borderColor(context),
+                        thickness: 0.5.h,
+                      ),
+                      _buildSettingItem(Assets.setting, 'Change Password', () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangePasswordScreen(),
                           ),
-                          child: CircleAvatar(
-                            backgroundColor: AppColors.lightGreyColor,
-                            radius: 24.r,
-                            backgroundImage: NetworkImage(
-                              getProfileImageUrl(authProvider.userData),
+                        );
+                      }),
+                      Divider(
+                        color: ThemeColors.borderColor(context),
+                        thickness: 0.5.h,
+                      ),
+                      _buildSettingItem(Assets.privacy, 'Email and SMS', () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EmailAndSmsScreen(),
+                          ),
+                        );
+                      }),
+                      Divider(
+                        color: ThemeColors.borderColor(context),
+                        thickness: 0.5.h,
+                      ),
+                      _buildSettingItem(
+                        Assets.appsettings,
+                        'Manage Contact',
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ManageContactScreen(),
                             ),
-                          ),
-                        ),
+                          );
+                        },
+                      ),
 
-                        10.widthBox,
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Susan Sumanggih',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontFamily: AppFonts.inter,
-                                  color: AppColors.blackGrey,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-
-                              Text(
-                                'tienlapspktnd@gmail.com',
-                                style: TextStyle(
-                                  fontFamily: AppFonts.inter,
-                                  fontSize: 12.sp,
-                                  color: AppColors.darkGrey,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      8.heightBox,
+                    ],
                   ),
-                  16.heightBox,
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Container(
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.r),
-                        border: Border.all(
-                          color: AppColors.lightGreyColor,
-                          width: 0.5,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'View Profile',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontFamily: AppFonts.inter,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  20.heightBox,
-                  Divider(color: AppColors.lightGreyColor, thickness: 0.5.h),
-                  8.heightBox,
-                  _buildSettingItem(
-                    Assets.profileSetting,
-                    'Profile Setting',
-                    () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfileSettingsScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  _buildSettingItem(Assets.setting, 'Account Setting', () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AccountSettingsScreen(),
-                      ),
-                    );
-                  }),
-                  _buildSettingItem(Assets.privacy, 'Privacy Setting', () {}),
-                  _buildSettingItem(Assets.appsettings, 'App Setting', () {}),
-                  _buildSettingItem(Assets.chat, 'Chat Setting', () {}),
-                  8.heightBox,
-                  Divider(color: AppColors.lightGreyColor, thickness: 0.5.h),
-                  20.heightBox,
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(Assets.logoutIcon),
-                          12.widthBox,
-                          Text(
-                            'Log out',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontFamily: AppFonts.inter,
-                              color: AppColors.red,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  16.heightBox,
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -212,21 +142,21 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           children: [
             Row(
               children: [
-                SvgPicture.asset(icon),
-
-                12.widthBox,
                 Text(
                   title,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: AppColors.black,
+                    color: ThemeColors.textColor(context),
                     fontFamily: AppFonts.inter,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
-            SvgPicture.asset(Assets.arrowRight),
+            SvgPicture.asset(
+              Assets.arrowRight,
+              color: ThemeColors.commentfielIconsColor(context),
+            ),
           ],
         ),
       ),

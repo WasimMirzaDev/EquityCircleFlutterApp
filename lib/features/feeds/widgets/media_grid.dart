@@ -7,6 +7,8 @@ import 'package:equitycircle/core/widgets/loading_indicator.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/theme_colors.dart';
+
 class MediaGrid extends StatefulWidget {
   List<MediaByFeeds> media;
 
@@ -47,7 +49,7 @@ class _MediaGridState extends State<MediaGrid> {
                       (context, url) => Center(
                         child: LoadingIndicator(
                           radius: 15,
-                          activeColor: AppColors.purpleColor,
+                          activeColor: ThemeColors.indicatorColor(context),
                           inactiveColor: AppColors.greyColor,
 
                           animationDuration: Duration(milliseconds: 500),

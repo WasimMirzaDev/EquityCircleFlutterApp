@@ -55,7 +55,11 @@ Widget customPostContainer(
             children: [
               Row(
                 children: [
-                  CircleAvatar(backgroundImage: NetworkImage(profileUrl)),
+                  CircleAvatar(
+                    radius: 16.r,
+                    backgroundColor: AppColors.white,
+                    backgroundImage: NetworkImage(profileUrl),
+                  ),
                   10.widthBox,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +121,7 @@ Widget customPostContainer(
                             children: [
                               Icon(
                                 Icons.edit,
-                                color: AppColors.black,
+                                color: ThemeColors.iconColor(context),
                                 size: 18,
                               ),
                               10.widthBox,

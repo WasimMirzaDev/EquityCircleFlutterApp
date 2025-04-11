@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../core/constants/theme_colors.dart';
+
 class JobDetailScreen extends StatefulWidget {
   String image;
   String title;
@@ -53,25 +55,29 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.offWhite,
+      backgroundColor: ThemeColors.background(context),
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppColors.offWhite,
+        backgroundColor: ThemeColors.background(context),
         shadowColor: Colors.black,
         surfaceTintColor: Colors.black,
         title: Text(
           "Details",
           style: TextStyle(
-            color: AppColors.black,
+            color: ThemeColors.textColor(context),
             fontWeight: FontWeight.w600,
             fontFamily: AppFonts.inter,
             fontSize: 14.sp,
           ),
         ),
         leading: IconButton(
-          icon: SvgPicture.asset(Assets.backArrow, height: 20.h),
+          icon: SvgPicture.asset(
+            Assets.backArrow,
+            height: 20.h,
+            color: ThemeColors.iconColor(context),
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -83,7 +89,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             children: [
-              Divider(color: AppColors.lightGreyColor, height: 0.5.h),
+              Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
 
               20.heightBox,
 
@@ -109,7 +115,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                   fontSize: 10.sp,
                   fontWeight: FontWeight.w400,
                   fontFamily: AppFonts.inter,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
               20.heightBox,
@@ -123,9 +129,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  color: AppColors.white,
+                  color: ThemeColors.cardColor(context),
                   border: Border.all(
-                    color: AppColors.lightGreyColor,
+                    color: ThemeColors.borderColor(context),
                     width: 0.28,
                   ),
                 ),
@@ -142,13 +148,14 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           fontSize: 12.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       8.heightBox,
                       CustomTextField(
                         controller: firstNameController,
                         hint: "Enter your first name",
+                        fillColor: ThemeColors.search(context),
                       ),
                       16.heightBox,
                       Text(
@@ -157,13 +164,14 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           fontSize: 12.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       8.heightBox,
                       CustomTextField(
                         controller: lastNameController,
                         hint: "Enter your Last name",
+                        fillColor: ThemeColors.search(context),
                       ),
 
                       16.heightBox,
@@ -173,13 +181,14 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           fontSize: 12.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       8.heightBox,
                       CustomTextField(
                         controller: emailController,
                         hint: "User@gmail.com",
+                        fillColor: ThemeColors.search(context),
                       ),
                       16.heightBox,
                       Text(
@@ -188,7 +197,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           fontSize: 12.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       8.heightBox,
@@ -207,7 +216,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         decoration: InputDecoration(
                           isDense: true,
                           filled: true,
-                          fillColor: AppColors.white,
+                          fillColor: ThemeColors.search(context),
                           contentPadding: EdgeInsets.symmetric(
                             horizontal: 12.w,
                             vertical: 12.h,
@@ -231,7 +240,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                             fontFamily: AppFonts.inter,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
-                            color: AppColors.darkGrey,
+                            color: ThemeColors.hintTextColor(context),
                           ),
                           suffixIcon: Padding(
                             padding: EdgeInsets.only(right: 12.w),
@@ -263,7 +272,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                     fontFamily: AppFonts.inter,
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColors.darkGrey,
+                                    color: ThemeColors.hintTextColor(context),
                                   ),
                                 ),
                               );
@@ -282,7 +291,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           fontSize: 12.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       8.heightBox,
@@ -292,7 +301,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.r),
                           border: Border.all(
-                            color: AppColors.lightGreyColor,
+                            color: ThemeColors.borderColor(context),
                             width: 0.5,
                           ),
                         ),
@@ -358,13 +367,14 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           fontSize: 12.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.black,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
                       8.heightBox,
                       CustomTextField(
                         controller: jobtitleController,
                         hint: "Enter your Job Title",
+                        fillColor: ThemeColors.search(context),
                       ),
                       25.heightBox,
 

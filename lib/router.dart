@@ -6,6 +6,7 @@ import 'package:equitycircle/features/event_calender/presentation/event_calender
 import 'package:equitycircle/features/feeds/feedScreen.dart';
 import 'package:equitycircle/features/job_application/presentation/job_application_screen.dart';
 import 'package:equitycircle/features/job_list/joblist_page.dart';
+import 'package:equitycircle/features/splash_screen.dart';
 import 'package:equitycircle/layout/main-layout.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +20,9 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter createRouter(AuthProvider authProvider) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: authProvider.isAuthenticated ? '/' : '/login',
+    initialLocation: '/splash',
+
+    // initialLocation: authProvider.isAuthenticated ? '/' : '/login',
     refreshListenable: authProvider,
     routes: [
       /// 🏠 **Main Shell Route** (Wraps Only Bottom Navigation Pages)
@@ -43,6 +46,11 @@ GoRouter createRouter(AuthProvider authProvider) {
       _protectedStandaloneRoute('/addNewEvent', AddNewEventScreen()),
 
       /// 🔑 **Authentication Routes**
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
+
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),

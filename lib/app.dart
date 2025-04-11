@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/theme_colors.dart';
+import 'core/providers/theme_provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
 
             theme: ThemeColors.lightTheme,
             darkTheme: ThemeColors.darkTheme,
-            themeMode: ThemeMode.system,
+            themeMode: themeProvider.currentTheme,
             routerConfig: createRouter(authProvider), // ✅ Safe access now
           ),
     );

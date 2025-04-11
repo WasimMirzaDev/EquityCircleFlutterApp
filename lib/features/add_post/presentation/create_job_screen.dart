@@ -12,7 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../core/constants/appColors.dart';
 import '../../../core/constants/theme_colors.dart';
+import '../../../core/widgets/custom_appbar.dart';
 import '../../../core/widgets/custom_textfield.dart';
 
 class CreateJobScreen extends StatefulWidget {
@@ -33,170 +35,163 @@ class _CreateJobScreenState extends State<CreateJobScreen> {
   XFile? _selectedImage;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ThemeColors.background(context),
-      appBar: AppBar(
-        centerTitle: true,
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        backgroundColor: ThemeColors.background(context),
-        shadowColor: Colors.black,
-        surfaceTintColor: Colors.black,
-        title: Text(
-          "Create new job",
-          style: TextStyle(
-            color: ThemeColors.textColor(context),
-            fontWeight: FontWeight.w600,
-            fontFamily: AppFonts.inter,
-            fontSize: 14.sp,
-          ),
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            Assets.backArrow,
-            height: 20.h,
-            color: ThemeColors.iconColor(context),
-          ),
-          onPressed: () {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      decoration:
+          isDarkMode
+              ? BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Assets.postFormBg),
+                  fit: BoxFit.fill,
+                ),
+              )
+              : BoxDecoration(color: AppColors.white),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+
+        appBar: CustomAppBar(
+          title: "Create new job",
+          onLeadingPressed: () {
             Navigator.pop(context);
           },
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  20.heightBox,
-                  Text(
-                    "Main image*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  GestureDetector(
-                    onTap: _pickImage,
-                    child: DottedBorder(
-                      borderType: BorderType.RRect,
-                      radius: Radius.circular(8.r),
-                      strokeWidth: 0.5,
-                      dashPattern: [6, 4],
-                      color: ThemeColors.dottedColor(context),
-                      child: Container(
-                        width: double.infinity,
-                        height: 150.h,
-                        decoration: BoxDecoration(
-                          color: ThemeColors.search(context),
-                          // border: Border.all(color: AppColors.purpleColor),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child:
-                            _selectedImage == null
-                                ? Center(
-                                  child: SvgPicture.asset(
-                                    Assets.photoIcon,
-                                    height: 18.h,
-                                    width: 18.w,
-                                    color: ThemeColors.dottedColor(context),
-                                  ),
-                                )
-                                : ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  child: Image.file(
-                                    File(_selectedImage!.path),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    20.heightBox,
+                    Text(
+                      "Main image*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
                       ),
                     ),
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Title*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
+                    8.heightBox,
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(8.r),
+                        strokeWidth: 0.5,
+                        dashPattern: [6, 4],
+                        color: ThemeColors.dottedColor(context),
+                        child: Container(
+                          width: double.infinity,
+                          height: 150.h,
+                          decoration: BoxDecoration(
+                            color: ThemeColors.search(context),
+                            // border: Border.all(color: AppColors.purpleColor),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child:
+                              _selectedImage == null
+                                  ? Center(
+                                    child: SvgPicture.asset(
+                                      Assets.photoIcon,
+                                      height: 18.h,
+                                      width: 18.w,
+                                      color: ThemeColors.dottedColor(context),
+                                    ),
+                                  )
+                                  : ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    child: Image.file(
+                                      File(_selectedImage!.path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                        ),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: titleController,
-                    hint: "Enter title*",
-                    fillColor: ThemeColors.search(context),
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Short Description*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
+                    16.heightBox,
+                    Text(
+                      "Title*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: shortdiscriptionController,
-                    hint: "Enter Short Description*",
-                    fillColor: ThemeColors.search(context),
-                    maxLines: 5,
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Description*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: titleController,
+                      hint: "Enter title*",
+                      fillColor: ThemeColors.search(context),
                     ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: discriptionController,
-                    hint: "Enter Description*",
-                    fillColor: ThemeColors.search(context),
-                    maxLines: 4,
-                  ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     color: AppColors.white,
-                  //     border: Border.all(
-                  //       color: AppColors.lightGreyColor,
-                  //       width: 0.5,
-                  //     ),
-                  //     borderRadius: BorderRadius.circular(8.r),
-                  //   ),
-                  //   child: CustomQuillEditor(
-                  //     controller: _controller,
-                  //     backgroundColor: AppColors.white,
-                  //   ),
-                  // ),
-                  30.heightBox,
+                    16.heightBox,
+                    Text(
+                      "Short Description*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: shortdiscriptionController,
+                      hint: "Enter Short Description*",
+                      fillColor: ThemeColors.search(context),
+                      maxLines: 5,
+                    ),
+                    16.heightBox,
+                    Text(
+                      "Description*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: discriptionController,
+                      hint: "Enter Description*",
+                      fillColor: ThemeColors.search(context),
+                      maxLines: 4,
+                    ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     color: AppColors.white,
+                    //     border: Border.all(
+                    //       color: AppColors.lightGreyColor,
+                    //       width: 0.5,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(8.r),
+                    //   ),
+                    //   child: CustomQuillEditor(
+                    //     controller: _controller,
+                    //     backgroundColor: AppColors.white,
+                    //   ),
+                    // ),
+                    30.heightBox,
 
-                  CustomButton(
-                    text: "Create job",
-                    onTap: () {
-                      Navigator.pop(context, true);
-                    },
-                  ),
-                  24.heightBox,
-                ],
+                    CustomButton(
+                      text: "Create job",
+                      onTap: () {
+                        Navigator.pop(context, true);
+                      },
+                    ),
+                    24.heightBox,
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

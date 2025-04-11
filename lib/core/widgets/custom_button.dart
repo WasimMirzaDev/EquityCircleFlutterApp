@@ -1,5 +1,6 @@
 import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
 import 'package:equitycircle/core/constants/appFonts.dart' show AppFonts;
+import 'package:equitycircle/core/constants/theme_colors.dart';
 import 'package:equitycircle/core/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -37,11 +38,31 @@ class CustomButton extends StatelessWidget {
       },
       child: Container(
         height: height.h,
+
         width: width.w,
 
         decoration: BoxDecoration(
-          border: Border.all(color: borderColor),
-          color: bgColor,
+          gradient:
+              Theme.of(context).brightness == Brightness.dark
+                  ? const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0x80FFFFFF), // 50% opacity
+                      Color(0x1AFFFFFF),
+                    ],
+                  )
+                  : null,
+
+          color:
+              Theme.of(context).brightness == Brightness.dark ? null : bgColor,
+          border: Border.all(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Color(0x33FFFFFF)
+                    : borderColor,
+          ),
+
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Center(
@@ -49,7 +70,7 @@ class CustomButton extends StatelessWidget {
               loading == true
                   ? LoadingIndicator(
                     radius: 10.r,
-                    activeColor: AppColors.purpleColor,
+                    activeColor: ThemeColors.indicatorColor(context),
                     inactiveColor: AppColors.greyColor,
 
                     animationDuration: Duration(milliseconds: 500),

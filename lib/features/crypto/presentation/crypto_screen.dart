@@ -71,89 +71,84 @@ class _CryptoScreenState extends State<CryptoScreen> {
     Assets.fitnessImg,
     Assets.mindsetImg,
   ];
-
   @override
   Widget build(BuildContext context) {
     final feedsProvider = Provider.of<FeedsProvider>(context);
     final feeds = feedsProvider.getFeedsByCategory(widget.categoryId);
     final isLoading = feedsProvider.isLoading;
 
-    return Scaffold(
-      backgroundColor: ThemeColors.background(context),
-      body:
-          isLoading && feeds.isEmpty
-              ? Center(
-                child: LoadingIndicator(
-                  radius: 15,
-                  activeColor: AppColors.purpleColor,
-                  inactiveColor: AppColors.greyColor,
-                  animationDuration: const Duration(milliseconds: 500),
-                ),
-              )
-              : feeds.isEmpty
-              ? Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.w),
-                  child: NoBusinessInsights(
-                    icon: Assets.cryptoIcon,
-                    text:
-                        "No crypto updates available. Keep an eye out for market trends and insights.",
-                  ),
-                ),
-              )
-              : RefreshIndicator(
-                onRefresh: () async {
-                  await feedsProvider.fetchFeeds(
+    if (isLoading && feeds.isEmpty) {
+      return Center(
+        child: LoadingIndicator(
+          radius: 15,
+          activeColor: ThemeColors.indicatorColor(context),
+          inactiveColor: AppColors.greyColor,
+          animationDuration: const Duration(milliseconds: 500),
+        ),
+      );
+    }
+
+    if (feeds.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          child: NoBusinessInsights(
+            icon: Assets.cryptoIcon,
+            text:
+                "No crypto updates available. Keep an eye out for market trends and insights.",
+          ),
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () async {
+        await feedsProvider.fetchFeeds(
+          context,
+          categoryId: widget.categoryId,
+          refresh: true,
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+        child: Column(
+          children: [
+            20.heightBox,
+            Expanded(
+              child: ListView(
+                controller: _scrollController,
+                padding: EdgeInsets.zero,
+                children: [
+                  customSearchWidget(
+                    "   Search for users",
+                    searchController,
                     context,
-                    categoryId: widget.categoryId,
-                    refresh: true,
-                  );
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-                  child: Column(
-                    children: [
-                      20.heightBox,
-                      Expanded(
-                        child: ListView(
-                          controller: _scrollController,
-                          padding: EdgeInsets.zero,
-                          children: [
-                            customSearchWidget(
-                              "   Search for users",
-                              searchController,
-                              context,
-                            ),
-                            12.heightBox,
-                            CustomCarouselSlider(images: images),
-                            20.heightBox,
-                            ...feeds.map(
-                              (feed) => FeedCard(
-                                feed: feed,
-                                loggedInUserId:
-                                    Provider.of<AuthProvider>(
-                                      context,
-                                    ).userData!['id'],
-                              ),
-                            ),
-                            if (feedsProvider.hasMore(widget.categoryId))
-                              const Center(
-                                child: LoadingIndicator(
-                                  radius: 15,
-                                  activeColor: AppColors.purpleColor,
-                                  inactiveColor: AppColors.greyColor,
-                                  animationDuration: Duration(
-                                    milliseconds: 500,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
                   ),
-                ),
+                  12.heightBox,
+                  CustomCarouselSlider(images: images),
+                  20.heightBox,
+                  ...feeds.map(
+                    (feed) => FeedCard(
+                      feed: feed,
+                      loggedInUserId:
+                          Provider.of<AuthProvider>(context).userData!['id'],
+                    ),
+                  ),
+                  if (feedsProvider.hasMore(widget.categoryId))
+                    Center(
+                      child: LoadingIndicator(
+                        radius: 15,
+                        activeColor: ThemeColors.indicatorColor(context),
+                        inactiveColor: AppColors.greyColor,
+                        animationDuration: Duration(milliseconds: 500),
+                      ),
+                    ),
+                ],
               ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

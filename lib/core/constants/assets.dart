@@ -1,4 +1,7 @@
 class Assets {
+  static final logo = "assets/images/equityCircleLogo.svg";
+
+  static final drawerBg = "assets/images/drawerBg.svg";
   static final bussinesIcon = "assets/icon/bussiness.svg";
 
   static final fitnessIcon = "assets/icon/fitnessIcon.svg";
@@ -62,7 +65,14 @@ class Assets {
   static final privacy = "assets/icon/privacy.svg";
   static final appsettings = "assets/icon/appsettings.svg";
   static final chat = "assets/icon/chat.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";// static final smileIcon = "assets/icon/smileIcon.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";
-  // static final smileIcon = "assets/icon/smileIcon.svg";
+  static final editIcon = "assets/icon/editIcon.svg";
+  static final homeBg = "assets/images/homeBg.png";
+  static final splashBg = "assets/images/splashBg.png";
+  static final postFormBg = "assets/images/postFormBg.png";
+  static final facebook = "assets/icon/facebook.svg";
+  static final googleIcon = "assets/icon/googleIcon.svg";
+  // static final postFormBg = "assets/images/postFormBg.png";
+  // static final homeBg = "assets/images/homeBg.png";
+  // static final splashBg = "assets/images/splashBg.png";
+  // static final postFormBg = "assets/images/postFormBg.png";
 }

@@ -13,6 +13,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import 'core/providers/theme_provider.dart';
+
 // Flutter Version 3.29.0
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -97,6 +99,7 @@ void main() async {
           create: (_) => EducationProvider(),
         ),
         ChangeNotifierProvider<JobProvider>(create: (_) => JobProvider()),
+        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
       ],
       child: const MyApp(),
     ),

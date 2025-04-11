@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/appColors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/theme_colors.dart';
 
 Future<void> showDiscardDialog(
   BuildContext context,
@@ -21,6 +22,7 @@ Future<void> showDiscardDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        backgroundColor: ThemeColors.background(context),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),
@@ -35,7 +37,11 @@ Future<void> showDiscardDialog(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: SvgPicture.asset(Assets.close),
+                child: SvgPicture.asset(
+                  Assets.close,
+
+                  color: ThemeColors.iconColor(context),
+                ),
               ),
             ),
             Center(
@@ -45,7 +51,7 @@ Future<void> showDiscardDialog(
                   fontSize: 14.sp,
                   fontFamily: AppFonts.inter,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.black,
+                  color: ThemeColors.textColor(context),
                 ),
               ),
             ),
@@ -57,7 +63,7 @@ Future<void> showDiscardDialog(
                 fontSize: 12.sp,
                 fontFamily: AppFonts.inter,
                 fontWeight: FontWeight.w400,
-                color: AppColors.darkGrey,
+                color: ThemeColors.subtitleColor(context),
               ),
             ),
 
@@ -75,8 +81,10 @@ Future<void> showDiscardDialog(
 
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4.r),
-                          border: Border.all(color: AppColors.purpleColor),
-                          color: AppColors.white,
+                          border: Border.all(
+                            color: ThemeColors.discardBorderColor(context),
+                          ),
+                          color: ThemeColors.discardBtnBg(context),
                         ),
 
                         child: Center(
@@ -86,7 +94,7 @@ Future<void> showDiscardDialog(
                               fontSize: 12.sp,
                               fontFamily: AppFonts.inter,
                               fontWeight: FontWeight.w400,
-                              color: AppColors.purpleColor,
+                              color: ThemeColors.discardBorderColor(context),
                             ),
                           ),
                         ),
@@ -103,7 +111,7 @@ Future<void> showDiscardDialog(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4.r),
 
-                          color: AppColors.purpleColor,
+                          color: AppColors.red,
                         ),
 
                         child: Center(

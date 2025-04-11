@@ -1,12 +1,15 @@
+import 'package:equitycircle/core/constants/assets.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/providers/auth_provider.dart'
     as auth_provider;
 import 'package:equitycircle/core/widgets/custom_button.dart';
 import 'package:equitycircle/core/widgets/custom_textfield.dart'
     show CustomTextField;
+import 'package:equitycircle/features/auth/presentation/widgets/custom_google_fb_btn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart'
 
 import '../../../core/constants/appColors.dart' show AppColors;
 import '../../../core/constants/appFonts.dart';
+import '../../../core/constants/theme_colors.dart';
 import '../../../core/widgets/custom_snackbar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -180,158 +184,146 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/icon/Equity_Circle_icon.png",
-                        height: 30.h,
-                        width: 30.w,
-                      ),
-                      8.widthBox,
-                      Text(
-                        'Equity Circle',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontFamily: AppFonts.inter,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
-                        ),
-                      ),
-                    ],
+      body: Container(
+        decoration:
+            isDarkMode
+                ? BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(Assets.splashBg),
+                    fit: BoxFit.cover,
                   ),
-                  20.heightBox,
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    child: Text(
-                      'Welcome to Equity Circle, a platform to connect with the social world',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontFamily: AppFonts.inter,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
+                )
+                : null,
+        color: isDarkMode ? null : AppColors.white,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      Assets.logo,
+                      height: 20.h,
+                      color: ThemeColors.logoColor(context),
                     ),
-                  ),
-                  30.heightBox,
-                  CustomTextField(
-                    controller: emailController,
-                    validator: _validateEmail,
-                    hint: "Email Address",
-                  ),
-
-                  10.heightBox,
-                  CustomTextField(
-                    isObscure: !_isPasswordVisible,
-                    controller: passwordController,
-                    validator: _validatePassword,
-                    hint: "Password",
-                    suffixIcon: Padding(
-                      padding: EdgeInsets.only(right: 12.w),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                        child: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-
-                          color:
-                              _isPasswordVisible
-                                  ? AppColors.purpleColor
-                                  : AppColors.greyColor,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  40.heightBox,
-                  CustomButton(
-                    text: "Sign in",
-                    onTap: _handleLogin,
-                    loading: isLoading,
-                  ),
-
-                  20.heightBox,
-                  Text(
-                    'OR',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.darkGrey,
-                    ),
-                  ),
-                  20.heightBox,
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                    ),
-                    onPressed: () {
-                      _handleGoogleSignIn();
-                    },
-                    icon: const Icon(Icons.login, color: AppColors.purpleColor),
-                    label: const Text(
-                      'Sign in with Google',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  10.heightBox,
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.purpleColor,
-                    ),
-                    onPressed: () {},
-                    child: const Text(
-                      'Login with Facebook',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  20.heightBox,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Don\'t have an account? ',
+                    20.heightBox,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Text(
+                        'Welcome to Equity Circle, a platform to connect with the social world',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontFamily: AppFonts.inter,
                           fontWeight: FontWeight.w400,
-                          color: AppColors.darkGrey,
+                          color: ThemeColors.textColor(context),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          context.go('/register');
-                        },
-                        child: Text(
-                          'Sign up',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            decoration: TextDecoration.underline,
-                            fontFamily: AppFonts.inter,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.purpleColor,
+                    ),
+                    30.heightBox,
+                    CustomTextField(
+                      controller: emailController,
+                      validator: _validateEmail,
+                      hint: "Email Address",
+                      fillColor: ThemeColors.search(context),
+                    ),
+
+                    10.heightBox,
+                    CustomTextField(
+                      isObscure: !_isPasswordVisible,
+                      controller: passwordController,
+                      validator: _validatePassword,
+                      hint: "Password",
+                      fillColor: ThemeColors.search(context),
+                      suffixIcon: Padding(
+                        padding: EdgeInsets.only(right: 12.w),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                          child: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+
+                            color:
+                                _isPasswordVisible
+                                    ? AppColors.purpleColor
+                                    : AppColors.greyColor,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+
+                    40.heightBox,
+                    CustomButton(
+                      text: "Sign in",
+                      onTap: _handleLogin,
+                      loading: isLoading,
+                    ),
+
+                    30.heightBox,
+                    Text(
+                      'OR',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGrey,
+                      ),
+                    ),
+                    30.heightBox,
+                    CustomSignInButton(
+                      onTap: _handleGoogleSignIn,
+                      iconPath: Assets.googleIcon,
+                      buttonText: 'Login with Google',
+                    ),
+                    10.heightBox,
+                    CustomSignInButton(
+                      onTap: _handleGoogleSignIn,
+                      iconPath: Assets.facebook,
+                      buttonText: 'Login with Facebook',
+                    ),
+                    20.heightBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Don\'t have an account? ',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontFamily: AppFonts.inter,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.darkGrey,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            context.go('/register');
+                          },
+                          child: Text(
+                            'Sign up',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              decoration: TextDecoration.underline,
+                              decorationColor: ThemeColors.loginColor(context),
+                              fontFamily: AppFonts.inter,
+                              fontWeight: FontWeight.w400,
+                              color: ThemeColors.loginColor(context),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

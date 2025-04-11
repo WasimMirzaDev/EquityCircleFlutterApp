@@ -3,6 +3,7 @@ library;
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:equitycircle/core/constants/appColors.dart' show AppColors;
+import 'package:equitycircle/core/constants/theme_colors.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,13 +52,17 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
         ),
         8.heightBox,
         if (widget.images.length > 1)
-          carouselIndicator(widget.images.length, _currentIndex),
+          carouselIndicator(widget.images.length, _currentIndex, context),
       ],
     );
   }
 }
 
-Widget carouselIndicator(int itemCount, int currentIndex) {
+Widget carouselIndicator(
+  int itemCount,
+  int currentIndex,
+  BuildContext context,
+) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: List.generate(itemCount, (index) {
@@ -70,7 +75,7 @@ Widget carouselIndicator(int itemCount, int currentIndex) {
           borderRadius: BorderRadius.circular(9.r),
           color:
               currentIndex == index
-                  ? AppColors.purpleColor
+                  ? ThemeColors.carousalIndicatorColor(context)
                   : AppColors.greyColor,
         ),
       );

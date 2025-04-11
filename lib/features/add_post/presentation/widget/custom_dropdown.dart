@@ -1,43 +1,101 @@
+import 'package:equitycircle/core/constants/appFonts.dart';
+import 'package:equitycircle/core/constants/theme_colors.dart' show ThemeColors;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomDropdown extends StatefulWidget {
-  final TextEditingController controller;
-  final String hint;
+import '../../../../core/constants/appColors.dart';
+import '../../../../core/constants/assets.dart';
+
+class CustomDropdown extends StatelessWidget {
+  final String? selectedValue;
   final List<String> items;
+  final void Function(String?) onChanged;
+  final String hintText;
+  final TextEditingController controller;
+  final String? Function(String?)? validator;
 
   const CustomDropdown({
     super.key,
     required this.controller,
-    required this.hint,
+    required this.selectedValue,
     required this.items,
+    required this.onChanged,
+    this.hintText = "Select",
+    this.validator,
   });
 
   @override
-  _CustomDropdownState createState() => _CustomDropdownState();
-}
-
-class _CustomDropdownState extends State<CustomDropdown> {
-  @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value:
-          widget.items.contains(widget.controller.text)
-              ? widget.controller.text
-              : null,
+      style: TextStyle(
+        fontFamily: AppFonts.inter,
+        fontSize: 12.sp,
+        fontWeight: FontWeight.w400,
+        color: AppColors.darkGrey,
+      ),
+      icon: const SizedBox.shrink(),
+      value: items.contains(controller.text) ? controller.text : null,
       decoration: InputDecoration(
-        hintText: widget.hint,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        isDense: true,
+        filled: true,
+        fillColor: ThemeColors.search(context),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ThemeColors.borderColor(context),
+            width: 0.5,
+          ),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ThemeColors.borderColor(context),
+            width: 0.5,
+          ),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        hintText: hintText,
+        hintStyle: TextStyle(
+          fontFamily: AppFonts.inter,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.darkGrey,
+        ),
+        suffixIcon: Padding(
+          padding: EdgeInsets.only(right: 12.w),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                Assets.arrowDown,
+                height: 16.h,
+                width: 16.w,
+                color: ThemeColors.iconColor(context),
+              ),
+            ],
+          ),
+        ),
+        suffixIconConstraints: const BoxConstraints(maxHeight: 43),
+        prefixIconConstraints: const BoxConstraints(maxHeight: 35),
       ),
       items:
-          widget.items.map((String value) {
-            return DropdownMenuItem<String>(value: value, child: Text(value));
+          items.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontFamily: AppFonts.inter,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.darkGrey,
+                ),
+              ),
+            );
           }).toList(),
-      onChanged: (newValue) {
-        setState(() {
-          widget.controller.text = newValue!;
-        });
-      },
+      onChanged: onChanged,
+      validator: validator,
     );
   }
 }

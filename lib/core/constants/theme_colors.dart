@@ -6,12 +6,28 @@ class ThemeColors {
   // Dynamic color getters
   static Color background(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-          ? AppColors.black
+          ? AppColors.pureBlack
           : AppColors.offWhite;
+  static Color logoColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.white
+          : AppColors.black;
+  static Color indicatorColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.black
+          : AppColors.purpleColor;
+  static Color carousalIndicatorColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.white
+          : AppColors.purpleColor;
   static Color appbar(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.black
           : AppColors.offWhite;
+  static Color bottomNavText(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.white
+          : AppColors.purpleColor;
   static Color search(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.darkblack
@@ -34,13 +50,16 @@ class ThemeColors {
           : AppColors.black;
   static Color hintTextColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-          ? AppColors.darkblack
+          ? AppColors.darkGrey
           : AppColors.darkGrey;
   static Color textColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.white
           : AppColors.black;
-
+  static Color radiobtn(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
   static Color subTextColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.darkGrey
@@ -62,7 +81,7 @@ class ThemeColors {
           : AppColors.orange;
   static Color commentBgColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
-          ? AppColors.black
+          ? AppColors.blackGreyDark
           : AppColors.fieldgrey;
   static Color commenttextColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
@@ -76,6 +95,55 @@ class ThemeColors {
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.darkblack
           : AppColors.white;
+  static Color sendBgColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkThemeGrey
+          : AppColors.purpleColor;
+  static Color sendIconColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.pureBlack
+          : AppColors.white;
+  static Color postTypeTextIconColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.pureBlack
+          : AppColors.white;
+  static Color swtichBgColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.white
+          : AppColors.purpleColor;
+  static Color swtichDotColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.pureBlack
+          : AppColors.white;
+  static Color discardBtnBg(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkblack
+          : AppColors.white;
+  static Color discardBorderColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.lime
+          : AppColors.purpleColor;
+  static Color subtitleColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.white
+          : AppColors.darkGrey;
+
+  static Color fabAddIcon(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.pureBlack
+          : AppColors.white;
+  static Color loginColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
+  static Color successSnack(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
+  static Color bottomNavColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.purpleColor;
   // Light Theme
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,

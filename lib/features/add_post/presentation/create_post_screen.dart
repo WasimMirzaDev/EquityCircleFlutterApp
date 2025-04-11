@@ -8,6 +8,7 @@ import 'package:equitycircle/core/constants/constants.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/models/feeds_model.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
+import 'package:equitycircle/core/widgets/custom_appbar.dart' show CustomAppBar;
 import 'package:equitycircle/core/widgets/custom_button.dart';
 import 'package:equitycircle/core/widgets/custom_snackbar.dart';
 import 'package:equitycircle/core/widgets/loading_indicator.dart';
@@ -23,6 +24,7 @@ import 'package:provider/provider.dart' show Provider;
 import '../../../core/constants/theme_colors.dart';
 import '../../../core/providers/auth_provider.dart';
 import '../../../core/widgets/custom_textfield.dart';
+import 'widget/discard_dialogbox.dart';
 
 class CreatePostScreen extends StatefulWidget {
   final DataByFeed? post;
@@ -206,360 +208,367 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     // final feedsProvider = Provider.of<FeedsProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     _selectedBackground = ThemeColors.search(context);
-    return Scaffold(
-      backgroundColor: ThemeColors.background(context),
+    return Container(
+      decoration:
+          isDarkMode
+              ? BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Assets.postFormBg),
+                  fit: BoxFit.fill,
+                ),
+              )
+              : BoxDecoration(color: AppColors.white),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
 
-      appBar: AppBar(
-        centerTitle: true,
-        scrolledUnderElevation: 0,
-        elevation: 0,
-        backgroundColor: ThemeColors.background(context),
-        shadowColor: ThemeColors.textColor(context),
-        surfaceTintColor: ThemeColors.textColor(context),
-        title: Text(
-          _isEditing ? "Edit Post" : "Create post",
-          style: TextStyle(
-            color: ThemeColors.textColor(context),
-            fontWeight: FontWeight.w600,
-            fontFamily: AppFonts.inter,
-            fontSize: 14.sp,
-          ),
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            Assets.backArrow,
-            height: 20.h,
-            color: ThemeColors.iconColor(context),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
+        appBar: CustomAppBar(
+          title: _isEditing ? "Edit Post" : "Create Post",
+          onLeadingPressed: () {
+            showDiscardDialog(
+              context,
+              "Discard Changes?",
+              "Are you sure you want to discard your changes? All unsaved modifications will be lost.",
+              "Cancel",
+              "Discard",
+              () => Navigator.pop(context, true),
+              () {
+                Navigator.pop(context, true);
+                Navigator.pop(context, true);
+              },
+            );
           },
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Divider(color: AppColors.lightGreyColor, height: 0.5.h),
 
-            10.heightBox,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Divider(color: AppColors.lightGreyColor, height: 0.5.h),
 
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 15.h),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        getProfileImageUrl(authProvider.userData),
-                      ),
-                    ),
-                  ),
-                  10.widthBox,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      16.heightBox,
-                      Text(
-                        widget.post?.user?.name ?? "Admin",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontFamily: AppFonts.inter,
-                          fontWeight: FontWeight.w600,
-                          color: ThemeColors.textColor(context),
+              10.heightBox,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.h),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          getProfileImageUrl(authProvider.userData),
                         ),
                       ),
-                      Text(
-                        widget.post?.user?.roles ?? "Admin",
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          fontFamily: AppFonts.inter,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.darkGrey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            20.heightBox,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-              child: _buildPrivacySelector(),
-            ),
-            16.heightBox,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Text(
-                  //   ".",
-                  //   style: TextStyle(
-                  //     fontSize: 30.sp,
-                  //     fontFamily: AppFonts.inter,
-                  //     color: AppColors.darkGrey,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
-                  Text(
-                    "• ",
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.darkGrey,
                     ),
-                  ),
-                  Text(
-                    "Anyone can see your post",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.darkGrey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            16.heightBox,
-            Divider(color: AppColors.lightGreyColor, height: 1.h),
-            16.heightBox,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Select Category*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  16.heightBox,
-                  _buildCategorySelector(),
-                  16.heightBox,
-                  Text(
-                    "Title*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: titleController,
-                    hint: "Enter title*",
-                    fillColor: ThemeColors.search(context),
-                  ),
-                  16.heightBox,
-                  Text(
-                    "Description*",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  CustomTextField(
-                    controller: discriptionController,
-                    hint: "Enter Description*",
-                    maxLines: 4,
-                    fillColor: _selectedBackground,
-                  ),
-
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     color: AppColors.white,
-                  //     border: Border.all(
-                  //       color: AppColors.lightGreyColor,
-                  //       width: 0.5,
-                  //     ),
-                  //     borderRadius: BorderRadius.circular(8.r),
-                  //   ),
-                  //   child: CustomQuillEditor(
-                  //     controller: _controller,
-                  //     backgroundColor: _selectedBackground,
-                  //   ),
-                  // ),
-                  16.heightBox,
-                  Text(
-                    "Select Background",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  _buildBackgroundSelector(),
-
-                  16.heightBox,
-                  Text(
-                    "Attachments",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontFamily: AppFonts.inter,
-                      fontWeight: FontWeight.w400,
-                      color: ThemeColors.textColor(context),
-                    ),
-                  ),
-                  8.heightBox,
-                  _buildAttachments(),
-                  35.heightBox,
-
-                  CustomButton(
-                    text: _isEditing ? "Update Post" : "Post",
-                    onTap: () async {
-                      if (titleController.text.isEmpty ||
-                          discriptionController.text.isEmpty ||
-                          selectedCategory.isEmpty ||
-                          selectedPrivacy.isEmpty) {
-                        showTopSnackbar(
-                          context,
-                          "Title, Description, Category, and Privacy is required.",
-                          true,
-                        );
-
-                        return;
-                      }
-
-                      Map<String, String> categoryIds = {
-                        "Business": "1",
-                        "Fitness": "2",
-                        "Crypto": "3",
-                        "Mindset": "5",
-                      };
-
-                      String? categoryId = categoryIds[selectedCategory];
-
-                      if (categoryId == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Invalid category selection."),
+                    10.widthBox,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        16.heightBox,
+                        Text(
+                          widget.post?.user?.name ?? "Admin",
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontFamily: AppFonts.inter,
+                            fontWeight: FontWeight.w600,
+                            color: ThemeColors.textColor(context),
                           ),
-                        );
-                        return;
-                      }
-
-                      final feedsProvider = Provider.of<FeedsProvider>(
-                        context,
-                        listen: false,
-                      );
-
-                      // Convert attachment paths to File objects
-                      List<File> imageFiles =
-                          attachments.map((path) => File(path)).toList();
-
-                      // Show loading indicator
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder:
-                            (context) => Center(
-                              child: LoadingIndicator(
-                                radius: 15,
-                                activeColor: AppColors.purpleColor,
-                                inactiveColor: AppColors.greyColor,
-                                animationDuration: Duration(milliseconds: 500),
-                              ),
-                            ),
-                      );
-
-                      try {
-                        if (_isEditing) {
-                          final response = await feedsProvider.editPost(
-                            context,
-                            widget.post?.id.toString() ?? "",
-                            titleController.text,
-                            discriptionController.text,
-                            categoryId,
-
-                            selectedPrivacy,
-                            imageFiles,
-                            [],
-                          );
-
-                          Navigator.pop(context); // Close loading dialog
-
-                          if (response != null) {
-                            // Navigate back or show success message
-                            Navigator.pop(context, true);
-                            showTopSnackbar(
-                              context,
-                              "Post created successfully!",
-                              true,
-                            );
-                          } else {
-                            print("eidt post id ${widget.post?.id}");
-                            showTopSnackbar(
-                              context,
-                              "Failed to create post",
-                              false,
-                            );
-                          }
-                        } else {
-                          final response = await feedsProvider.createPost(
-                            context,
-                            titleController.text,
-                            discriptionController.text,
-                            categoryId, // Pass category ID instead of the name
-
-                            selectedPrivacy,
-                            imageFiles,
-                            [],
-                          );
-
-                          Navigator.pop(context); // Close loading dialog
-
-                          if (response != null) {
-                            // Navigate back or show success message
-                            Navigator.pop(context, true);
-                            showTopSnackbar(
-                              context,
-                              "Post created successfully!",
-                              true,
-                            );
-                          } else {
-                            showTopSnackbar(
-                              context,
-                              "Failed to create post",
-                              false,
-                            );
-                          }
-                        }
-                      } catch (e) {
-                        Navigator.pop(context);
-                        showTopSnackbar(
-                          context,
-                          "Error: ${e.toString()}",
-                          false,
-                        );
-                      }
-                    },
-                  ),
-                  24.heightBox,
-                ],
+                        ),
+                        Text(
+                          widget.post?.user?.roles ?? "Admin",
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontFamily: AppFonts.inter,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.darkGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+
+              20.heightBox,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+                child: _buildPrivacySelector(),
+              ),
+              16.heightBox,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Text(
+                    //   ".",
+                    //   style: TextStyle(
+                    //     fontSize: 30.sp,
+                    //     fontFamily: AppFonts.inter,
+                    //     color: AppColors.darkGrey,
+                    //     fontWeight: FontWeight.w400,
+                    //   ),
+                    // ),
+                    Text(
+                      "• ",
+                      style: TextStyle(
+                        fontSize: 24.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGrey,
+                      ),
+                    ),
+                    Text(
+                      "Anyone can see your post",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGrey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              16.heightBox,
+              Divider(color: AppColors.lightGreyColor, height: 1.h),
+              16.heightBox,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PAGE_MARGIN_HOR),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Select Category*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    16.heightBox,
+                    _buildCategorySelector(),
+                    16.heightBox,
+                    Text(
+                      "Title*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: titleController,
+                      hint: "Enter title*",
+                      fillColor: ThemeColors.search(context),
+                    ),
+                    16.heightBox,
+                    Text(
+                      "Description*",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    CustomTextField(
+                      controller: discriptionController,
+                      hint: "Write here...",
+                      maxLines: 4,
+                      fillColor: _selectedBackground,
+                    ),
+
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     color: AppColors.white,
+                    //     border: Border.all(
+                    //       color: AppColors.lightGreyColor,
+                    //       width: 0.5,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(8.r),
+                    //   ),
+                    //   child: CustomQuillEditor(
+                    //     controller: _controller,
+                    //     backgroundColor: _selectedBackground,
+                    //   ),
+                    // ),
+                    16.heightBox,
+                    Text(
+                      "Select Background",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    _buildBackgroundSelector(),
+
+                    16.heightBox,
+                    Text(
+                      "Attachments",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontFamily: AppFonts.inter,
+                        fontWeight: FontWeight.w400,
+                        color: ThemeColors.textColor(context),
+                      ),
+                    ),
+                    8.heightBox,
+                    _buildAttachments(),
+                    35.heightBox,
+
+                    CustomButton(
+                      text: _isEditing ? "Update Post" : "Post",
+                      onTap: () async {
+                        if (titleController.text.isEmpty ||
+                            discriptionController.text.isEmpty ||
+                            selectedCategory.isEmpty ||
+                            selectedPrivacy.isEmpty) {
+                          showTopSnackbar(
+                            context,
+                            "Title, Description, Category, and Privacy is required.",
+                            true,
+                          );
+
+                          return;
+                        }
+
+                        Map<String, String> categoryIds = {
+                          "Business": "1",
+                          "Fitness": "2",
+                          "Crypto": "3",
+                          "Mindset": "5",
+                        };
+
+                        String? categoryId = categoryIds[selectedCategory];
+
+                        if (categoryId == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Invalid category selection."),
+                            ),
+                          );
+                          return;
+                        }
+
+                        final feedsProvider = Provider.of<FeedsProvider>(
+                          context,
+                          listen: false,
+                        );
+
+                        // Convert attachment paths to File objects
+                        List<File> imageFiles =
+                            attachments.map((path) => File(path)).toList();
+
+                        // Show loading indicator
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder:
+                              (context) => Center(
+                                child: LoadingIndicator(
+                                  radius: 15,
+                                  activeColor: ThemeColors.indicatorColor(
+                                    context,
+                                  ),
+                                  inactiveColor: AppColors.greyColor,
+                                  animationDuration: Duration(
+                                    milliseconds: 500,
+                                  ),
+                                ),
+                              ),
+                        );
+
+                        try {
+                          if (_isEditing) {
+                            final response = await feedsProvider.editPost(
+                              context,
+                              widget.post?.id.toString() ?? "",
+                              titleController.text,
+                              discriptionController.text,
+                              categoryId,
+
+                              selectedPrivacy,
+                              imageFiles,
+                              [],
+                            );
+
+                            Navigator.pop(context); // Close loading dialog
+
+                            if (response != null) {
+                              // Navigate back or show success message
+                              Navigator.pop(context, true);
+                              showTopSnackbar(
+                                context,
+                                "Post created successfully!",
+                                true,
+                              );
+                            } else {
+                              print("eidt post id ${widget.post?.id}");
+                              showTopSnackbar(
+                                context,
+                                "Failed to create post",
+                                false,
+                              );
+                            }
+                          } else {
+                            final response = await feedsProvider.createPost(
+                              context,
+                              titleController.text,
+                              discriptionController.text,
+                              categoryId, // Pass category ID instead of the name
+
+                              selectedPrivacy,
+                              imageFiles,
+                              [],
+                            );
+
+                            Navigator.pop(context); // Close loading dialog
+
+                            if (response != null) {
+                              // Navigate back or show success message
+                              Navigator.pop(context, true);
+                              showTopSnackbar(
+                                context,
+                                "Post created successfully!",
+                                true,
+                              );
+                            } else {
+                              showTopSnackbar(
+                                context,
+                                "Failed to create post",
+                                false,
+                              );
+                            }
+                          }
+                        } catch (e) {
+                          Navigator.pop(context);
+                          showTopSnackbar(
+                            context,
+                            "Error: ${e.toString()}",
+                            false,
+                          );
+                        }
+                      },
+                    ),
+                    24.heightBox,
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -706,9 +715,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 selectedPrivacy.toLowerCase() == label.toLowerCase()
                     ? null
                     : Border.all(color: ThemeColors.borderColor(context)),
+
+            gradient:
+                Theme.of(context).brightness == Brightness.dark &&
+                        selectedPrivacy.toLowerCase() == label.toLowerCase()
+                    ? const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0x80FFFFFF), // 50% opacity
+                        Color(0x1AFFFFFF),
+                      ],
+                    )
+                    : null,
+
             color:
                 selectedPrivacy.toLowerCase() == label.toLowerCase()
-                    ? AppColors.purpleColor
+                    ? Theme.of(context).brightness == Brightness.dark
+                        ? null
+                        : AppColors.purpleColor
                     : ThemeColors.postCatagoriesBox(context),
           ),
           child: Row(
@@ -771,9 +796,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 selectedCategory == category
                     ? null
                     : Border.all(color: ThemeColors.borderColor(context)),
+
+            gradient:
+                Theme.of(context).brightness == Brightness.dark &&
+                        selectedCategory == category
+                    ? const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0x80FFFFFF), // 50% opacity
+                        Color(0x1AFFFFFF),
+                      ],
+                    )
+                    : null,
+
             color:
                 selectedCategory == category
-                    ? AppColors.purpleColor
+                    ? Theme.of(context).brightness == Brightness.dark
+                        ? null
+                        : AppColors.purpleColor
                     : ThemeColors.postCatagoriesBox(context),
           ),
 
