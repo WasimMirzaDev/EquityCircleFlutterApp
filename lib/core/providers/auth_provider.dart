@@ -207,7 +207,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> fetchUser() async {
     try {
       if (_token == null) return;
-      // await getTokenAndSaveToDatabase();
+      await getTokenAndSaveToDatabase();
 
       final data = await AuthApi.getUserData(
         _token!,
