@@ -100,7 +100,7 @@ class _MainLayoutState extends State<MainLayout> {
 
             FitnessScreen(categoryId: 2),
 
-            MindsetScreen(categoryId: 5),
+            MindsetScreen(categoryId: 4),
           ],
         ),
 
