@@ -7,6 +7,7 @@ import 'package:equitycircle/features/bussiness/presentation/widgets/custom_sear
     show customSearchWidget;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/constants/theme_colors.dart';
@@ -167,7 +168,13 @@ class SubjectScreen extends StatelessWidget {
                   ),
                   itemBuilder: (context, index) {
                     final category = categories[index];
-                    return CategoryCard(category: category);
+                    return GestureDetector(
+                      onTap: () {
+                        context.push('/CorporateFinanceScreen');
+                      },
+
+                      child: CategoryCard(category: category),
+                    );
                   },
                 ),
               ),

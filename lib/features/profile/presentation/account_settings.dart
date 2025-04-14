@@ -63,7 +63,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Divider(color: ThemeColors.borderColor(context), height: 0.5.h),
+              Divider(
+                color: ThemeColors.borderColor(context),
+                thickness: 0.5.h,
+              ),
               20.heightBox,
 
               Padding(

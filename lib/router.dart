@@ -15,6 +15,8 @@ import 'package:provider/provider.dart';
 
 import 'core/providers/auth_provider.dart';
 import 'education_new/presentation/education_screen.dart';
+import 'education_new/presentation/education_tab_screen.dart';
+import 'education_new/presentation/video_detail_screen.dart';
 import 'features/event_calender/presentation/add_new_event_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -40,6 +42,11 @@ GoRouter createRouter(AuthProvider authProvider) {
       ),
 
       /// 📚 **Standalone Pages (Separate from Bottom Navigation)**
+      _protectedStandaloneRoute(
+        '/CorporateFinanceScreen',
+        CorporateFinanceScreen(),
+      ),
+      _protectedStandaloneRoute('/VideoDetailScreen', VideoDetailScreen()),
       _protectedStandaloneRoute('/education', EducationPage()),
       _protectedStandaloneRoute('/neweducation', NewEducationScreen()),
       _protectedStandaloneRoute('/SubjectScreen', SubjectScreen()),
