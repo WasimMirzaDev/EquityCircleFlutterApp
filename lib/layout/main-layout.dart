@@ -95,7 +95,6 @@ class _MainLayoutState extends State<MainLayout> {
 
           children: [
             BusinessScreen(categoryId: 1),
-
             CryptoScreen(categoryId: 3),
 
             FitnessScreen(categoryId: 2),

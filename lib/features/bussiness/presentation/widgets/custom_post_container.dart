@@ -56,9 +56,13 @@ Widget customPostContainer(
               Row(
                 children: [
                   CircleAvatar(
-                    radius: 16.r,
-                    backgroundColor: AppColors.white,
-                    backgroundImage: NetworkImage(profileUrl),
+                    radius: 17.r,
+                    backgroundColor: ThemeColors.subjCardColor(context),
+                    child: CircleAvatar(
+                      radius: 16.r,
+                      backgroundColor: AppColors.white,
+                      backgroundImage: NetworkImage(profileUrl),
+                    ),
                   ),
                   10.widthBox,
                   Column(

@@ -69,7 +69,14 @@ class ThemeColors {
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.darkblack
           : AppColors.lightGreyColor;
-
+  static Color subjCardColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.black
+          : AppColors.purpleColor;
+  static Color subjTextColor(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? AppColors.darkGrey
+          : AppColors.white;
   static Color tabBackground(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.lightBlack

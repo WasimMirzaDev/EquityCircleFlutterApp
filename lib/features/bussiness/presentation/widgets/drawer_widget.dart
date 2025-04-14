@@ -47,7 +47,7 @@ class DrawerContent extends StatelessWidget {
               Divider(color: AppColors.lightGreyColor, height: 0.5),
               25.heightBox,
               drawerRow("Education", Assets.education, () {
-                context.push('/education');
+                context.push('/neweducation');
               }, context),
 
               20.heightBox,
