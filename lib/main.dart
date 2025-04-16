@@ -12,7 +12,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
 import 'core/providers/theme_provider.dart';
 
 // Flutter Version 3.29.0

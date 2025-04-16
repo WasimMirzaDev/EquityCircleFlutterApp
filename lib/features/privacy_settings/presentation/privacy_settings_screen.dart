@@ -3,9 +3,12 @@ import 'package:equitycircle/core/constants/theme_colors.dart' show ThemeColors;
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/constants/appColors.dart';
 import '../../../core/constants/assets.dart';
+import '../../../core/providers/theme_provider.dart';
 import '../../../core/widgets/custom_appbar.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
@@ -40,7 +43,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               )
               : BoxDecoration(color: AppColors.white),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.transparent,
 
         appBar: CustomAppBar(
           title: "Privacy Settings",
@@ -50,97 +53,206 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
         ),
 
         body: ListView(
-          padding: const EdgeInsets.all(16),
           children: [
             Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
-            20.heightBox,
+            16.heightBox,
             _buildSwitchTile(
               title: 'Private Account',
               value: isPrivate,
               onChanged: (val) => setState(() => isPrivate = val),
             ),
+            16.heightBox,
+            Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
             _buildSwitchTile(
               title: 'Active Status',
               value: isActive,
               onChanged: (val) => setState(() => isActive = val),
             ),
+            16.heightBox,
+            Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
             _buildSwitchTile(
               title: 'Story Sharing',
               value: isStorySharing,
               onChanged: (val) => setState(() => isStorySharing = val),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Photo Of You',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            _buildRadioTile('Add Automatically', 'auto', photoOption, (val) {
-              setState(() => photoOption = val!);
-            }),
-            _buildRadioTile('Add Manually', 'manual', photoOption, (val) {
-              setState(() => photoOption = val!);
-            }),
-            _buildDescription(),
-            const SizedBox(height: 20),
-            const Text(
-              'Your Profile',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            _buildRadioTile('Public', 'public', profileVisibility, (val) {
-              setState(() => profileVisibility = val!);
-            }),
-            _buildRadioTile('Friend', 'friend', profileVisibility, (val) {
-              setState(() => profileVisibility = val!);
-            }),
-            _buildRadioTile('Specific Friend', 'specific', profileVisibility, (
-              val,
-            ) {
-              setState(() => profileVisibility = val!);
-            }),
-            _buildRadioTile('Only Me', 'only_me', profileVisibility, (val) {
-              setState(() => profileVisibility = val!);
-            }),
-            _buildDescription(),
-            const SizedBox(height: 20),
-            const Text(
-              'Login Notification',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            _buildRadioTile(
-              'Enable',
-              'enable',
-              isLoginNotificationEnabled ? 'enable' : 'disable',
-              (val) {
-                setState(() => isLoginNotificationEnabled = val == 'enable');
-              },
-            ),
-            _buildRadioTile(
-              'Disable',
-              'disable',
-              isLoginNotificationEnabled ? 'enable' : 'disable',
-              (val) {
-                setState(() => isLoginNotificationEnabled = val == 'enable');
-              },
-            ),
-            _buildDescription(),
-            const SizedBox(height: 30),
-            const Divider(),
-            ListTile(
-              leading: const Icon(
-                Icons.support_agent_rounded,
-                color: Colors.deepPurple,
-              ),
-              title: const Text(
-                'Support',
+            16.heightBox,
+            Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
+            16.heightBox,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                'Photo Of You',
                 style: TextStyle(
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.bold,
+                  color: ThemeColors.textColor(context),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: AppFonts.inter,
+                  fontSize: 12.sp,
                 ),
               ),
-              onTap: () {
-                // Handle support tap
-              },
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                children: [
+                  _buildRadioTile('Add Automatically', 'auto', photoOption, (
+                    val,
+                  ) {
+                    setState(() => photoOption = val!);
+                  }),
+                  _buildRadioTile('Add Manually', 'manual', photoOption, (val) {
+                    setState(() => photoOption = val!);
+                  }),
+                ],
+              ),
+            ),
+            _buildDescription(),
+            16.heightBox,
+            Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
+            16.heightBox,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                'Your Profile',
+                style: TextStyle(
+                  color: ThemeColors.textColor(context),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: AppFonts.inter,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildRadioTile('Public', 'public', profileVisibility, (
+                      val,
+                    ) {
+                      setState(() => profileVisibility = val!);
+                    }),
+                    _buildRadioTile('Friend', 'friend', profileVisibility, (
+                      val,
+                    ) {
+                      setState(() => profileVisibility = val!);
+                    }),
+                    _buildRadioTile(
+                      'Specific Friend',
+                      'specific',
+                      profileVisibility,
+                      (val) {
+                        setState(() => profileVisibility = val!);
+                      },
+                    ),
+                    _buildRadioTile('Only Me', 'only_me', profileVisibility, (
+                      val,
+                    ) {
+                      setState(() => profileVisibility = val!);
+                    }),
+                  ],
+                ),
+              ),
+            ),
+
+            _buildDescription(),
+            16.heightBox,
+            Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
+            16.heightBox,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                'Login Notification',
+                style: TextStyle(
+                  color: ThemeColors.textColor(context),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: AppFonts.inter,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                children: [
+                  _buildRadioTile(
+                    'Enable',
+                    'enable',
+                    isLoginNotificationEnabled ? 'enable' : 'disable',
+                    (val) {
+                      setState(
+                        () => isLoginNotificationEnabled = val == 'enable',
+                      );
+                    },
+                  ),
+                  _buildRadioTile(
+                    'Disable',
+                    'disable',
+                    isLoginNotificationEnabled ? 'enable' : 'disable',
+                    (val) {
+                      setState(
+                        () => isLoginNotificationEnabled = val == 'enable',
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            _buildDescription(),
+            16.heightBox,
+            Divider(color: ThemeColors.borderColor(context), thickness: 0.5.h),
+
+            16.heightBox,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                'Privacy Help',
+                style: TextStyle(
+                  color: ThemeColors.textColor(context),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: AppFonts.inter,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
+            16.heightBox,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Container(
+                height: 38.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6.r),
+                  border: Border.all(color: ThemeColors.borderColor(context)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16.w, right: 8.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        Assets.supportIcon,
+                        color: ThemeColors.radiobtn(context),
+                      ),
+                      8.widthBox,
+                      Text(
+                        'Support',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontFamily: AppFonts.inter,
+                          fontWeight: FontWeight.w500,
+                          color: ThemeColors.textColor(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            16.heightBox,
           ],
         ),
       ),
@@ -153,16 +265,37 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     required Function(bool) onChanged,
   }) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SwitchListTile(
-          title: Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  color: ThemeColors.textColor(context),
+                  fontWeight: FontWeight.w500,
+                  fontFamily: AppFonts.inter,
+                  fontSize: 12.sp,
+                ),
+              ),
+              Transform.scale(
+                scale: 0.6,
+                child: Switch(
+                  value: true,
+                  onChanged: (value) {},
+                  activeColor: ThemeColors.swtichDotColor(context),
+                  activeTrackColor: ThemeColors.swtichBgColor(context),
+                ),
+              ),
+            ],
           ),
-          value: value,
-          onChanged: onChanged,
         ),
+
         _buildDescription(),
       ],
     );
@@ -174,26 +307,45 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
     String groupValue,
     ValueChanged<String?> onChanged,
   ) {
-    return RadioListTile<String>(
-      title: Text(title),
-      value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
+    return GestureDetector(
+      onTap: () {
+        onChanged(value);
+      },
+
+      child: Row(
+        children: [
+          Radio<String>(
+            value: value,
+            activeColor: ThemeColors.radiobtn(context),
+            groupValue: groupValue,
+            onChanged: onChanged,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              color: ThemeColors.textColor(context),
+              fontWeight: FontWeight.w500,
+              fontFamily: AppFonts.inter,
+              fontSize: 10.sp,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildDescription() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Text(
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
         'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, '
         'when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
         style: TextStyle(
-          fontSize: 12.sp,
+          fontSize: 10.sp,
           fontFamily: AppFonts.inter,
           fontWeight: FontWeight.w400,
-          color: ThemeColors.textColor(context),
+          color: ThemeColors.subTextColor(context),
         ),
       ),
     );

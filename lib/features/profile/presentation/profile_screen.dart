@@ -13,7 +13,9 @@ import '../../../core/providers/auth_provider.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/widgets/custom_appbar.dart';
 import '../../add_post/presentation/widget/discard_dialogbox.dart';
+import '../../app_settings/presentation/app_settings.dart';
 import '../../feeds/helpers/picture_helpers.dart';
+import '../../privacy_settings/presentation/privacy_settings_screen.dart';
 import 'account_settings.dart';
 import 'profile_settings_screen.dart';
 
@@ -63,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: ThemeColors.borderColor(context),
                     width: 0.5,
                   ),
-                  color: ThemeColors.background(context),
+                  color: ThemeColors.cardColor(context),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Column(
@@ -193,8 +195,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       );
                     }),
-                    _buildSettingItem(Assets.privacy, 'Privacy Setting', () {}),
-                    _buildSettingItem(Assets.appsettings, 'App Setting', () {}),
+                    _buildSettingItem(Assets.privacy, 'Privacy Setting', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PrivacySettingsScreen(),
+                        ),
+                      );
+                    }),
+                    _buildSettingItem(Assets.appsettings, 'App Setting', () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AppSettingScreen(),
+                        ),
+                      );
+                    }),
                     _buildSettingItem(Assets.chat, 'Chat Setting', () {}),
                     8.heightBox,
                     Divider(

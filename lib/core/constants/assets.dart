@@ -71,8 +71,14 @@ class Assets {
   static final postFormBg = "assets/images/postFormBg.png";
   static final facebook = "assets/icon/facebook.svg";
   static final googleIcon = "assets/icon/googleIcon.svg";
+  static final supportIcon = "assets/icon/supportIcon.svg";
+  static final videoPostIcon = "assets/icon/videoPostIcon.svg";
+  static final pictureIcon = "assets/icon/pictureIcon.svg";
+  static final jobIcon = "assets/icon/jobIcon.svg";
+  static final eventPostIcon = "assets/icon/eventPostIcon.svg";
   // static final postFormBg = "assets/images/postFormBg.png";
-  // static final homeBg = "assets/images/homeBg.png";
-  // static final splashBg = "assets/images/splashBg.png";
+  //   static final splashBg = "assets/images/splashBg.png";
+  // static final postFormBg = "assets/images/postFormBg.png";
+  //   static final splashBg = "assets/images/splashBg.png";
   // static final postFormBg = "assets/images/postFormBg.png";
 }

@@ -9,6 +9,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/constants/appColors.dart';
 import '../../../core/constants/theme_colors.dart';
+import 'change_password_screen.dart';
+import 'email_and_sms_screen.dart';
+import 'manage_contact_screen.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -58,7 +61,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       color: ThemeColors.borderColor(context),
                       width: 0.5,
                     ),
-                    color: ThemeColors.background(context),
+                    color: ThemeColors.cardColor(context),
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Column(
@@ -81,24 +84,24 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         thickness: 0.5.h,
                       ),
                       _buildSettingItem(Assets.setting, 'Change Password', () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ChangePasswordScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChangePasswordScreen(),
+                          ),
+                        );
                       }),
                       Divider(
                         color: ThemeColors.borderColor(context),
                         thickness: 0.5.h,
                       ),
                       _buildSettingItem(Assets.privacy, 'Email and SMS', () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => EmailAndSmsScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EmailAndSmsScreen(),
+                          ),
+                        );
                       }),
                       Divider(
                         color: ThemeColors.borderColor(context),
@@ -108,12 +111,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         Assets.appsettings,
                         'Manage Contact',
                         () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => ManageContactScreen(),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ManageContactScreen(),
+                            ),
+                          );
                         },
                       ),
 
