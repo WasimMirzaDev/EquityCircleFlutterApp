@@ -76,8 +76,13 @@ class Assets {
   static final pictureIcon = "assets/icon/pictureIcon.svg";
   static final jobIcon = "assets/icon/jobIcon.svg";
   static final eventPostIcon = "assets/icon/eventPostIcon.svg";
-  // static final postFormBg = "assets/images/postFormBg.png";
-  //   static final splashBg = "assets/images/splashBg.png";
+  static final buisness = "assets/images/buisness.png";
+  static final crypto = "assets/images/crypto.png";
+  static final mindset = "assets/images/mindset.png";
+  static final gym = "assets/images/gym.png";
+  static final gym2 = "assets/images/gym2.png";
+  static final sport = "assets/images/sport_1.jpg";
+  static final educationImg = "assets/images/education.png";
   // static final postFormBg = "assets/images/postFormBg.png";
   //   static final splashBg = "assets/images/splashBg.png";
   // static final postFormBg = "assets/images/postFormBg.png";

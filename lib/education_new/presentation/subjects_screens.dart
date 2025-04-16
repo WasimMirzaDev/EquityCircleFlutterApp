@@ -41,79 +41,50 @@ class CategoryItem {
 class SubjectScreen extends StatelessWidget {
   final List<CategoryItem> categories = [
     CategoryItem(
-      title: 'Online Courses',
-      imagePath: Assets.carousalImg,
+      title: 'Commercial Gym',
+      imagePath: Assets.gym,
       startDate: DateTime(2025, 4, 5),
       endDate: DateTime(2025, 4, 6),
       code: 'OC',
       ticketStatus: 'Sold Out',
     ),
     CategoryItem(
-      title: 'Web Development',
-      imagePath: Assets.cryptoImg,
+      title: 'CrossFit Boxes',
+      imagePath: Assets.crypto,
       startDate: DateTime(2025, 4, 5),
       code: 'WD',
       ticketStatus: '2 Tickets Available',
     ),
     CategoryItem(
-      title: 'Data Science',
-      imagePath: Assets.mindsetImg,
+      title: 'Powerlifting Gyms',
+      imagePath: Assets.educationImg,
       startDate: DateTime(2025, 4, 5),
       code: 'DS',
       ticketStatus: 'Sold Out',
     ),
     CategoryItem(
-      title: 'Machine Learning',
-      imagePath: Assets.postImg,
+      title: 'Bodybuidng Gyms ',
+      imagePath: Assets.mindset,
       startDate: DateTime(2025, 4, 10),
       endDate: DateTime(2025, 4, 13),
       code: 'ML',
       ticketStatus: '7 Tickets Available',
     ),
     CategoryItem(
-      title: 'Digital Marketing',
-      imagePath: Assets.fitnessImg,
+      title: 'Home Gyms',
+      imagePath: Assets.sport,
       startDate: DateTime(2025, 4, 12),
       endDate: DateTime(2025, 4, 13),
       code: 'DM',
       ticketStatus: '13 Tickets Available',
     ),
     CategoryItem(
-      title: 'Graphic Design',
-      imagePath: Assets.carousalImg,
+      title: 'Combat Gyms',
+      imagePath: Assets.gym2,
       startDate: DateTime(2025, 4, 12),
-      code: 'GD',
-      ticketStatus: '4 Tickets Available',
-    ),
-    CategoryItem(
-      title: 'Online Courses',
-      imagePath: Assets.carousalImg,
-      startDate: DateTime(2025, 4, 5),
-      endDate: DateTime(2025, 4, 6),
-      code: 'OC',
-      ticketStatus: 'Sold Out',
-    ),
-    CategoryItem(
-      title: 'Web Development',
-      imagePath: Assets.cryptoImg,
-      startDate: DateTime(2025, 4, 5),
-      code: 'WD',
-      ticketStatus: '2 Tickets Available',
-    ),
-    CategoryItem(
-      title: 'Data Science',
-      imagePath: Assets.mindsetImg,
-      startDate: DateTime(2025, 4, 5),
-      code: 'DS',
-      ticketStatus: 'Sold Out',
-    ),
-    CategoryItem(
-      title: 'Machine Learning',
-      imagePath: Assets.postImg,
-      startDate: DateTime(2025, 4, 10),
       endDate: DateTime(2025, 4, 13),
-      code: 'ML',
-      ticketStatus: '7 Tickets Available',
+      code: 'DM',
+      ticketStatus: '13 Tickets Available',
     ),
   ];
 
@@ -164,7 +135,7 @@ class SubjectScreen extends StatelessWidget {
                     crossAxisCount: 2,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
-                    childAspectRatio: 1.2,
+                    childAspectRatio: 1.1,
                   ),
                   itemBuilder: (context, index) {
                     final category = categories[index];
@@ -194,101 +165,49 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8.r),
-      child: Stack(
-        fit: StackFit.expand,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: AppColors.lightGreyColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset(
-            category.imagePath,
-            fit: BoxFit.cover,
-            color: Colors.black.withOpacity(0.4),
-            colorBlendMode: BlendMode.darken,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Stack(
             children: [
-              4.heightBox,
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "4-04-2025",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontFamily: AppFonts.inter,
-                        color: ThemeColors.subjTextColor(context),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 6.w,
-                        vertical: 2.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: Text(
-                        category.code,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontFamily: AppFonts.inter,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
+              // Background image
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8.r),
+                  topRight: Radius.circular(8.r),
+                ),
+                child: Image.asset(
+                  category.imagePath,
+                  fit: BoxFit.cover,
+                  height: 100.h,
+                  width: double.infinity,
                 ),
               ),
-              const Spacer(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Text(
-                  category.title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontFamily: AppFonts.inter,
-                    color: ThemeColors.subjTextColor(context),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              5.heightBox,
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: ThemeColors.subjCardColor(context),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8.r),
-                    bottomRight: Radius.circular(8.r),
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  color: Colors.black.withOpacity(0.6),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'BUY TICKETS',
+                        category.title,
                         style: TextStyle(
-                          fontSize: 10.sp,
-                          fontFamily: AppFonts.inter,
-                          color: ThemeColors.subjTextColor(context),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        category.ticketStatus,
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          fontFamily: AppFonts.inter,
-                          color: ThemeColors.subjTextColor(context),
-                          fontWeight: FontWeight.w700,
+                          color: AppColors.white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -296,6 +215,38 @@ class CategoryCard extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          Container(
+            decoration: BoxDecoration(color: ThemeColors.cardColor(context)),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  5.heightBox,
+                  Text(
+                    'Available Seats: 5',
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontFamily: AppFonts.inter,
+                      color: ThemeColors.textColor(context),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    'Duration: ${category.formattedDate}',
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontFamily: AppFonts.inter,
+                      color: ThemeColors.textColor(context),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
