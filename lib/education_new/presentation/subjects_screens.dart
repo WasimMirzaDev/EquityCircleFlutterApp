@@ -41,6 +41,14 @@ class CategoryItem {
 class SubjectScreen extends StatelessWidget {
   final List<CategoryItem> categories = [
     CategoryItem(
+      title: 'Combat Gyms',
+      imagePath: Assets.gym3,
+      startDate: DateTime(2025, 4, 12),
+      endDate: DateTime(2025, 4, 13),
+      code: 'DM',
+      ticketStatus: '13 Tickets Available',
+    ),
+    CategoryItem(
       title: 'Commercial Gym',
       imagePath: Assets.gym,
       startDate: DateTime(2025, 4, 5),
@@ -54,6 +62,14 @@ class SubjectScreen extends StatelessWidget {
       startDate: DateTime(2025, 4, 5),
       code: 'WD',
       ticketStatus: '2 Tickets Available',
+    ),
+    CategoryItem(
+      title: 'Home Gyms',
+      imagePath: Assets.education3,
+      startDate: DateTime(2025, 4, 12),
+      endDate: DateTime(2025, 4, 13),
+      code: 'DM',
+      ticketStatus: '13 Tickets Available',
     ),
     CategoryItem(
       title: 'Powerlifting Gyms',
@@ -85,6 +101,14 @@ class SubjectScreen extends StatelessWidget {
       endDate: DateTime(2025, 4, 13),
       code: 'DM',
       ticketStatus: '13 Tickets Available',
+    ),
+    CategoryItem(
+      title: 'Bodybuidng Gyms ',
+      imagePath: Assets.education2,
+      startDate: DateTime(2025, 4, 10),
+      endDate: DateTime(2025, 4, 13),
+      code: 'ML',
+      ticketStatus: '7 Tickets Available',
     ),
   ];
 
@@ -237,8 +261,10 @@ class CategoryCard extends StatelessWidget {
                   ),
                   Text(
                     'Duration: ${category.formattedDate}',
+                    maxLines: 1,
                     style: TextStyle(
                       fontSize: 10.sp,
+                      overflow: TextOverflow.ellipsis,
                       fontFamily: AppFonts.inter,
                       color: ThemeColors.textColor(context),
                       fontWeight: FontWeight.w500,

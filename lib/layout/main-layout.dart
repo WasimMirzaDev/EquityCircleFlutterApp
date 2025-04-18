@@ -14,13 +14,9 @@ import 'package:provider/provider.dart';
 
 import '../core/constants/theme_colors.dart';
 import '../core/widgets/home_custom_appbar.dart' show HomePageCustomAppBar;
-import '../education_new/presentation/subjects_screens.dart';
 import '../features/add_post/presentation/addpost_bottomsheet.dart';
-import '../features/app_settings/presentation/app_settings.dart';
 import '../features/bussiness/presentation/bussiness_screen.dart';
 import '../features/fitness/presentation/fitness_screen.dart';
-import '../features/privacy_settings/presentation/privacy_settings_screen.dart';
-import '../features/view_profile/presentation/view_profile_screen.dart';
 
 class MainLayout extends StatefulWidget {
   final Widget child;

@@ -83,7 +83,12 @@ class Assets {
   static final gym2 = "assets/images/gym2.png";
   static final sport = "assets/images/sport_1.jpg";
   static final educationImg = "assets/images/education.png";
-  // static final postFormBg = "assets/images/postFormBg.png";
-  //   static final splashBg = "assets/images/splashBg.png";
-  // static final postFormBg = "assets/images/postFormBg.png";
+  static final gym3 = "assets/images/THG_M294_09.jpg";
+  static final education2 = "assets/images/VNU_M551_11.jpg";
+  static final education3 = "assets/images/TV_M186_06.jpg";
+  // static final gym = "assets/images/gym.png";
+
+  // static final gym = "assets/images/gym.png";
+
+  // static final gym = "assets/images/gym.png";
 }

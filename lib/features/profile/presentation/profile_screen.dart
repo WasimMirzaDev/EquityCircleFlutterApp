@@ -16,6 +16,7 @@ import '../../add_post/presentation/widget/discard_dialogbox.dart';
 import '../../app_settings/presentation/app_settings.dart';
 import '../../feeds/helpers/picture_helpers.dart';
 import '../../privacy_settings/presentation/privacy_settings_screen.dart';
+import '../../view_profile/presentation/view_profile_screen.dart';
 import 'account_settings.dart';
 import 'profile_settings_screen.dart';
 
@@ -147,23 +148,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     16.heightBox,
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Container(
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100.r),
-                          border: Border.all(
-                            color: ThemeColors.borderColor(context),
-                            width: 0.5,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewProfileScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 30.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.r),
+                            border: Border.all(
+                              color: ThemeColors.borderColor(context),
+                              width: 0.5,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'View Profile',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontFamily: AppFonts.inter,
-                              color: ThemeColors.textColor(context),
-                              fontWeight: FontWeight.w500,
+                          child: Center(
+                            child: Text(
+                              'View Profile',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontFamily: AppFonts.inter,
+                                color: ThemeColors.textColor(context),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
