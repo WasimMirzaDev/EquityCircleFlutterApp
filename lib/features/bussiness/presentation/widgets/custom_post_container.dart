@@ -123,10 +123,9 @@ Widget customPostContainer(
                           value: 'edit',
                           child: Row(
                             children: [
-                              Icon(
-                                Icons.edit,
+                              SvgPicture.asset(
+                                Assets.editComment,
                                 color: ThemeColors.iconColor(context),
-                                size: 18,
                               ),
                               10.widthBox,
                               Text("Edit", style: TextStyle(fontSize: 14.sp)),
@@ -137,7 +136,7 @@ Widget customPostContainer(
                           value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.delete, color: Colors.red, size: 18),
+                              SvgPicture.asset(Assets.deleteIcon),
                               10.widthBox,
                               Text(
                                 "Delete",

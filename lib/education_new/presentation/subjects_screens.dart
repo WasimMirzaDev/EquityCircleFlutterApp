@@ -132,7 +132,7 @@ class SubjectScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: CustomAppBar(
-          title: "Subjects",
+          title: "Courses",
           onLeadingPressed: () {
             Navigator.pop(context);
           },
@@ -144,7 +144,7 @@ class SubjectScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: customSearchWidget(
-                "Search for Subjects",
+                "Search for Courses",
                 searchController,
                 context,
               ),

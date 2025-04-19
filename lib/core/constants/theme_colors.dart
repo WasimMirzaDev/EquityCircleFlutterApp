@@ -7,7 +7,7 @@ class ThemeColors {
   static Color background(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.pureBlack
-          : AppColors.offWhite;
+          : AppColors.white;
   static Color logoColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? AppColors.white

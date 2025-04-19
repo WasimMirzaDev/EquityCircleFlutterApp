@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:equitycircle/core/constants/appColors.dart';
 import 'package:equitycircle/core/extensions/sizedbox.dart';
 import 'package:equitycircle/core/models/feeds_model.dart';
 import 'package:equitycircle/core/providers/feeds_provider.dart';
 import 'package:equitycircle/features/bussiness/presentation/widgets/custom_post_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -183,107 +186,415 @@ class _FeedCardState extends State<FeedCard> {
                         top: Radius.circular(20.r),
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        20.heightBox,
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 20.w),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: SvgPicture.asset(
-                                Assets.close,
-                                height: 12.h,
-                                color: ThemeColors.iconColor(context),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Column(
+                        children: [
+                          20.heightBox,
+
+                          Container(
+                            height: 5.h,
+                            width: 38.w,
+                            decoration: BoxDecoration(
+                              color: AppColors.lightGreyColor,
+                              borderRadius: BorderRadius.circular(5.r),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 20.w),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: SvgPicture.asset(
+                                  Assets.close,
+                                  height: 12.h,
+                                  color: ThemeColors.iconColor(context),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Text(
-                          "Comments",
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontFamily: AppFonts.inter,
-                            fontWeight: FontWeight.w600,
-                            color: ThemeColors.textColor(context),
+                          20.heightBox,
+                          Text(
+                            "Comments",
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontFamily: AppFonts.inter,
+                              fontWeight: FontWeight.w600,
+                              color: ThemeColors.textColor(context),
+                            ),
                           ),
-                        ),
-                        20.heightBox,
-                        Divider(
-                          color: ThemeColors.borderColor(context),
-                          height: 0.5.h,
-                        ),
-                        20.heightBox,
 
-                        // Comments ListView
-                        Expanded(
-                          child:
-                              comments.isEmpty
-                                  ? Center(
-                                    child: Text(
-                                      'No comments found',
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontFamily: AppFonts.inter,
-                                        fontWeight: FontWeight.w400,
-                                        color: ThemeColors.textColor(context),
+                          20.heightBox,
+
+                          // Comments ListView
+                          Expanded(
+                            child:
+                                comments.isEmpty
+                                    ? Center(
+                                      child: Text(
+                                        'No comments found',
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontFamily: AppFonts.inter,
+                                          fontWeight: FontWeight.w400,
+                                          color: ThemeColors.textColor(context),
+                                        ),
                                       ),
+                                    )
+                                    : ListView.builder(
+                                      controller: scrollController,
+                                      itemCount: comments.length,
+
+                                      itemBuilder: (context, index) {
+                                        final comment =
+                                            comments.reversed.toList()[index];
+                                        final mediaList =
+                                            (comment.media != null &&
+                                                    comment.media != '[]' &&
+                                                    comment.media!.isNotEmpty)
+                                                ? List<String>.from(
+                                                  jsonDecode(comment.media!),
+                                                ) // Decode the string into a List<String>
+                                                : [];
+                                        final String? baseUrl =
+                                            dotenv.env['API_URL'];
+                                        return Padding(
+                                          padding: EdgeInsets.only(
+                                            bottom: 16.h,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                  comment.user?.profileImage ??
+                                                      '',
+                                                ),
+                                              ),
+                                              8.widthBox,
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    if ((comment.content ?? '')
+                                                            .isNotEmpty ||
+                                                        mediaList.isNotEmpty)
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          color:
+                                                              AppColors
+                                                                  .extralightgrey,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                10.r,
+                                                              ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal: 8.w,
+                                                                vertical: 8.h,
+                                                              ),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                comment
+                                                                        .user
+                                                                        ?.name ??
+                                                                    'Anonymous',
+                                                                style: TextStyle(
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                  fontFamily:
+                                                                      AppFonts
+                                                                          .inter,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color:
+                                                                      ThemeColors.textColor(
+                                                                        context,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              5.heightBox,
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      comment.content ??
+                                                                          '',
+                                                                      style: TextStyle(
+                                                                        fontSize:
+                                                                            10.sp,
+                                                                        fontFamily:
+                                                                            AppFonts.inter,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                        color: ThemeColors.textColor(
+                                                                          context,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topRight,
+                                                                    child: PopupMenuButton<
+                                                                      String
+                                                                    >(
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .zero,
+                                                                      icon: SvgPicture.asset(
+                                                                        Assets
+                                                                            .moreHorizontal,
+                                                                      ),
+                                                                      onSelected: (
+                                                                        value,
+                                                                      ) {
+                                                                        print(
+                                                                          "PopupMenu selected: $value",
+                                                                        );
+                                                                      },
+                                                                      itemBuilder:
+                                                                          (
+                                                                            BuildContext
+                                                                            context,
+                                                                          ) => [
+                                                                            PopupMenuItem<
+                                                                              String
+                                                                            >(
+                                                                              value:
+                                                                                  'edit',
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  SvgPicture.asset(
+                                                                                    Assets.editComment,
+                                                                                    color: ThemeColors.iconColor(
+                                                                                      context,
+                                                                                    ),
+                                                                                  ),
+                                                                                  10.widthBox,
+                                                                                  Text(
+                                                                                    "Edit",
+                                                                                    style: TextStyle(
+                                                                                      fontSize:
+                                                                                          14.sp,
+                                                                                      fontFamily:
+                                                                                          AppFonts.inter,
+                                                                                      fontWeight:
+                                                                                          FontWeight.w500,
+                                                                                      color: ThemeColors.textColor(
+                                                                                        context,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                            PopupMenuItem<
+                                                                              String
+                                                                            >(
+                                                                              value:
+                                                                                  'delete',
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  SvgPicture.asset(
+                                                                                    Assets.deleteIcon,
+                                                                                  ),
+                                                                                  10.widthBox,
+                                                                                  Text(
+                                                                                    "Delete",
+                                                                                    style: TextStyle(
+                                                                                      fontSize:
+                                                                                          14.sp,
+                                                                                      fontFamily:
+                                                                                          AppFonts.inter,
+                                                                                      fontWeight:
+                                                                                          FontWeight.w500,
+                                                                                      color:
+                                                                                          AppColors.red,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              if (mediaList
+                                                                  .isNotEmpty) ...[
+                                                                8.heightBox,
+                                                                ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                        10.r,
+                                                                      ),
+                                                                  child: Image.network(
+                                                                    mediaList[0],
+                                                                    height:
+                                                                        180.h,
+                                                                    width:
+                                                                        double
+                                                                            .infinity,
+                                                                    fit:
+                                                                        BoxFit
+                                                                            .cover,
+                                                                    errorBuilder: (
+                                                                      context,
+                                                                      error,
+                                                                      stackTrace,
+                                                                    ) {
+                                                                      return Container(
+                                                                        height:
+                                                                            180.h,
+                                                                        width:
+                                                                            double.infinity,
+                                                                        color:
+                                                                            AppColors.darkGrey,
+                                                                        child: Icon(
+                                                                          Icons
+                                                                              .broken_image,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    5.heightBox,
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              '2 hr',
+                                                              style: TextStyle(
+                                                                fontSize: 10.sp,
+                                                                fontFamily:
+                                                                    AppFonts
+                                                                        .inter,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    ThemeColors.subTextColor(
+                                                                      context,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                            10.widthBox,
+                                                            Text(
+                                                              'Like',
+                                                              style: TextStyle(
+                                                                fontSize: 10.sp,
+                                                                fontFamily:
+                                                                    AppFonts
+                                                                        .inter,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    ThemeColors.subTextColor(
+                                                                      context,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                            10.widthBox,
+                                                            Text(
+                                                              'Reply',
+                                                              style: TextStyle(
+                                                                fontSize: 10.sp,
+                                                                fontFamily:
+                                                                    AppFonts
+                                                                        .inter,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    ThemeColors.subTextColor(
+                                                                      context,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              Assets
+                                                                  .heartFilled,
+                                                              height: 12.h,
+                                                              width: 12.w,
+                                                              color:
+                                                                  AppColors.red,
+                                                            ),
+                                                            5.widthBox,
+                                                            Text(
+                                                              "10",
+                                                              style: TextStyle(
+                                                                fontSize: 10.sp,
+                                                                fontFamily:
+                                                                    AppFonts
+                                                                        .inter,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    ThemeColors.textColor(
+                                                                      context,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  )
-                                  : ListView.builder(
-                                    controller: scrollController,
-                                    itemCount: comments.length,
-                                    itemBuilder: (context, index) {
-                                      final comment =
-                                          comments.reversed.toList()[index];
-                                      return ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                            comment.user?.profileImage ?? '',
-                                          ),
-                                        ),
-                                        title: Text(
-                                          comment.user?.name ?? 'Anonymous',
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontFamily: AppFonts.inter,
-                                            fontWeight: FontWeight.w600,
-                                            color: ThemeColors.textColor(
-                                              context,
-                                            ),
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                          comment.content ?? '',
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            fontFamily: AppFonts.inter,
-                                            fontWeight: FontWeight.w600,
-                                            color: ThemeColors.textColor(
-                                              context,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                        ),
+                          ),
 
-                        20.heightBox,
+                          20.heightBox,
 
-                        // Ensure the input bar stays at the bottom
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          child: CommentInputBar(
+                          // Ensure the input bar stays at the bottom
+                          CommentInputBar(
                             feedId: widget.feed.id ?? 0,
                             categoryId: widget.feed.categoryId ?? 0,
                           ),
-                        ),
-                        20.heightBox,
-                      ],
+                          20.heightBox,
+                        ],
+                      ),
                     ),
                   ),
                 ),
